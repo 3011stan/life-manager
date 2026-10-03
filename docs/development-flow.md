@@ -66,6 +66,37 @@ Rules:
   infrastructure checkpoints are proposed explicitly.
 - Kaizen (process retrospective) is deferred; it will be introduced later.
 
+## Engineering rules
+
+Adapted from researched workflows
+
+- **Regression test before the fix.** A bug fix starts with a test that fails
+  without the fix and passes with it.
+- **Plan the evidence before building.** At Tasks, each claim gets an evidence
+  path (test, command, or check). At Verify, each claim is reported as
+  established, limited, or refuted.
+- **A gap is not a pass.** A skipped, pending, or unrunnable check (including
+  "tool not installed") is recorded as a gap, never as green.
+- **Green on the exact commit.** Deploy only from a commit whose CI is green;
+  never chain the check and the push or deploy in one command.
+- **Deploy → smoke test → tag.** After deploying, run a live smoke test; tag a
+  release only after it passes, and only when asked.
+- **Slop is a defect.** No speculative abstractions, drive-by refactors,
+  TODOs, dead code, or tests weakened to pass.
+- **Living examples over skills.** Point the agent at working code in this or
+  another repo before writing a skill; write a skill only for a procedure that
+  repeats the same way and has already caused friction.
+
+### Later, with a trigger
+
+| Practice | Trigger |
+|---|---|
+| Changelog-driven semver | First release |
+| Kaizen: after each round, route learnings to a skill, `AGENTS.md`, a tool, or ai-memory | When reintroduced |
+
+Constitution v2 candidates: regression-test-first, evidence-based
+verification, and treating external input as untrusted.
+
 ## Roadmap
 
 | Order | Item | Notes |
