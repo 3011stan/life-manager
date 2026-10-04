@@ -148,11 +148,11 @@ contract generation, the web data layer, and a working staging deploy.
 
 **Independent Test**: isolation suite passes as the application role; manual spot check of quickstart scenario 5.
 
-- [ ] T051 [P] [US3] Write `backend/test/isolation/cross-tenant.test.ts`: for every registry entry, account B reading, updating, or deleting account A's resource gets the same 404 body as a random id; B's responses never contain A's ids
-- [ ] T052 [P] [US3] Write `backend/test/isolation/rls-fail-closed.test.ts`: a query without `app.workspace_id` returns no rows; inserting a row referencing another workspace's id fails on the composite foreign key
-- [ ] T053 [US3] Fix any failures found by T051–T052 with a regression test first; record results for `verification.md`
+- [x] T051 [P] [US3] Write `backend/test/isolation/cross-tenant.test.ts`: for every registry entry, account B reading, updating, or deleting account A's resource gets the same 404 body as a random id; B's responses never contain A's ids
+- [x] T052 [P] [US3] Write `backend/test/isolation/rls-fail-closed.test.ts`: a query without `app.workspace_id` returns no rows; inserting a row referencing another workspace's id fails on the composite foreign key
+- [x] T053 [US3] Fix any failures found by T051–T052 with a regression test first; record results for `verification.md`
 
-**Checkpoint**: SC-003 established by test output.
+**Checkpoint**: SC-003 established by test output. 2026-10-04: 17 isolation tests pass as the application role; no failures to fix (T053); mutation check confirmed the suite catches a session-wide tenant setting.
 
 ---
 
