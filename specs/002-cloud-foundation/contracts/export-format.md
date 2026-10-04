@@ -21,7 +21,9 @@ they never remove or rename fields without increasing `formatVersion`.
 | `workspace.settings.timeZone` | string | IANA time zone |
 | `workspace.settings.defaultDailyCapacityMinutes` | integer | Minutes |
 | `workspace.settings.updatedAt` | string (UTC timestamp) | Last change |
-| `securityEvents[]` | array | This account's events: `type`, `occurredAt` |
+| `securityEvents[]` | array | This account's security events, oldest first |
+| `securityEvents[].type` | string | `sign_in`, `sign_in_refused`, `sign_out`, `export`, `account_deleted` |
+| `securityEvents[].occurredAt` | string (UTC timestamp) | When it happened |
 
 Not included: session tokens, provider tokens, hashed values, other accounts'
 data.
@@ -37,13 +39,19 @@ Exported: 2026-10-04T18:00:00Z · Format version 1
 
 ## Account
 
+- Id: …
 - Email: …
 - Name: …
 - Created: …
 
+## Workspace
+
+- Id: …
+- Created: …
+
 ## Workspace Settings
 
-- Week starts on: Sunday
+- Week starts on: Sunday (0)
 - Time zone: America/Sao_Paulo
 - Default daily capacity: 960 minutes
 - Last changed: …

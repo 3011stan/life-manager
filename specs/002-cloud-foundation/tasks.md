@@ -162,10 +162,10 @@ contract generation, the web data layer, and a working staging deploy.
 
 **Independent Test**: quickstart scenario 7.
 
-- [ ] T054 [P] [US4] Write `backend/test/integration/export.test.ts`: both formats contain every stored value for the account and nothing from another account; every JSON field appears in the Markdown; a concurrent export returns 409; an `export` security event is written
-- [ ] T055 [US4] Implement `GET /v1/export?format=json|markdown` in `backend/src/modules/export/` (JSON builder, Markdown renderer, per-account concurrency lock); add registry entry; regenerate `backend/openapi.json`
-- [ ] T056 [US4] Document the format in `backend/docs/export-format.md` (copied from the spec contract and kept in sync by a test that checks field names)
-- [ ] T057 [US4] Build export actions on `/account` in `web/src/app/(signed-in)/account/page.tsx`; add `web/e2e/export.spec.ts`
+- [x] T054 [P] [US4] Write `backend/test/integration/export.test.ts`: both formats contain every stored value for the account and nothing from another account; every JSON field appears in the Markdown; a concurrent export returns 409; an `export` security event is written
+- [x] T055 [US4] Implement `GET /v1/export?format=json|markdown` in `backend/src/modules/export/` (JSON builder, Markdown renderer, per-account concurrency lock); add registry entry; regenerate `backend/openapi.json`
+- [x] T056 [US4] Document the format in `backend/docs/export-format.md` (copied from the spec contract and kept in sync by a test that checks field names)
+- [x] T057 [US4] Build export actions on `/account` in `web/src/app/(signed-in)/account/page.tsx`; add `web/e2e/export.spec.ts`
 
 **Checkpoint**: SC-004 measured on staging.
 

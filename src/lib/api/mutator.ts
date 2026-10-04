@@ -58,6 +58,7 @@ export async function apiFetch<T>(url: string, options: RequestInit): Promise<T>
   connectivity.markApiReachable(true);
   if (!res.ok) throw new ApiError(res.status, await readProblem(res));
 
-  const data: unknown = res.status === 204 ? undefined : await res.json();
+  const isJson = (res.headers.get("content-type") ?? "").includes("json");
+  const data: unknown = res.status === 204 ? undefined : isJson ? await res.json() : await res.text();
   return { data, status: res.status, headers: res.headers } as T;
 }

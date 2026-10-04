@@ -248,6 +248,165 @@
           }
         }
       }
+    },
+    "/v1/export": {
+      "get": {
+        "operationId": "exportAccountData",
+        "tags": [
+          "account"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "json"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "markdown"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "format",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The account's data as an attachment (contracts/export-format.md)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "formatVersion",
+                    "exportedAt",
+                    "account",
+                    "workspace",
+                    "securityEvents"
+                  ],
+                  "properties": {
+                    "formatVersion": {
+                      "type": "integer"
+                    },
+                    "exportedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "account": {
+                      "type": "object",
+                      "required": [
+                        "id",
+                        "email",
+                        "name",
+                        "createdAt"
+                      ],
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
+                    },
+                    "workspace": {
+                      "type": "object",
+                      "required": [
+                        "id",
+                        "createdAt",
+                        "settings"
+                      ],
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "settings": {
+                          "type": "object",
+                          "required": [
+                            "weekStartDay",
+                            "timeZone",
+                            "defaultDailyCapacityMinutes",
+                            "updatedAt"
+                          ],
+                          "properties": {
+                            "weekStartDay": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 6,
+                              "description": "0 = Sunday"
+                            },
+                            "timeZone": {
+                              "type": "string",
+                              "description": "IANA time zone"
+                            },
+                            "defaultDailyCapacityMinutes": {
+                              "type": "integer"
+                            },
+                            "updatedAt": {
+                              "type": "string",
+                              "format": "date-time"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "securityEvents": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "type",
+                          "occurredAt"
+                        ],
+                        "properties": {
+                          "type": {
+                            "type": "string"
+                          },
+                          "occurredAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "text/markdown": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "servers": [

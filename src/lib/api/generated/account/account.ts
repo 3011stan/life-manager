@@ -20,6 +20,8 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  ExportAccountData200One,
+  ExportAccountDataParams,
   GetMe200
 } from '../lifeManagerAPI.schemas';
 
@@ -140,6 +142,124 @@ export function useGetMe<TData = Awaited<ReturnType<typeof getMe>>, TError = unk
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetMeQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export type exportAccountDataResponse200ApplicationJson = {
+  data: ExportAccountData200One
+  status: 200
+}
+
+export type exportAccountDataResponse200TextMarkdown = {
+  data: string
+  status: 200
+}
+
+export type exportAccountDataResponseSuccess = (exportAccountDataResponse200ApplicationJson | exportAccountDataResponse200TextMarkdown) & {
+  headers: Headers;
+};
+;
+
+export type exportAccountDataResponse = (exportAccountDataResponseSuccess)
+
+export const getExportAccountDataUrl = (params: ExportAccountDataParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/v1/export?${stringifiedParams}` : `/v1/export`
+}
+
+export const exportAccountData = async (params: ExportAccountDataParams, options?: Parameters<typeof apiFetch>[1]): Promise<exportAccountDataResponse> => {
+
+  return apiFetch<exportAccountDataResponse>(getExportAccountDataUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getExportAccountDataQueryKey = (params?: ExportAccountDataParams,) => {
+    return [
+    `/v1/export`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getExportAccountDataQueryOptions = <TData = Awaited<ReturnType<typeof exportAccountData>>, TError = unknown>(params: ExportAccountDataParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof exportAccountData>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getExportAccountDataQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof exportAccountData>>> = ({ signal }) => exportAccountData(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof exportAccountData>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type ExportAccountDataQueryResult = NonNullable<Awaited<ReturnType<typeof exportAccountData>>>
+export type ExportAccountDataQueryError = unknown
+
+
+export function useExportAccountData<TData = Awaited<ReturnType<typeof exportAccountData>>, TError = unknown>(
+ params: ExportAccountDataParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof exportAccountData>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof exportAccountData>>,
+          TError,
+          Awaited<ReturnType<typeof exportAccountData>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useExportAccountData<TData = Awaited<ReturnType<typeof exportAccountData>>, TError = unknown>(
+ params: ExportAccountDataParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof exportAccountData>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof exportAccountData>>,
+          TError,
+          Awaited<ReturnType<typeof exportAccountData>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useExportAccountData<TData = Awaited<ReturnType<typeof exportAccountData>>, TError = unknown>(
+ params: ExportAccountDataParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof exportAccountData>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useExportAccountData<TData = Awaited<ReturnType<typeof exportAccountData>>, TError = unknown>(
+ params: ExportAccountDataParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof exportAccountData>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getExportAccountDataQueryOptions(params,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

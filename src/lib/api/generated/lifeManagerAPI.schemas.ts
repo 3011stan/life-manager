@@ -86,3 +86,49 @@ export type UpdateWorkspaceSettings200 = {
   updatedAt: string;
 };
 
+export type ExportAccountDataParams = {
+format: typeof ExportAccountDataFormat[keyof typeof ExportAccountDataFormat];
+};
+
+export const ExportAccountDataFormat = {  json: 'json',
+  markdown: 'markdown',
+} as const
+export type ExportAccountData200OneAccount = {
+  id: string;
+  email: string;
+  name: string | null;
+  createdAt: string;
+};
+
+export type ExportAccountData200OneWorkspaceSettings = {
+  /**
+     * 0 = Sunday
+     * @minimum 0
+     * @maximum 6
+     */
+  weekStartDay: number;
+  /** IANA time zone */
+  timeZone: string;
+  defaultDailyCapacityMinutes: number;
+  updatedAt: string;
+};
+
+export type ExportAccountData200OneWorkspace = {
+  id: string;
+  createdAt: string;
+  settings: ExportAccountData200OneWorkspaceSettings;
+};
+
+export type ExportAccountData200OneSecurityEventsItem = {
+  type: string;
+  occurredAt: string;
+};
+
+export type ExportAccountData200One = {
+  formatVersion: number;
+  exportedAt: string;
+  account: ExportAccountData200OneAccount;
+  workspace: ExportAccountData200OneWorkspace;
+  securityEvents: ExportAccountData200OneSecurityEventsItem[];
+};
+

@@ -21,6 +21,12 @@ describe("apiFetch", () => {
     expect(fetchMock.mock.calls[0]?.[1]).toMatchObject({ credentials: "include" });
   });
 
+  it("returns non-JSON bodies as text", async () => {
+    stubFetch(() => new Response("# Export\n", { status: 200, headers: { "content-type": "text/markdown; charset=utf-8" } }));
+    const result = await apiFetch<{ data: unknown }>("/v1/export?format=markdown", { method: "GET" });
+    expect(result.data).toBe("# Export\n");
+  });
+
   it("adds an idempotency key to mutations", async () => {
     const fetchMock = stubFetch(() => new Response(null, { status: 204 }));
     await apiFetch("/v1/thing", { method: "PATCH", body: "{}" });

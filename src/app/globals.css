@@ -170,3 +170,61 @@ h1 {
   background: var(--soft);
   color: var(--foreground);
 }
+
+h2 {
+  margin: 8px 0 0;
+  font-size: 1.15rem;
+}
+
+.panel p {
+  margin: 0;
+}
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.details {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 6px 14px;
+  margin: 0;
+}
+
+.details dt {
+  color: var(--muted);
+}
+
+.details dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.top-bar__nav {
+  display: flex;
+  gap: 4px;
+}
+
+.top-bar__nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 10px;
+  border-radius: 6px;
+  color: var(--foreground);
+  text-decoration: none;
+}
+
+.top-bar__nav a[aria-current="page"] {
+  background: var(--soft);
+  font-weight: 600;
+}
+
+.top-bar__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
