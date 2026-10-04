@@ -228,3 +228,35 @@ h2 {
   gap: 8px;
   min-width: 0;
 }
+
+.danger-button {
+  min-height: 44px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--danger);
+  color: #fff;
+  font-weight: 600;
+}
+
+.dialog {
+  width: min(calc(100% - 32px), 480px);
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--foreground);
+}
+
+.dialog::backdrop {
+  background: rgb(0 0 0 / 40%);
+}
+
+.dialog p {
+  margin: 0;
+}
+
+.top-bar__actions .ghost-button {
+  flex-shrink: 0;
+  white-space: nowrap;
+}

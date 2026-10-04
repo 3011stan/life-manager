@@ -177,9 +177,9 @@ contract generation, the web data layer, and a working staging deploy.
 
 **Independent Test**: quickstart scenario 8.
 
-- [ ] T058 [P] [US5] Write `backend/test/integration/account-deletion.test.ts`: wrong or missing confirmation returns 422; confirmed deletion removes account, workspace, settings, membership, idempotency keys, sessions, and provider links; a second device's session gets 401 on its next request; an `account_deleted` event remains with only the opaque id; signing in again creates a new empty workspace
-- [ ] T059 [US5] Implement `DELETE /v1/account` in `backend/src/modules/account/delete.ts` in one transaction with session revocation; add registry entry; regenerate `backend/openapi.json`
-- [ ] T060 [US5] Build the deletion dialog (export offered first, confirmation phrase) on `web/src/app/(signed-in)/account/page.tsx`; add `web/e2e/account-deletion.spec.ts`
+- [x] T058 [P] [US5] Write `backend/test/integration/account-deletion.test.ts`: wrong or missing confirmation returns 422; confirmed deletion removes account, workspace, settings, membership, idempotency keys, sessions, and provider links; a second device's session gets 401 on its next request; an `account_deleted` event remains with only the opaque id; signing in again creates a new empty workspace
+- [x] T059 [US5] Implement `DELETE /v1/account` in `backend/src/modules/account/delete.ts` in one transaction with session revocation; add registry entry; regenerate `backend/openapi.json`
+- [x] T060 [US5] Build the deletion dialog (export offered first, confirmation phrase) on `web/src/app/(signed-in)/account/page.tsx`; add `web/e2e/account-deletion.spec.ts`
 
 **Checkpoint**: SC-005 established.
 

@@ -109,6 +109,39 @@
         }
       }
     },
+    "/v1/account": {
+      "delete": {
+        "operationId": "deleteAccount",
+        "tags": [
+          "account"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "confirmation"
+                ],
+                "properties": {
+                  "confirmation": {
+                    "type": "string",
+                    "description": "Must be exactly \"DELETE MY ACCOUNT\""
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Deleted; every session is revoked and the cookie cleared"
+          }
+        }
+      }
+    },
     "/v1/workspace/settings": {
       "get": {
         "operationId": "getWorkspaceSettings",

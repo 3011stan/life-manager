@@ -32,6 +32,11 @@ export type GetMe200 = {
   workspace: GetMe200Workspace;
 };
 
+export type DeleteAccountBody = {
+  /** Must be exactly "DELETE MY ACCOUNT" */
+  confirmation: string;
+};
+
 export type GetWorkspaceSettings200 = {
   /**
      * 0 = Sunday

@@ -5,6 +5,7 @@ import { downloadExport, type ExportFormat } from "@/lib/api/export";
 import { useGetMe } from "@/lib/api/generated/account/account";
 import { ApiError } from "@/lib/api/mutator";
 import { useConnectivity } from "@/lib/offline/use-connectivity";
+import { DeleteAccountDialog } from "./DeleteAccountDialog";
 
 export function AccountPanel() {
   const me = useGetMe({ query: { retry: false } });
@@ -57,6 +58,12 @@ export function AccountPanel() {
           {message.text}
         </p>
       ) : null}
+
+      <h2>Delete account</h2>
+      <p>Permanently remove your account and everything stored for it.</p>
+      <div className="button-row">
+        <DeleteAccountDialog disabled={readOnly} />
+      </div>
     </section>
   );
 }

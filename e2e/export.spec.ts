@@ -1,14 +1,23 @@
 import { readFile } from "node:fs/promises";
 import { expect, test, type Page } from "@playwright/test";
 
-// US4 / SC-004. Requires the local API with the allowed e2e email.
-const ALLOWED = process.env.E2E_ALLOWED_EMAIL ?? "e2e@example.test";
+// US4 / SC-004. One export runs at a time per account (409 otherwise), so each
+// project uses its own account and the tests in this file run one by one.
+// Allow-list both emails locally first:
+//   npm run allow-email -- e2e-export-desktop@example.test   (backend)
+//   npm run allow-email -- e2e-export-mobile@example.test
+test.describe.configure({ mode: "serial" });
+
+let ALLOWED = "";
+test.beforeEach(({}, testInfo) => {
+  ALLOWED = `e2e-export-${testInfo.project.name}@example.test`;
+});
 
 async function signInToAccount(page: Page) {
   await page.goto("/sign-in?next=/account");
   await page.getByLabel("Test sign-in email").fill(ALLOWED);
   await page.getByRole("button", { name: "Test sign-in" }).click();
-  await expect(page.getByRole("heading", { name: "Account" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Account", exact: true })).toBeVisible();
 }
 
 test("exports JSON with the account's settings (FR-017)", async ({ page }) => {

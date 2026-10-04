@@ -18,6 +18,7 @@ export function SignInForm() {
     errorCode ? (MESSAGES[errorCode] ?? "Sign-in failed. Try again.") : undefined,
   );
   const [busy, setBusy] = useState(false);
+  const deleted = params.get("deleted") === "1";
 
   async function google() {
     setBusy(true);
@@ -44,6 +45,11 @@ export function SignInForm() {
 
   return (
     <section className="panel">
+      {deleted ? (
+        <p role="status" className="notice notice--ok">
+          Your account was deleted.
+        </p>
+      ) : null}
       {error ? (
         <p role="alert" className="notice notice--error">
           {error}

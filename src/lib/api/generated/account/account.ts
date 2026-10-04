@@ -5,21 +5,26 @@
  * OpenAPI spec version: 1.0.0
  */
 import {
+  useMutation,
   useQuery
 } from '@tanstack/react-query';
 import type {
   DataTag,
   DefinedInitialDataOptions,
   DefinedUseQueryResult,
+  MutationFunction,
   QueryClient,
   QueryFunction,
   QueryKey,
   UndefinedInitialDataOptions,
+  UseMutationOptions,
+  UseMutationResult,
   UseQueryOptions,
   UseQueryResult
 } from '@tanstack/react-query';
 
 import type {
+  DeleteAccountBody,
   ExportAccountData200One,
   ExportAccountDataParams,
   GetMe200
@@ -153,7 +158,100 @@ export function useGetMe<TData = Awaited<ReturnType<typeof getMe>>, TError = unk
 
 
 
-export type exportAccountDataResponse200ApplicationJson = {
+export type deleteAccountResponse204 = {
+  data: void
+  status: 204
+}
+
+export type deleteAccountResponseSuccess = (deleteAccountResponse204) & {
+  headers: Headers;
+};
+;
+
+export type deleteAccountResponse = (deleteAccountResponseSuccess)
+
+export const getDeleteAccountUrl = () => {
+
+
+
+
+  return `/v1/account`
+}
+
+export const deleteAccount = async (deleteAccountBody: DeleteAccountBody, options?: Parameters<typeof apiFetch>[1]): Promise<deleteAccountResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<deleteAccountResponse>(getDeleteAccountUrl(),
+  {
+    ...options,
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(deleteAccountBody)
+  }
+);}
+
+
+
+
+
+export const getDeleteAccountMutationKey = () => ['deleteAccount'] as const;
+
+export const getDeleteAccountMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteAccount>>, TError,DeleteAccountMutationVariables, TContext>, request?: SecondParameter<typeof apiFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteAccount>>, TError,DeleteAccountMutationVariables, TContext> => {
+
+const mutationKey = getDeleteAccountMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteAccount>>, DeleteAccountMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  deleteAccount(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteAccountMutationResult = NonNullable<Awaited<ReturnType<typeof deleteAccount>>>
+    export type DeleteAccountMutationBody = DeleteAccountBody
+    export type DeleteAccountMutationError = unknown
+    export type DeleteAccountMutationVariables = {data: DeleteAccountBody}
+
+    export const useDeleteAccount = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteAccount>>, TError,DeleteAccountMutationVariables, TContext>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof deleteAccount>>,
+        TError,
+        DeleteAccountMutationVariables,
+        TContext
+      > => {
+      return useMutation(getDeleteAccountMutationOptions(options), queryClient);
+    }
+    export type exportAccountDataResponse200ApplicationJson = {
   data: ExportAccountData200One
   status: 200
 }
