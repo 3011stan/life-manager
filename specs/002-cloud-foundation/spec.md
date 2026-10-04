@@ -171,8 +171,10 @@ environment and confirm the data matches.
    currently deployed web app keeps working throughout.
 2. **Given** a change whose automated checks fail, **When** a release is
    attempted, **Then** it does not go live.
-3. **Given** a release, **When** it finishes, **Then** a live smoke check
-   confirms sign-in and settings round-trip in the released environment.
+3. **Given** a release, **When** it finishes, **Then** a live smoke check passes
+   in the released environment (full sign-in and settings round-trip on
+   staging; reduced checks in production for a commit already proven on
+   staging).
 4. **Given** production data, **When** a restore test is performed, **Then** the
    restored data matches the source as of the backup time.
 
@@ -278,8 +280,11 @@ environment and confirm the data matches.
   release of either MUST NOT break the currently deployed version of the other.
 - **FR-024**: A release MUST NOT go live unless its automated checks passed on
   the exact version being released.
-- **FR-025**: Each release MUST be followed by a live smoke check of sign-in and
-  settings round-trip.
+- **FR-025**: Each release MUST be followed by a live smoke check. On staging it
+  covers sign-in and a settings round-trip. In production it covers health,
+  refusal of unauthenticated access, the sign-in redirect, and CORS; the same
+  commit MUST have passed the staging round-trip before reaching production.
+  (Amended 2026-10-04: production sign-in cannot be automated.)
 - **FR-026**: Changes to stored data structure MUST keep the currently deployed
   web app and service working during rollout and MUST NOT discard data.
 - **FR-027**: Security-relevant events (sign-in, sign-out, export, account
@@ -314,7 +319,9 @@ environment and confirm the data matches.
 ### Measurable Outcomes
 
 - **SC-001**: A new user goes from opening the app on a phone to seeing their
-  workspace in under 1 minute.
+  workspace in under 1 minute, measured with the service awake. (Amended
+  2026-10-04: the owner chose a hosting plan whose service sleeps when idle and
+  takes about a minute to wake; see ADR 0002.)
 - **SC-002**: A setting saved on one device appears on a second device within
   5 seconds of refreshing, in 100% of attempts in verification.
 - **SC-003**: 100% of automated cross-workspace read and write attempts return
@@ -354,4 +361,9 @@ environment and confirm the data matches.
   are decided in research for this feature, not in this specification.
 - The owner manages the allow list directly (no admin screen is required in this
   feature).
-- Users are primarily in Brazil; response times are judged from there.
+- Users are primarily in Brazil; response times are judged from there. The
+  service is hosted in the US east, so each request carries roughly 110–130 ms
+  of network latency (ADR 0002).
+- The first request after the service has been idle for 15 minutes can take
+  about a minute; the app shows the offline copy and a waking-up notice
+  meanwhile instead of an error.
