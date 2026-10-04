@@ -1,8 +1,6 @@
-// Placeholder until US2 (T049) builds the settings form.
+import { SettingsForm } from "./SettingsForm";
+
+// Static shell; data is loaded in the browser so the page works offline.
 export default function SettingsPage() {
-  return (
-    <section className="panel">
-      <h1>Settings</h1>
-    </section>
-  );
+  return <SettingsForm />;
 }

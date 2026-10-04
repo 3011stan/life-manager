@@ -1,3 +1,5 @@
+import { connectivity } from "@/lib/offline/connectivity";
+
 // ADR 0007: every generated API call goes through this function. It owns
 // credentials, idempotency keys, error mapping, and the offline read-only guard.
 export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
@@ -25,17 +27,6 @@ export class ReadOnlyError extends Error {
   }
 }
 
-let readOnly = false;
-
-// Set by the connectivity layer (ADR 0006). Mutations are refused while true.
-export function setReadOnly(value: boolean): void {
-  readOnly = value;
-}
-
-export function isReadOnly(): boolean {
-  return readOnly;
-}
-
 const SAFE_METHODS = new Set(["GET", "HEAD"]);
 
 async function readProblem(res: Response): Promise<Problem | undefined> {
@@ -47,15 +38,24 @@ async function readProblem(res: Response): Promise<Problem | undefined> {
 export async function apiFetch<T>(url: string, options: RequestInit): Promise<T> {
   const method = (options.method ?? "GET").toUpperCase();
   const mutating = !SAFE_METHODS.has(method);
-  if (mutating && readOnly) throw new ReadOnlyError();
+  if (mutating && connectivity.getSnapshot().readOnly) throw new ReadOnlyError();
 
   const headers = new Headers(options.headers);
+  // FR-012: lets the API default a new workspace to this device's time zone.
+  headers.set("x-time-zone", Intl.DateTimeFormat().resolvedOptions().timeZone);
   if (mutating) {
     if (!headers.has("idempotency-key")) headers.set("idempotency-key", crypto.randomUUID());
     if (options.body !== undefined && !headers.has("content-type")) headers.set("content-type", "application/json");
   }
 
-  const res = await fetch(`${API_BASE_URL}${url}`, { ...options, method, headers, credentials: "include" });
+  let res: Response;
+  try {
+    res = await fetch(`${API_BASE_URL}${url}`, { ...options, method, headers, credentials: "include" });
+  } catch (error) {
+    connectivity.markApiReachable(false);
+    throw error;
+  }
+  connectivity.markApiReachable(true);
   if (!res.ok) throw new ApiError(res.status, await readProblem(res));
 
   const data: unknown = res.status === 204 ? undefined : await res.json();

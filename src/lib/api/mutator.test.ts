@@ -1,8 +1,9 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { ApiError, ReadOnlyError, apiFetch, setReadOnly } from "./mutator";
+import { connectivity } from "@/lib/offline/connectivity";
+import { ApiError, ReadOnlyError, apiFetch } from "./mutator";
 
 afterEach(() => {
-  setReadOnly(false);
+  connectivity.reset();
   vi.unstubAllGlobals();
 });
 
@@ -36,7 +37,7 @@ describe("apiFetch", () => {
 
   it("refuses mutations while read-only, but still allows reads", async () => {
     const fetchMock = stubFetch(() => new Response(JSON.stringify({}), { status: 200, headers: { "content-type": "application/json" } }));
-    setReadOnly(true);
+    connectivity.setBrowserOnline(false);
     await expect(apiFetch("/v1/thing", { method: "PATCH", body: "{}" })).rejects.toBeInstanceOf(ReadOnlyError);
     await apiFetch("/health", { method: "GET" });
     expect(fetchMock).toHaveBeenCalledTimes(1);

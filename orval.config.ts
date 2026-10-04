@@ -13,7 +13,6 @@ export default defineConfig({
       clean: true,
       override: {
         mutator: { path: "./src/lib/api/mutator.ts", name: "apiFetch" },
-        query: { useQuery: true },
       },
     },
   },

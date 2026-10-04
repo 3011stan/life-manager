@@ -32,3 +32,57 @@ export type GetMe200 = {
   workspace: GetMe200Workspace;
 };
 
+export type GetWorkspaceSettings200 = {
+  /**
+     * 0 = Sunday
+     * @minimum 0
+     * @maximum 6
+     */
+  weekStartDay: number;
+  /** IANA time zone */
+  timeZone: string;
+  /**
+     * @minimum 1
+     * @maximum 1440
+     */
+  defaultDailyCapacityMinutes: number;
+  version: number;
+  updatedAt: string;
+};
+
+export type UpdateWorkspaceSettingsBody = {
+  /**
+     * @minimum 0
+     * @maximum 6
+     */
+  weekStartDay?: number;
+  /**
+     * @minLength 1
+     * @maxLength 64
+     */
+  timeZone?: string;
+  /**
+     * @minimum 1
+     * @maximum 1440
+     */
+  defaultDailyCapacityMinutes?: number;
+};
+
+export type UpdateWorkspaceSettings200 = {
+  /**
+     * 0 = Sunday
+     * @minimum 0
+     * @maximum 6
+     */
+  weekStartDay: number;
+  /** IANA time zone */
+  timeZone: string;
+  /**
+     * @minimum 1
+     * @maximum 1440
+     */
+  defaultDailyCapacityMinutes: number;
+  version: number;
+  updatedAt: string;
+};
+

@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { SerwistProvider } from "@serwist/turbopack/react";
 import { ApiProvider } from "@/lib/api/query-client";
 import "./globals.css";
 
@@ -20,7 +21,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ApiProvider>{children}</ApiProvider>
+        <SerwistProvider swUrl="/serwist/sw.js" disable={process.env.NODE_ENV !== "production"}>
+          <ApiProvider>{children}</ApiProvider>
+        </SerwistProvider>
       </body>
     </html>
   );

@@ -126,19 +126,19 @@ contract generation, the web data layer, and a working staging deploy.
 
 ### Tests for User Story 2
 
-- [ ] T043 [P] [US2] Write `backend/test/integration/settings.test.ts`: defaults (Sunday, detected or fallback time zone, 960); field-level PATCH; invalid week day, unknown time zone, capacity 0 and 1441 return 422 and leave the row unchanged; `version` increments; last write wins
-- [ ] T044 [P] [US2] Write `web/src/lib/offline/connectivity.test.ts`: offline or unreachable API sets read-only; mutations are blocked in the mutator while read-only
-- [ ] T045 [P] [US2] Write `web/e2e/settings.spec.ts`: change on one browser context, reload another → new value (SC-002); failed save keeps the previous value with an error; offline reload shows cached values, banner with time, disabled inputs (SC-011); 390 px has no horizontal scroll
+- [x] T043 [P] [US2] Write `backend/test/integration/settings.test.ts`: defaults (Sunday, detected or fallback time zone, 960); field-level PATCH; invalid week day, unknown time zone, capacity 0 and 1441 return 422 and leave the row unchanged; `version` increments; last write wins
+- [x] T044 [P] [US2] Write `web/src/lib/offline/connectivity.test.ts`: offline or unreachable API sets read-only; mutations are blocked in the mutator while read-only
+- [x] T045 [P] [US2] Write `web/e2e/settings.spec.ts`: change on one browser context, reload another → new value (SC-002); failed save keeps the previous value with an error; offline reload shows cached values, banner with time, disabled inputs (SC-011); 390 px has no horizontal scroll
 
 ### Implementation for User Story 2
 
-- [ ] T046 [US2] Create the `workspace_settings` schema and migration (unique `workspace_id`, checks for ranges, forced row-level security) in `backend/src/db/schema/settings.ts`
-- [ ] T047 [US2] Implement `GET` and `PATCH /v1/workspace/settings` with IANA time zone validation in `backend/src/modules/settings/routes.ts`; add registry entries; regenerate `backend/openapi.json`
-- [ ] T048 [US2] Update the pinned `web/openapi/openapi.json` and regenerate the client
-- [ ] T049 [US2] Build `/settings` in `web/src/app/(signed-in)/settings/page.tsx` as a static shell with client-side data, saving state, and error messages (FR-013, FR-015)
-- [ ] T050 [US2] Implement offline support: `web/src/app/sw.ts` with Serwist (app shell and offline fallback), IndexedDB query persistence keyed by account and workspace and wiped on sign-out and 401 in `web/src/lib/offline/persist.ts`, connectivity and read-only hook in `web/src/lib/offline/connectivity.ts`, offline and waking-up banner in `web/src/components/ConnectivityBanner.tsx`
+- [x] T046 [US2] Create the `workspace_settings` schema and migration (unique `workspace_id`, checks for ranges, forced row-level security) in `backend/src/db/schema/settings.ts`
+- [x] T047 [US2] Implement `GET` and `PATCH /v1/workspace/settings` with IANA time zone validation in `backend/src/modules/settings/routes.ts`; add registry entries; regenerate `backend/openapi.json`
+- [x] T048 [US2] Update the pinned `web/openapi/openapi.json` and regenerate the client
+- [x] T049 [US2] Build `/settings` in `web/src/app/(signed-in)/settings/page.tsx` as a static shell with client-side data, saving state, and error messages (FR-013, FR-015)
+- [x] T050 [US2] Implement offline support: `web/src/app/sw.ts` with Serwist (app shell and offline fallback), IndexedDB query persistence keyed by account and workspace and wiped on sign-out and 401 in `web/src/lib/offline/persist.ts`, connectivity and read-only hook in `web/src/lib/offline/connectivity.ts`, offline and waking-up banner in `web/src/components/ConnectivityBanner.tsx` (implementation notes: one cache slot per device, wiped on sign-out and 401, which meets the ADR 0006 intent of never mixing accounts; cache kept 7 days because the gcTime must stay under the 24.8-day setTimeout limit; the service worker never caches cross-origin API responses)
 
-**Checkpoint**: settings round-trip across two devices on staging; offline read-only verified on a real phone (record device and browser).
+**Checkpoint**: settings round-trip across two devices on staging; offline read-only verified on a real phone (record device and browser). Locally verified 2026-10-04 with Playwright (desktop and 390×844); staging and real-phone checks pending deployment.
 
 ---
 

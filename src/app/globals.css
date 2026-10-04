@@ -142,3 +142,31 @@ h1 {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.plain-fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.field select {
+  width: 100%;
+  min-width: 0;
+}
+
+.field-error {
+  color: var(--danger);
+  font-size: 0.85rem;
+}
+
+.notice--ok {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.notice--offline {
+  margin-bottom: 16px;
+  background: var(--soft);
+  color: var(--foreground);
+}

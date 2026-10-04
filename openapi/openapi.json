@@ -108,6 +108,146 @@
           }
         }
       }
+    },
+    "/v1/workspace/settings": {
+      "get": {
+        "operationId": "getWorkspaceSettings",
+        "tags": [
+          "settings"
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "weekStartDay",
+                    "timeZone",
+                    "defaultDailyCapacityMinutes",
+                    "version",
+                    "updatedAt"
+                  ],
+                  "properties": {
+                    "weekStartDay": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 6,
+                      "description": "0 = Sunday"
+                    },
+                    "timeZone": {
+                      "type": "string",
+                      "description": "IANA time zone"
+                    },
+                    "defaultDailyCapacityMinutes": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 1440
+                    },
+                    "version": {
+                      "type": "integer"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateWorkspaceSettings",
+        "tags": [
+          "settings"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "weekStartDay": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 6
+                  },
+                  "timeZone": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 64
+                  },
+                  "defaultDailyCapacityMinutes": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 1440
+                  }
+                },
+                "additionalProperties": false,
+                "minProperties": 1
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "in": "header",
+            "name": "idempotency-key",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "weekStartDay",
+                    "timeZone",
+                    "defaultDailyCapacityMinutes",
+                    "version",
+                    "updatedAt"
+                  ],
+                  "properties": {
+                    "weekStartDay": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 6,
+                      "description": "0 = Sunday"
+                    },
+                    "timeZone": {
+                      "type": "string",
+                      "description": "IANA time zone"
+                    },
+                    "defaultDailyCapacityMinutes": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 1440
+                    },
+                    "version": {
+                      "type": "integer"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "servers": [
