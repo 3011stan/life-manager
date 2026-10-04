@@ -100,19 +100,19 @@ contract generation, the web data layer, and a working staging deploy.
 
 ### Tests for User Story 1
 
-- [ ] T033 [P] [US1] Write `backend/test/integration/first-sign-in.test.ts`: first sign-in of an allowed email creates account, workspace, owner membership, and default settings in one transaction; a second sign-in creates nothing new
-- [ ] T034 [P] [US1] Write `backend/test/integration/allow-list.test.ts`: a non-allowed email creates no account row, records `sign_in_refused` with a hashed email only, and redirects to `/sign-in?error=invitation_only`
-- [ ] T035 [P] [US1] Write `backend/test/integration/me.test.ts`: `GET /v1/me` returns account and workspace for a session, 401 without one, and 401 after sign-out
-- [ ] T036 [P] [US1] Write `web/e2e/sign-in.spec.ts`: signed-out visit to `/settings` goes to `/sign-in` and returns after test sign-in; invitation-only message shown for the refusal error; sign-out clears workspace data (desktop and mobile projects)
+- [x] T033 [P] [US1] Write `backend/test/integration/first-sign-in.test.ts`: first sign-in of an allowed email creates account, workspace, owner membership, and default settings in one transaction; a second sign-in creates nothing new
+- [x] T034 [P] [US1] Write `backend/test/integration/allow-list.test.ts`: a non-allowed email creates no account row, records `sign_in_refused` with a hashed email only, and redirects to `/sign-in?error=invitation_only`
+- [x] T035 [P] [US1] Write `backend/test/integration/me.test.ts`: `GET /v1/me` returns account and workspace for a session, 401 without one, and 401 after sign-out
+- [x] T036 [P] [US1] Write `web/e2e/sign-in.spec.ts`: signed-out visit to `/settings` goes to `/sign-in` and returns after test sign-in; invitation-only message shown for the refusal error; sign-out clears workspace data (desktop and mobile projects)
 
 ### Implementation for User Story 1
 
-- [ ] T037 [US1] Create schema and migration for `allowed_email` and `security_event` (`workspace` and `workspace_member` already exist from T020) in `backend/src/db/schema/` and `backend/src/db/migrations/` with forced row-level security on workspace tables and composite foreign keys
-- [ ] T038 [US1] Implement the allow-list check in the Better Auth user-creation hook and workspace provisioning (workspace, membership, default settings) in `backend/src/modules/workspace/provision.ts`
-- [ ] T039 [P] [US1] Implement security event recording in `backend/src/modules/account/security-events.ts` (sign_in, sign_in_refused, sign_out; salted hashes; no workspace content)
-- [ ] T040 [US1] Implement `GET /v1/me` in `backend/src/modules/account/routes.ts`; add its cross-tenant registry entry; regenerate `backend/openapi.json`
-- [ ] T041 [US1] Build `/sign-in` and the signed-in route guard in `web/src/app/sign-in/page.tsx` and `web/src/app/(signed-in)/layout.tsx`; return to the requested page after sign-in
-- [ ] T042 [US1] Add allow-list management instructions (SQL against the production database through the migration role) to `backend/docs/operations.md`
+- [x] T037 [US1] Create schema and migration for `allowed_email` and `security_event` (`workspace` and `workspace_member` already exist from T020) in `backend/src/db/schema/` and `backend/src/db/migrations/` with forced row-level security on workspace tables and composite foreign keys
+- [x] T038 [US1] Implement the allow-list check in the Better Auth user-creation hook and workspace provisioning (workspace, membership, default settings) in `backend/src/modules/workspace/provision.ts`
+- [x] T039 [P] [US1] Implement security event recording in `backend/src/modules/account/security-events.ts` (sign_in, sign_in_refused, sign_out; salted hashes; no workspace content)
+- [x] T040 [US1] Implement `GET /v1/me` in `backend/src/modules/account/routes.ts`; add its cross-tenant registry entry; regenerate `backend/openapi.json`
+- [x] T041 [US1] Build `/sign-in` and the signed-in route guard in `web/src/app/sign-in/page.tsx` and `web/src/app/(signed-in)/layout.tsx`; return to the requested page after sign-in
+- [x] T042 [US1] Add allow-list management instructions (SQL against the production database through the migration role) to `backend/docs/operations.md`
 
 **Checkpoint**: on staging, an allowed account signs in and sees an empty workspace; a non-allowed email is refused with no account created.
 

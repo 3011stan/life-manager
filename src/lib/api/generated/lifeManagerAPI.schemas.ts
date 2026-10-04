@@ -16,3 +16,19 @@ export type GetHealth200 = {
   version: string;
 };
 
+export type GetMe200Account = {
+  id: string;
+  email: string;
+  name: string;
+  image: string | null;
+};
+
+export type GetMe200Workspace = {
+  id: string;
+};
+
+export type GetMe200 = {
+  account: GetMe200Account;
+  workspace: GetMe200Workspace;
+};
+
