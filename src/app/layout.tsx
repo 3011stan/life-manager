@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Cloud StanOS",
-  description: "Life Manager daily timeline prototype.",
+  title: "Life Manager",
+  description: "Plan, live, and review your days.",
 };
 
 export default function RootLayout({

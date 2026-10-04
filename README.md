@@ -1,64 +1,26 @@
-# Cloud StanOS
+# Cloud StanOS (Life Manager web app)
 
-Local prototype for the Cloud StanOS Life Manager MVP.
+Mobile-first web app for Life Manager. This repository also holds the product
+documentation: constitution (`.specify/memory/constitution.md`), specifications
+(`specs/`), architecture decisions (`docs/adr/`), and the development flow
+(`docs/development-flow.md`).
 
-## Current Goal
+The API lives in a separate repository, `life-manager-backend`.
 
-Build a mobile-first Daily Timeline Prototype backed by `localStorage`.
+## Status
 
-## Planned Stack
+Feature `002-cloud-foundation` is in progress: sign-in, a personal workspace,
+settings, export, and account deletion against the hosted API. The local-only
+daily timeline prototype from feature 001 is no longer part of the app; it
+remains in git history and is rebuilt on the API in a later feature.
 
-- Next.js
-- React
-- TypeScript
-- Local persistence through `localStorage`
-- No backend in the first prototype
+## Requirements
 
-## Setup
-
-```bash
-cd /Users/stan/Projects/cloud-stanos
-npm install
-```
+- Node.js 24 (`nvm use`)
 
 ## Run
 
 ```bash
+npm install
 npm run dev
-```
-
-Open the local URL printed by Next.js.
-
-## MVP Focus
-
-- Daily timeline with real local dates
-- Drag and drop ordering
-- Task bundles with expand/collapse
-- Useful vs non-useful time visualization
-- Basic daily close
-- Simple freeform capture
-- `localStorage` persistence
-
-## Current Prototype Behavior
-
-- The app opens today's local date by default.
-- Each date has a separate daily cycle.
-- Data is stored only in the current browser.
-- The seeded day includes prayer, reading, deep work, standup, a gym bundle, and daily close.
-- Timeline items can be added, edited, reordered, and marked as planned, completed, partial, skipped, or cancelled.
-- Bundles show total time plus useful/support split and can be expanded.
-- Freeform capture creates suggestions that must be accepted before entering the timeline.
-- Daily close generates execution score, alignment score, useful/support totals, deep work minutes, and carry candidates.
-
-## Validation
-
-```bash
-npm run lint
-npm run build
-```
-
-Manual validation scenarios live in:
-
-```text
-specs/001-daily-timeline-prototype/quickstart.md
 ```

@@ -39,15 +39,15 @@ Branch `002-cloud-foundation` is used in both repositories.
 **Purpose**: Create the backend repository, prepare the web app, and verify the
 one unconfirmed platform assumption before building on it.
 
-- [ ] T001 Verify on a Render Postgres instance that the default user can create a non-owner, `NOSUPERUSER`, `NOBYPASSRLS` login role with DML-only grants and that `FORCE ROW LEVEL SECURITY` applies to it; record commands and results in `web/specs/002-cloud-foundation/research.md` (R5, "Render Postgres check"). If it fails, stop and return to Plan (ADR 0004)
-- [ ] T002 Initialize `backend/` as a git repository with branch `002-cloud-foundation`, `package.json` (Node 24, ESM, TypeScript 5.9), `tsconfig.json`, `.gitignore` (including `.env`), `.env.example` with placeholder values only, and `README.md`
-- [ ] T003 [P] Add backend dependencies pinned to exact versions in `backend/package.json`: fastify 5, `@fastify/type-provider-typebox`, `typebox`, `@fastify/swagger`, `@fastify/cors`, `@fastify/cookie`, better-auth (core), drizzle-orm 0.45.x, drizzle-kit, pg; dev: vitest 4, `@testcontainers/postgresql`, tsx, eslint, typescript
-- [ ] T004 [P] Configure lint, format, and type-check scripts (`check`, `test`, `dev`, `build`, `db:migrate`, `openapi:generate`, `openapi:check`) in `backend/package.json` and `backend/eslint.config.mjs`
-- [ ] T005 [P] Create `backend/docker-compose.yml` with a local Postgres matching the Render major version, and `backend/Dockerfile` (multi-stage, Node 24, non-root user)
-- [ ] T006 [P] Remove the 001 prototype from the deployed web app: delete `web/src/components/*`, `web/src/lib/*`, and `web/src/types/life-manager.ts`; replace `web/src/app/page.tsx` with a redirect to `/settings`; update `web/README.md` (prototype remains in git history)
-- [ ] T007 [P] Add web dependencies pinned to exact versions in `web/package.json`: `@tanstack/react-query`, `@tanstack/react-query-persist-client`, `@tanstack/query-async-storage-persister`, `idb-keyval`, `@serwist/turbopack`, orval; dev: vitest 4, `@testing-library/react`, `@playwright/test`
-- [ ] T008 [P] Add web scripts (`check`, `test`, `e2e`, `api:generate`, `api:check`) in `web/package.json` and `web/orval.config.ts` pointing at a pinned `web/openapi/openapi.json` with a custom mutator `web/src/lib/api/mutator.ts`
-- [ ] T009 [P] Create `web/playwright.config.ts` with `desktop` (1280×900) and `mobile` (390×844, touch) projects
+- [ ] T001 Verify on a Render Postgres instance that the default user can create a non-owner, `NOSUPERUSER`, `NOBYPASSRLS` login role with DML-only grants and that `FORCE ROW LEVEL SECURITY` applies to it; record commands and results in `web/specs/002-cloud-foundation/research.md` (R5, "Render Postgres check"). If it fails, stop and return to Plan (ADR 0004). **Deferred by the owner on 2026-10-04 (no database access during remote-control session); must be completed before T028**
+- [x] T002 Initialize `backend/` as a git repository with branch `002-cloud-foundation`, `package.json` (Node 24, ESM, TypeScript 5.9), `tsconfig.json`, `.gitignore` (including `.env`), `.env.example` with placeholder values only, and `README.md`
+- [x] T003 [P] Add backend dependencies pinned to exact versions in `backend/package.json`: fastify 5, `@fastify/type-provider-typebox`, `typebox`, `@fastify/swagger`, `@fastify/cors`, `@fastify/cookie`, better-auth (core), drizzle-orm 0.45.x, drizzle-kit, pg; dev: vitest 4, `@testcontainers/postgresql`, tsx, eslint, typescript
+- [x] T004 [P] Configure lint, format, and type-check scripts (`check`, `test`, `dev`, `build`, `db:migrate`, `openapi:generate`, `openapi:check`) in `backend/package.json` and `backend/eslint.config.mjs`
+- [x] T005 [P] Create `backend/docker-compose.yml` with a local Postgres matching the Render major version, and `backend/Dockerfile` (multi-stage, Node 24, non-root user)
+- [x] T006 [P] Remove the 001 prototype from the deployed web app: delete `web/src/components/*`, `web/src/lib/*`, and `web/src/types/life-manager.ts`; replace `web/src/app/page.tsx` with a redirect to `/settings`; update `web/README.md` (prototype remains in git history)
+- [x] T007 [P] Add web dependencies pinned to exact versions in `web/package.json`: `@tanstack/react-query`, `@tanstack/react-query-persist-client`, `@tanstack/query-async-storage-persister`, `idb-keyval`, `@serwist/turbopack`, orval; dev: vitest 4, `@testing-library/react`, `@playwright/test`
+- [x] T008 [P] Add web scripts (`check`, `test`, `e2e`, `api:generate`, `api:check`) in `web/package.json` and `web/orval.config.ts` pointing at a pinned `web/openapi/openapi.json` with a custom mutator `web/src/lib/api/mutator.ts`
+- [x] T009 [P] Create `web/playwright.config.ts` with `desktop` (1280×900) and `mobile` (390×844, touch) projects
 
 ---
 
