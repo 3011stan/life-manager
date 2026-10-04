@@ -61,31 +61,31 @@ contract generation, the web data layer, and a working staging deploy.
 
 ### Tests first
 
-- [ ] T010 Create the integration test harness in `backend/test/helpers/db.ts`: Testcontainers Postgres, migrations applied once as the migration role into a template database, one database per worker, application code connecting as the application role
-- [ ] T011 [P] Create `backend/test/helpers/accounts.ts`: create a fresh allowed account + workspace per test and return a session cookie through the auth test utilities (no Google calls)
-- [ ] T012 [P] Write the isolation catalog test in `backend/test/isolation/catalog.test.ts`: every table with `workspace_id` has row-level security enabled and forced, has policies, and every foreign key to a workspace table includes `workspace_id`; the application role is not owner, not superuser, and lacks `BYPASSRLS`
-- [ ] T013 [P] Write the route registry test in `backend/test/isolation/route-registry.test.ts`: collect all routes via the `onRoute` hook and fail if any route lacks an entry in `backend/test/isolation/registry.ts` (cross-tenant fixture or explicit public exemption)
-- [ ] T014 [P] Write request-rule tests in `backend/test/integration/request-rules.test.ts`: state-changing requests are refused with a foreign `Origin` (403), with `Sec-Fetch-Site: cross-site` (403), and with a non-JSON body (415); errors use `application/problem+json`
-- [ ] T015 [P] Write the idempotency tests in `backend/test/integration/idempotency.test.ts`: a replayed key returns the stored response; the same key with a different body returns 422; keys are workspace-scoped
-- [ ] T016 [P] Write `backend/test/integration/test-sign-in-absent.test.ts`: building the app with production configuration registers no `/test/*` route
+- [x] T010 Create the integration test harness in `backend/test/helpers/db.ts`: Testcontainers Postgres, migrations applied once as the migration role into a template database, one database per worker, application code connecting as the application role
+- [x] T011 [P] Create `backend/test/helpers/accounts.ts`: create a fresh allowed account + workspace per test and return a session cookie through the auth test utilities (no Google calls)
+- [x] T012 [P] Write the isolation catalog test in `backend/test/isolation/catalog.test.ts`: every table with `workspace_id` has row-level security enabled and forced, has policies, and every foreign key to a workspace table includes `workspace_id`; the application role is not owner, not superuser, and lacks `BYPASSRLS`
+- [x] T013 [P] Write the route registry test in `backend/test/isolation/route-registry.test.ts`: collect all routes via the `onRoute` hook and fail if any route lacks an entry in `backend/test/isolation/registry.ts` (cross-tenant fixture or explicit public exemption)
+- [x] T014 [P] Write request-rule tests in `backend/test/integration/request-rules.test.ts`: state-changing requests are refused with a foreign `Origin` (403), with `Sec-Fetch-Site: cross-site` (403), and with a non-JSON body (415); errors use `application/problem+json`
+- [x] T015 [P] Write the idempotency tests in `backend/test/integration/idempotency.test.ts`: a replayed key returns the stored response; the same key with a different body returns 422; keys are workspace-scoped
+- [x] T016 [P] Write `backend/test/integration/test-sign-in-absent.test.ts`: building the app with production configuration registers no `/test/*` route
 
 ### Implementation
 
-- [ ] T017 Implement validated configuration in `backend/src/config/index.ts` (database URLs for app and migration roles, auth secret, Google client, allowed origins, cookie domain, environment name); refuse to start on missing values
-- [ ] T018 Create the Drizzle setup in `backend/src/db/client.ts` and `backend/drizzle.config.ts` (app role for runtime, migration role for `db:migrate`)
-- [ ] T019 Write migration `0001_roles_and_conventions` in `backend/src/db/migrations/` (hand-reviewed SQL): application role grants, default privileges for future tables, helper for `updated_at`/`version` maintenance
-- [ ] T020 Implement the tenant-context plugin in `backend/src/plugins/tenant-context.ts`: per request, resolve the workspace from the session's membership, open a transaction, `set_config('app.workspace_id', …, true)`, and expose a scoped data-access handle; no route reads a workspace id from input
-- [ ] T021 [P] Implement the request-rules plugin in `backend/src/plugins/request-rules.ts` (Origin allow list, Fetch-Metadata, JSON-only) and CORS for the configured origin with credentials
-- [ ] T022 [P] Implement problem+json error handling and the shared not-found response in `backend/src/plugins/errors.ts`
-- [ ] T023 [P] Implement the idempotency plugin and the `idempotency_key` table (schema in `backend/src/db/schema/idempotency.ts`, migration with forced row-level security and 24-hour expiry)
-- [ ] T024 Implement the app factory `backend/src/app.ts`, entry point `backend/src/server.ts`, and `GET /health` returning the deployed commit
-- [ ] T025 Configure Better Auth in `backend/src/plugins/auth.ts`: Google provider only, database sessions (30-day expiry, sliding refresh, cookie cache disabled), `__Secure-` cookie with the configured subdomain `Domain`, routes under `/auth`; register test utilities and `POST /test/sign-in` only when environment is local or staging; add the auth tables migration
-- [ ] T026 [P] Generate and commit `backend/openapi.json` with `backend/scripts/generate-openapi.ts`; `openapi:check` fails on any difference
-- [ ] T027 Create backend CI in `backend/.github/workflows/ci.yml`: install, `check`, `test` (Testcontainers), `openapi:check`, oasdiff breaking-change check against the base branch
+- [x] T017 Implement validated configuration in `backend/src/config/index.ts` (database URLs for app and migration roles, auth secret, Google client, allowed origins, cookie domain, environment name); refuse to start on missing values
+- [x] T018 Create the Drizzle setup in `backend/src/db/client.ts` and `backend/drizzle.config.ts` (app role for runtime, migration role for `db:migrate`)
+- [x] T019 Write migration `0001_roles_and_conventions` in `backend/src/db/migrations/` (hand-reviewed SQL): application role grants, default privileges for future tables, helper for `updated_at`/`version` maintenance
+- [x] T020 Implement the tenant-context plugin (implementation note: `workspace` and `workspace_member` tables were created here instead of T037 because membership resolution needs them; the workspace is provisioned on the first authenticated request) in `backend/src/plugins/tenant-context.ts`: per request, resolve the workspace from the session's membership, open a transaction, `set_config('app.workspace_id', …, true)`, and expose a scoped data-access handle; no route reads a workspace id from input
+- [x] T021 [P] Implement the request-rules plugin in `backend/src/plugins/request-rules.ts` (Origin allow list, Fetch-Metadata, JSON-only) and CORS for the configured origin with credentials
+- [x] T022 [P] Implement problem+json error handling and the shared not-found response in `backend/src/plugins/errors.ts`
+- [x] T023 [P] Implement the idempotency plugin and the `idempotency_key` table (schema in `backend/src/db/schema/idempotency.ts`, migration with forced row-level security and 24-hour expiry)
+- [x] T024 Implement the app factory `backend/src/app.ts`, entry point `backend/src/server.ts`, and `GET /health` returning the deployed commit
+- [x] T025 Configure Better Auth in `backend/src/plugins/auth.ts`: Google provider only, database sessions (30-day expiry, sliding refresh, cookie cache disabled), `__Secure-` cookie with the configured subdomain `Domain`, routes under `/auth`; register test utilities and `POST /test/sign-in` only when environment is local or staging; add the auth tables migration
+- [x] T026 [P] Generate and commit `backend/openapi.json` with `backend/scripts/generate-openapi.ts`; `openapi:check` fails on any difference
+- [x] T027 Create backend CI in `backend/.github/workflows/ci.yml`: install, `check`, `test` (Testcontainers), `openapi:check`, oasdiff breaking-change check against the base branch
 - [ ] T028 Create the staging deploy workflow `backend/.github/workflows/deploy-staging.yml`: on green CI for the exact commit, run `db:migrate` against staging with the migration role, trigger the Render deploy hook, wait for `/health` to report the commit; and `backend/render.yaml` for the staging service (Free plan, Virginia)
 - [ ] T029 Provision staging: Render web service and free Postgres, DNS `api.life-staging.bystan.tech`, Google OAuth client for staging, secrets in Render and GitHub (never committed); write the recreate-when-expired script `backend/scripts/recreate-staging-db.sh`; document steps in `backend/docs/deploy.md`
-- [ ] T030 Implement the web data layer: `web/src/lib/api/mutator.ts` (credentials, `Idempotency-Key` on mutations, problem+json mapping, offline read-only guard), generated client in `web/src/lib/api/generated/` from the pinned spec, `web/src/lib/api/query-client.tsx` provider
-- [ ] T031 [P] Create web CI in `web/.github/workflows/ci.yml`: `check`, `test`, `api:check` (regenerate and fail on diff), Playwright against a local API built from the pinned backend version
+- [x] T030 Implement the web data layer: `web/src/lib/api/mutator.ts` (credentials, `Idempotency-Key` on mutations, problem+json mapping, offline read-only guard), generated client in `web/src/lib/api/generated/` from the pinned spec, `web/src/lib/api/query-client.tsx` provider
+- [x] T031 [P] Create web CI in `web/.github/workflows/ci.yml`: `check`, `test`, `api:check` (regenerate and fail on diff), Playwright against a local API built from the pinned backend version
 - [ ] T032 Connect the web app to Vercel (Hobby) with domain `life-staging.bystan.tech` for the staging branch and previews pointing at the staging API; document in `web/docs/deploy.md`
 
 **Checkpoint**: staging API answers `/health` with the deployed commit; T010–T016 run; catalog and route registry tests pass for the tables and routes that exist so far.
@@ -107,7 +107,7 @@ contract generation, the web data layer, and a working staging deploy.
 
 ### Implementation for User Story 1
 
-- [ ] T037 [US1] Create schema and migration for `allowed_email`, `workspace`, `workspace_member` (temporary unique `account_id`), `security_event` in `backend/src/db/schema/` and `backend/src/db/migrations/` with forced row-level security on workspace tables and composite foreign keys
+- [ ] T037 [US1] Create schema and migration for `allowed_email` and `security_event` (`workspace` and `workspace_member` already exist from T020) in `backend/src/db/schema/` and `backend/src/db/migrations/` with forced row-level security on workspace tables and composite foreign keys
 - [ ] T038 [US1] Implement the allow-list check in the Better Auth user-creation hook and workspace provisioning (workspace, membership, default settings) in `backend/src/modules/workspace/provision.ts`
 - [ ] T039 [P] [US1] Implement security event recording in `backend/src/modules/account/security-events.ts` (sign_in, sign_in_refused, sign_out; salted hashes; no workspace content)
 - [ ] T040 [US1] Implement `GET /v1/me` in `backend/src/modules/account/routes.ts`; add its cross-tenant registry entry; regenerate `backend/openapi.json`
