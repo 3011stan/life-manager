@@ -1,4 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
+import { TEST_SIGN_IN_SECRET } from "./env";
 
 // US5 / SC-005. Each project deletes its own account so the shared e2e account
 // is never touched. Allow-list both emails locally first:
@@ -11,6 +12,7 @@ function deletableEmail(project: string) {
 async function signIn(page: Page, email: string) {
   await page.goto("/sign-in?next=/account");
   await page.getByLabel("Test sign-in email").fill(email);
+  await page.getByLabel("Test sign-in secret").fill(TEST_SIGN_IN_SECRET);
   await page.getByRole("button", { name: "Test sign-in" }).click();
   await expect(page.getByRole("heading", { name: "Account", exact: true })).toBeVisible();
 }

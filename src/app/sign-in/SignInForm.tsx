@@ -32,10 +32,12 @@ export function SignInForm() {
 
   async function submitTest(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const email = String(new FormData(event.currentTarget).get("email") ?? "");
+    const form = new FormData(event.currentTarget);
+    const email = String(form.get("email") ?? "");
+    const secret = String(form.get("secret") ?? "");
     setBusy(true);
     try {
-      await testSignIn(email);
+      await testSignIn(email, secret);
       router.replace(next);
     } catch (e) {
       setError(e instanceof ApiError && e.status === 403 ? MESSAGES.invitation_only : "Sign-in failed. Try again.");
@@ -63,6 +65,10 @@ export function SignInForm() {
           <label className="field">
             Test sign-in email
             <input name="email" type="email" required autoComplete="email" />
+          </label>
+          <label className="field">
+            Test sign-in secret
+            <input name="secret" type="password" required autoComplete="current-password" />
           </label>
           <button type="submit" className="ghost-button" disabled={busy}>
             Test sign-in

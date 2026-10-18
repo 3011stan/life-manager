@@ -20,9 +20,10 @@ export async function signOut(): Promise<void> {
   await apiFetch("/auth/sign-out", { method: "POST", body: "{}" });
 }
 
-// Local and staging only (ADR 0003). The API refuses it in production.
-export async function testSignIn(email: string): Promise<void> {
-  await apiFetch("/test/sign-in", { method: "POST", body: JSON.stringify({ email }) });
+// Local and staging only (ADR 0003). The API refuses it in production and
+// requires the owner's secret, which is typed in and never built into the app.
+export async function testSignIn(email: string, secret: string): Promise<void> {
+  await apiFetch("/test/sign-in", { method: "POST", body: JSON.stringify({ email, secret }) });
 }
 
 export const testSignInEnabled = process.env.NEXT_PUBLIC_TEST_SIGN_IN === "true";

@@ -1,4 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
+import { TEST_SIGN_IN_SECRET } from "./env";
 
 // Requires the production build (offline support) and the local API.
 const ALLOWED = process.env.E2E_ALLOWED_EMAIL ?? "e2e@example.test";
@@ -6,6 +7,7 @@ const ALLOWED = process.env.E2E_ALLOWED_EMAIL ?? "e2e@example.test";
 async function signIn(page: Page) {
   await page.goto("/sign-in?next=/settings");
   await page.getByLabel("Test sign-in email").fill(ALLOWED);
+  await page.getByLabel("Test sign-in secret").fill(TEST_SIGN_IN_SECRET);
   await page.getByRole("button", { name: "Test sign-in" }).click();
   await expect(page.getByRole("heading", { name: "Settings" })).toBeVisible();
 }

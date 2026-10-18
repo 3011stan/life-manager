@@ -1,5 +1,6 @@
 import { readFile } from "node:fs/promises";
 import { expect, test, type Page } from "@playwright/test";
+import { TEST_SIGN_IN_SECRET } from "./env";
 
 // US4 / SC-004. One export runs at a time per account (409 otherwise), so each
 // project uses its own account and the tests in this file run one by one.
@@ -16,6 +17,7 @@ test.beforeEach(({}, testInfo) => {
 async function signInToAccount(page: Page) {
   await page.goto("/sign-in?next=/account");
   await page.getByLabel("Test sign-in email").fill(ALLOWED);
+  await page.getByLabel("Test sign-in secret").fill(TEST_SIGN_IN_SECRET);
   await page.getByRole("button", { name: "Test sign-in" }).click();
   await expect(page.getByRole("heading", { name: "Account", exact: true })).toBeVisible();
 }

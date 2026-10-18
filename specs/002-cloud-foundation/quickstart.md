@@ -41,7 +41,7 @@ npm run dev                      # http://localhost:3000
 | Route coverage | part of `npm test` (backend) | every route has a cross-tenant test entry or explicit public exemption |
 | Test sign-in absent in production | part of `npm test` (backend) | production build registers no `/test/*` route |
 | Contract | `npm run openapi:check` (backend), `npm run api:check` (web app) | no diff; no breaking change without a version step |
-| End-to-end | `npm run e2e` (web app) | desktop and 390×844 projects pass |
+| End-to-end | `E2E_TEST_SIGN_IN_SECRET=<API TEST_SIGN_IN_SECRET> npm run e2e` (web app) | desktop and 390×844 projects pass |
 
 ## Scenario Validation
 

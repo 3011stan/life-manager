@@ -191,8 +191,8 @@ contract generation, the web data layer, and a working staging deploy.
 
 **Amended 2026-10-18 (one hosted environment, spec Assumptions; ADR 0002, 0003, 0005 amendments)**: the staging environment is the only hosted environment and will hold real data. T062, T063, and T066's production half are deferred; backups, the restore drill, and the test sign-in secret move ahead of real data.
 
-- [ ] T072 [US1] Backend: require `TEST_SIGN_IN_SECRET` (≥32 chars) for `POST /test/sign-in`; route not registered when unset or in production; constant-time compare; wrong secret → same refusal as off-allow-list, recorded in `security_event`; tests for missing, wrong, and right secret; set the secret in Render (FR-004a, ADR 0003 amendment)
-- [ ] T073 [US1] Web: test sign-in form asks for the secret as a password field (never `NEXT_PUBLIC_*`); e2e reads it from the environment; update `web/.env.example` docs
+- [x] T072 [US1] Backend: require `TEST_SIGN_IN_SECRET` (≥32 chars) for `POST /test/sign-in`; route not registered when unset or in production; constant-time compare; wrong secret → same refusal as off-allow-list, recorded in `security_event`; tests for missing, wrong, and right secret; set the secret in Render (FR-004a, ADR 0003 amendment). **Done 2026-10-18** (backend `e90e5e6`)
+- [x] T073 [US1] Web: test sign-in form asks for the secret as a password field (never `NEXT_PUBLIC_*`); e2e reads it from the environment; update `web/.env.example` docs. **Done 2026-10-18** (verified locally: 28/28 e2e (desktop and mobile) against the API with a secret)
 - [ ] T074 [US6] Deploy pipeline: logical dump to R2 before migrations in `backend/.github/workflows/deploy-staging.yml`, reusing `backend/scripts/backup-dump.sh` (T064); a failed dump stops the deploy (FR-026 amendment, ADR 0005 amendment)
 - [ ] T075 [US6] Owner: upgrade the staging Render Postgres from Free to Basic before storing real data; afterwards `scripts/recreate-staging-db.sh` is only for disposable environments
 
