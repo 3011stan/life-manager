@@ -172,11 +172,12 @@ environment and confirm the data matches.
 2. **Given** a change whose automated checks fail, **When** a release is
    attempted, **Then** it does not go live.
 3. **Given** a release, **When** it finishes, **Then** a live smoke check passes
-   in the released environment (full sign-in and settings round-trip on
-   staging; reduced checks in production for a commit already proven on
-   staging).
-4. **Given** production data, **When** a restore test is performed, **Then** the
-   restored data matches the source as of the backup time.
+   in the released environment (full sign-in and settings round-trip).
+4. **Given** the hosted environment's data, **When** a restore test is
+   performed, **Then** the restored data matches the source as of the backup
+   time.
+
+(Amended 2026-10-18: one hosted environment; see FR-025 and Assumptions.)
 
 ### Edge Cases
 
@@ -219,6 +220,11 @@ environment and confirm the data matches.
   one personal workspace for it.
 - **FR-004**: Users MUST be able to sign out; signing out MUST end access to
   workspace data on that device.
+- **FR-004a**: Any sign-in path that bypasses Google (for automated tests and
+  previews) MUST require a secret known only to the owner and the release
+  pipeline, MUST still honor the allow list, and MUST NOT exist in production
+  configuration. (Added 2026-10-18: an allow-listed email alone must never be
+  enough to enter an account.)
 - **FR-005**: Signed-in sessions MUST persist across app restarts on the same
   device for a limited lifetime (see Assumptions) and then require signing in
   again.
@@ -280,13 +286,16 @@ environment and confirm the data matches.
   release of either MUST NOT break the currently deployed version of the other.
 - **FR-024**: A release MUST NOT go live unless its automated checks passed on
   the exact version being released.
-- **FR-025**: Each release MUST be followed by a live smoke check. On staging it
-  covers sign-in and a settings round-trip. In production it covers health,
-  refusal of unauthenticated access, the sign-in redirect, and CORS; the same
-  commit MUST have passed the staging round-trip before reaching production.
-  (Amended 2026-10-04: production sign-in cannot be automated.)
+- **FR-025**: Each release MUST be followed by a live smoke check covering
+  health, refusal of unauthenticated access, CORS, sign-in, and a settings
+  round-trip. (Amended 2026-10-04: production sign-in cannot be automated.
+  Amended 2026-10-18: there is one hosted environment, so the check runs there;
+  sign-in uses the secret-protected path of FR-004a. The staging-before-
+  production rule returns if a second environment is added.)
 - **FR-026**: Changes to stored data structure MUST keep the currently deployed
-  web app and service working during rollout and MUST NOT discard data.
+  web app and service working during rollout and MUST NOT discard data. A
+  backup MUST be taken immediately before each structure change is applied.
+  (Amended 2026-10-18: changes reach real data directly.)
 - **FR-027**: Security-relevant events (sign-in, sign-out, export, account
   deletion) MUST be recorded with time and account, without storing workspace
   content.
@@ -349,6 +358,13 @@ environment and confirm the data matches.
 - The default daily capacity is 960 minutes (16 waking hours) until the user
   changes it; calibration from history is a later feature (discovery Q19).
 - Week start is a workspace setting so it can change later (discovery Q2).
+- **One hosted environment** (decided 2026-10-18): the environment deployed as
+  "staging" (`life-staging.bystan.tech`, `api.life-staging.bystan.tech`) is the
+  only hosted environment and will hold real data; it becomes production later
+  without moving data. Names and configuration stay as they are until the owner
+  decides to rename them. Its database moves to a paid plan before real data is
+  stored (the free plan expires after 30 days), and backups and a passing
+  restore test (FR-021, FR-022) come before real data too.
 - Backups are kept for 30 days; deleted accounts disappear from backups when
   those age out.
 - Data from the 001 localStorage prototype is not imported (decided

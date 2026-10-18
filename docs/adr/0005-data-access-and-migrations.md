@@ -1,6 +1,6 @@
 # ADR 0005: Data Access And Migrations
 
-**Status**: Accepted (2026-10-04)
+**Status**: Accepted (2026-10-04); amended 2026-10-18 (dump before migrating)
 **Feature**: `002-cloud-foundation` — evidence in research R6; constitution VII
 
 ## Decision
@@ -16,6 +16,11 @@
   and before the Render deploy hook is triggered (ADR 0002). Because they run
   while the previous API version is still serving, every migration must be
   compatible with it.
+
+- **Amended 2026-10-18**: with one hosted environment, migrations reach real
+  data directly, so the deploy pipeline takes a logical dump of the database
+  and stores it in the backup bucket (R2) before running migrations; if the
+  dump fails, nothing is migrated or deployed.
 
 ## Consequences
 

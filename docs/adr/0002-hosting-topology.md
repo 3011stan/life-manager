@@ -1,6 +1,6 @@
 # ADR 0002: Hosting Topology And Environments
 
-**Status**: Accepted (2026-10-04)
+**Status**: Accepted (2026-10-04); amended 2026-10-18 (one hosted environment)
 **Feature**: `002-cloud-foundation` — evidence in `specs/002-cloud-foundation/research.md` (R2, R3)
 
 ## Context
@@ -39,6 +39,23 @@ the domain `bystan.tech`.
   dump into a scratch database and compares row counts and checksums.
 - **Environments**: local (Docker Compose Postgres), staging, production.
   Vercel previews point at staging.
+
+## Amendment 2026-10-18: one hosted environment
+
+- The environment provisioned as staging is the **only hosted environment** and
+  will hold real data. It becomes production later **without moving data**; its
+  names (`life-staging.bystan.tech`, `api.life-staging.bystan.tech`, GitHub
+  environment `staging`, `APP_ENV=staging`) stay until the owner renames them.
+- Its database moves from Free to **Basic** before real data is stored (the
+  owner upgrades it in place); until then it is disposable and
+  `scripts/recreate-staging-db.sh` recreates it.
+- Nightly dumps to R2 and the restore drill target this environment and must
+  pass before real data is stored.
+- Vercel previews and the staging branch both point at this API, so previews
+  see real data; the test sign-in secret (ADR 0003) is what keeps them from
+  being an open door.
+- Separate production provisioning (database, service, domains, OAuth client)
+  is deferred until a second environment is wanted.
 
 ## Consequences
 

@@ -83,7 +83,7 @@ contract generation, the web data layer, and a working staging deploy.
 - [x] T026 [P] Generate and commit `backend/openapi.json` with `backend/scripts/generate-openapi.ts`; `openapi:check` fails on any difference
 - [x] T027 Create backend CI in `backend/.github/workflows/ci.yml`: install, `check`, `test` (Testcontainers), `openapi:check`, oasdiff breaking-change check against the base branch
 - [x] T028 Create the staging deploy workflow `backend/.github/workflows/deploy-staging.yml`: on green CI for the exact commit, run `db:migrate` against staging with the migration role, trigger the Render deploy hook, wait for `/health` to report the commit; and `backend/render.yaml` for the staging service (Free plan, Virginia). **Done 2026-10-17**: verified with backend `2cc3c99` (migrate, hook, `/health` moved from the previous commit to the new one after three polls; a guard fails the deploy if Render auto-deployed first); the staging service is configured in the Render dashboard and documented in `backend/docs/deploy.md` instead of `render.yaml`
-- [ ] T029 Provision staging: Render web service and free Postgres, DNS `api.life-staging.bystan.tech`, Google OAuth client for staging, secrets in Render and GitHub (never committed); write the recreate-when-expired script `backend/scripts/recreate-staging-db.sh`; document steps in `backend/docs/deploy.md`
+- [ ] T029 Provision staging: Render web service and free Postgres, DNS `api.life-staging.bystan.tech`, Google OAuth client for staging, secrets in Render and GitHub (never committed); write the recreate-when-expired script `backend/scripts/recreate-staging-db.sh`; document steps in `backend/docs/deploy.md`. **Progress 2026-10-18**: service, free Postgres, API domain, secrets, recreate script, and docs done (backend `b97847a`); Google OAuth client pending
 - [x] T030 Implement the web data layer: `web/src/lib/api/mutator.ts` (credentials, `Idempotency-Key` on mutations, problem+json mapping, offline read-only guard), generated client in `web/src/lib/api/generated/` from the pinned spec, `web/src/lib/api/query-client.tsx` provider
 - [x] T031 [P] Create web CI in `web/.github/workflows/ci.yml`: `check`, `test`, `api:check` (regenerate and fail on diff), Playwright against a local API built from the pinned backend version
 - [ ] T032 Connect the web app to Vercel (Hobby) with domain `life-staging.bystan.tech` for the staging branch and previews pointing at the staging API; document in `web/docs/deploy.md`
@@ -189,17 +189,25 @@ contract generation, the web data layer, and a working staging deploy.
 
 **Goal**: Production environment, gated releases, smoke checks, backups, and restore drills.
 
+**Amended 2026-10-18 (one hosted environment, spec Assumptions; ADR 0002, 0003, 0005 amendments)**: the staging environment is the only hosted environment and will hold real data. T062, T063, and T066's production half are deferred; backups, the restore drill, and the test sign-in secret move ahead of real data.
+
+- [ ] T072 [US1] Backend: require `TEST_SIGN_IN_SECRET` (≥32 chars) for `POST /test/sign-in`; route not registered when unset or in production; constant-time compare; wrong secret → same refusal as off-allow-list, recorded in `security_event`; tests for missing, wrong, and right secret; set the secret in Render (FR-004a, ADR 0003 amendment)
+- [ ] T073 [US1] Web: test sign-in form asks for the secret as a password field (never `NEXT_PUBLIC_*`); e2e reads it from the environment; update `web/.env.example` docs
+- [ ] T074 [US6] Deploy pipeline: logical dump to R2 before migrations in `backend/.github/workflows/deploy-staging.yml`, reusing `backend/scripts/backup-dump.sh` (T064); a failed dump stops the deploy (FR-026 amendment, ADR 0005 amendment)
+- [ ] T075 [US6] Owner: upgrade the staging Render Postgres from Free to Basic before storing real data; afterwards `scripts/recreate-staging-db.sh` is only for disposable environments
+
+
 **Independent Test**: quickstart scenarios 9–11 and the post-deploy smoke.
 
-- [ ] T061 [P] [US6] Write the smoke suites: `web/e2e/smoke-staging.spec.ts` (test sign-in, settings round-trip) and `backend/scripts/smoke-production.sh` (health commit, 401 on `/v1/me`, sign-in redirect URL, CORS only for the production origin)
-- [ ] T062 [US6] Provision production: Render web service (Free), Render Postgres Basic, DNS `life.bystan.tech` and `api.life.bystan.tech`, production Google OAuth client, application and migration roles per T001, secrets in Render and GitHub; extend `backend/docs/deploy.md`
-- [ ] T063 [US6] Create `backend/.github/workflows/deploy-production.yml`: manual trigger for a commit that passed staging smoke; migrate with the migration role, trigger the Render deploy hook, run the production smoke; never chained into one command with the check it depends on
-- [ ] T064 [P] [US6] Create `backend/.github/workflows/backup.yml`: nightly logical dump of production to Cloudflare R2 with 30-day lifecycle; alert (failed workflow notification) on failure; script in `backend/scripts/backup-dump.sh`
+- [ ] T061 [P] [US6] Write the smoke suites: `web/e2e/smoke-staging.spec.ts` (test sign-in, settings round-trip) and `backend/scripts/smoke-production.sh` (health commit, 401 on `/v1/me`, sign-in redirect URL, CORS only for the production origin). **Amended 2026-10-18**: both run against the one hosted environment; the e2e smoke uses the test sign-in secret (T072, T073)
+- [ ] T062 [US6] **Deferred 2026-10-18 (one hosted environment)**. Provision production: Render web service (Free), Render Postgres Basic, DNS `life.bystan.tech` and `api.life.bystan.tech`, production Google OAuth client, application and migration roles per T001, secrets in Render and GitHub; extend `backend/docs/deploy.md`
+- [ ] T063 [US6] **Deferred 2026-10-18 (one hosted environment)**. Create `backend/.github/workflows/deploy-production.yml`: manual trigger for a commit that passed staging smoke; migrate with the migration role, trigger the Render deploy hook, run the production smoke; never chained into one command with the check it depends on
+- [ ] T064 [P] [US6] Create `backend/.github/workflows/backup.yml`: nightly logical dump of the hosted environment (amended 2026-10-18; must pass before real data) to Cloudflare R2 with 30-day lifecycle; alert (failed workflow notification) on failure; script in `backend/scripts/backup-dump.sh`
 - [ ] T065 [P] [US6] Create `backend/.github/workflows/restore-drill.yml`: monthly and on demand, restore the latest dump into a scratch database, compare row counts and checksums, tear down; script in `backend/scripts/restore-drill.sh`
-- [ ] T066 [US6] Configure Vercel production for `life.bystan.tech` pointing at the production API; release independence check: deploy API alone, then web alone, run both smoke suites (SC-007)
+- [ ] T066 [US6] Configure Vercel production for `life.bystan.tech` pointing at the production API (**deferred 2026-10-18**); release independence check on the hosted environment: deploy API alone, then web alone, run both smoke suites (SC-007)
 - [ ] T067 [US6] Prove the gate: push a commit with a deliberately failing test on a throwaway branch and record that no deploy job ran (SC-008); delete the branch
 
-**Checkpoint**: production live at `life.bystan.tech`; first restore drill passed.
+**Checkpoint**: the hosted environment has passed its smoke suites, nightly backups run, and the first restore drill passed (amended 2026-10-18; formerly "production live at `life.bystan.tech`").
 
 ---
 
@@ -207,7 +215,7 @@ contract generation, the web data layer, and a working staging deploy.
 
 - [ ] T068 [P] Write `backend/AGENTS.md`: commands, two-repo workflow, migration rules (expand/contract, reviewed SQL, migration role), isolation rules (registry entry for every route, tests as application role), secrets policy
 - [ ] T069 [P] Write `web/docs/engineering/testing.md` from the real examples built in this feature (flow doc: observe first, then codify)
-- [ ] T070 Run all of [quickstart.md](quickstart.md) on staging and production; write `web/specs/002-cloud-foundation/verification.md` with commands, results, failures, and gaps (a skipped check is a gap)
+- [ ] T070 Run all of [quickstart.md](quickstart.md) on the hosted environment (amended 2026-10-18); write `web/specs/002-cloud-foundation/verification.md` with commands, results, failures, and gaps (a skipped check is a gap)
 - [ ] T071 Record in ai-memory the hosting decision history (Fly.io + Neon proposed and rejected in favor of Render + Vercel), the Render role check result, and any gotchas found during implementation
 
 ---
