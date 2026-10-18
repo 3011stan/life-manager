@@ -112,10 +112,20 @@ checked during implementation.
      security, so only this layer enforces cross-tenant referential integrity.
 - **Roles**: a migration role owns the tables; the application role is not the
   owner, not superuser, and `NOBYPASSRLS`, with DML grants only.
-- **Render Postgres check** *(unverified)*: confirm the default database user can
-  create a separate non-owner `NOBYPASSRLS` application role and grant it DML
-  only. If it cannot, isolation layers 1 and 3 still hold and layer 2 needs a
-  provider change; this is the first implementation task.
+- **Render Postgres check** *(verified 2026-10-17, staging, PASSED)*: the
+  default database user is the owner and migration role (`superuser=false`,
+  `createrole=true`, `bypassrls=false`) on PostgreSQL 18.6 (Render, Virginia,
+  Free). Command, run by the owner from a workstation with the External URL:
+  `MIGRATION_DATABASE_URL=<external owner URL> npm run db:provision-app-role`
+  (backend `scripts/provision-app-role.ts`). It created `life_app`
+  (`NOSUPERUSER NOCREATEDB NOCREATEROLE NOBYPASSRLS`), granted `CONNECT`,
+  applied migrations as the owner, then checked as `life_app` in a rolled-back
+  transaction. All 12 checks passed: forced RLS on `idempotency_key`,
+  `workspace`, `workspace_member`, `workspace_settings`; role attributes;
+  `life_app` owns no relations; a row is visible inside its tenant, hidden with
+  no tenant set (fail closed) and under another tenant; an insert for a foreign
+  workspace is rejected; `CREATE TABLE` and `ALTER TABLE ... NO FORCE ROW LEVEL
+  SECURITY` are rejected. ADR 0004 stands. Production repeats this command (T062).
 - **Tests**: integration tests run **as the application role** (a superuser
   silently bypasses row-level security); a catalog test checks every table with
   `workspace_id` has row-level security forced and policies present; a route
