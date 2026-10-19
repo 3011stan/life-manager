@@ -62,7 +62,7 @@ tables before code; every new route joins the cross-tenant registry.
 - [x] T017 [US2] Entry sheet with segments editor, time block, time value, deep work, notes in `web/src/app/(signed-in)/day/EntrySheet.tsx` (totals come from the API; the sheet sums segments locally)
 - [x] T018 [US1] Touch and mouse reordering with dnd-kit and 44 px handles in `web/src/app/(signed-in)/day/[date]/Timeline.tsx`
 - [x] T019 [US1] E2E `web/e2e/day.spec.ts` (US1 and US2 independent tests, desktop and 390×844, second context as second device)
-- [ ] T020 Slice 1 release: merge `003-daily-timeline` into `002-cloud-foundation` in both repos after green CI; owner seed loaded into the owner's workspace on staging
+- [ ] T020 Slice 1 release (released 2026-10-19; owner seed pending the owner's run): merge `003-daily-timeline` into `002-cloud-foundation` in both repos after green CI; owner seed loaded into the owner's workspace on staging
 
 ## Phase 5: US4 + US5 Log and day close (P2)
 
@@ -89,7 +89,7 @@ tables before code; every new route joins the cross-tenant registry.
 - [x] T035 [US8] Capture panel on the day screen (text saved on the day, suggestions edit/accept/dismiss)
 - [x] T036 [P] Export formatVersion 2 and Markdown in the chosen locale in `backend/src/modules/export/`, `backend/docs/export-format.md`, and `backend/test/integration/export*.test.ts`; account deletion test covers new tables
 - [x] T037 [US8] E2E `web/e2e/capture.spec.ts` and a locale e2e (`web/e2e/locale.spec.ts`)
-- [ ] T038 Slice 4 release (as T020)
+- [x] T038 Slice 4 release (as T020)
 
 ## Phase 8: Verification
 
