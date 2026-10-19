@@ -14,6 +14,11 @@ docker compose up -d && npm run db:migrate && npm run dev
 npm run build && npm start
 ```
 
+The e2e accounts must be on the local allow list: `e2e@example.test` and
+`e2e-cycles@example.test` (the cycles spec has its own account because the
+settings spec changes the shared account's week start while tests run in
+parallel).
+
 ## Automated
 
 | Check | Command | Expected |

@@ -79,6 +79,11 @@ export function DayScreen() {
               ? t("day.over", { n: formatMinutes(-data.totals.remaining) })
               : t("day.left", { n: formatMinutes(data.totals.remaining) })}
           </p>
+          {data.weekEssentials.length > 0 ? (
+            <Link href={`/cycles?h=week&date=${date}`} className="week-line">
+              {t("day.weekEssentials")}: {data.weekEssentials.map((o) => `${o.title} ${String(Math.round(Math.min(o.progress, 1) * 100))}%`).join(" · ")}
+            </Link>
+          ) : null}
           {data.cycle.closedAt ? (
             <p className="notice notice--ok">
               {t("day.closed")}

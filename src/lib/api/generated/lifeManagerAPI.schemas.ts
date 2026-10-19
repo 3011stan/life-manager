@@ -1282,3 +1282,920 @@ export type CloseDay200 = {
   weekEssentials: CloseDay200WeekEssentialsItem[];
 };
 
+export type GetCycle200CycleCloseSnapshot = { [key: string]: unknown } | null;
+
+export type GetCycle200Cycle = {
+  id: string | null;
+  notes: string;
+  closedAt: string | null;
+  closeSnapshot: GetCycle200CycleCloseSnapshot;
+  version: number;
+};
+
+export const GetCycle200ObjectivesItemTier = {  essential: 'essential',
+  secondary: 'secondary',
+  parked: 'parked',
+} as const
+export const GetCycle200ObjectivesItemStatus = {  active: 'active',
+  done: 'done',
+  carried: 'carried',
+  dropped: 'dropped',
+} as const
+export const GetCycle200ObjectivesItemTargetType = {  count: 'count',
+  duration: 'duration',
+  value: 'value',
+  level: 'level',
+  milestone: 'milestone',
+  composite: 'composite',
+} as const
+export type GetCycle200ObjectivesItemCheckpoint = {
+  year: number;
+  relevant: boolean;
+  onTrack: boolean;
+  note: string;
+} | null;
+
+export type GetCycle200ObjectivesItem = {
+  id: string;
+  cycleId: string;
+  horizon: string;
+  startDate: string;
+  endDate: string;
+  title: string;
+  tier: typeof GetCycle200ObjectivesItemTier[keyof typeof GetCycle200ObjectivesItemTier];
+  status: typeof GetCycle200ObjectivesItemStatus[keyof typeof GetCycle200ObjectivesItemStatus];
+  targetType: typeof GetCycle200ObjectivesItemTargetType[keyof typeof GetCycle200ObjectivesItemTargetType];
+  targetCount: number | null;
+  targetMinutes: number | null;
+  unit: string | null;
+  startValue: number | null;
+  targetValue: number | null;
+  isCumulative: boolean;
+  levelScale: string[];
+  targetLevel: string | null;
+  milestoneEntryId: string | null;
+  doneAt: string | null;
+  parentObjectiveId: string | null;
+  activityIds: string[];
+  childIds: string[];
+  carriedFromObjectiveId: string | null;
+  checkpoint: GetCycle200ObjectivesItemCheckpoint;
+  orderKey: string;
+  progress: number;
+  current: number | string | null;
+  pace: number;
+  version: number;
+};
+
+export type GetCycle200CloseRequired = {
+  horizon: string;
+  startDate: string;
+} | null;
+
+export type GetCycle200 = {
+  horizon: string;
+  startDate: string;
+  endDate: string;
+  today: string;
+  cycle: GetCycle200Cycle;
+  objectives: GetCycle200ObjectivesItem[];
+  closeRequired: GetCycle200CloseRequired;
+};
+
+export type UpdateCycleBody = {
+  /** @maxLength 10000 */
+  notes: string;
+};
+
+export type UpdateCycle200CycleCloseSnapshot = { [key: string]: unknown } | null;
+
+export type UpdateCycle200Cycle = {
+  id: string | null;
+  notes: string;
+  closedAt: string | null;
+  closeSnapshot: UpdateCycle200CycleCloseSnapshot;
+  version: number;
+};
+
+export const UpdateCycle200ObjectivesItemTier = {  essential: 'essential',
+  secondary: 'secondary',
+  parked: 'parked',
+} as const
+export const UpdateCycle200ObjectivesItemStatus = {  active: 'active',
+  done: 'done',
+  carried: 'carried',
+  dropped: 'dropped',
+} as const
+export const UpdateCycle200ObjectivesItemTargetType = {  count: 'count',
+  duration: 'duration',
+  value: 'value',
+  level: 'level',
+  milestone: 'milestone',
+  composite: 'composite',
+} as const
+export type UpdateCycle200ObjectivesItemCheckpoint = {
+  year: number;
+  relevant: boolean;
+  onTrack: boolean;
+  note: string;
+} | null;
+
+export type UpdateCycle200ObjectivesItem = {
+  id: string;
+  cycleId: string;
+  horizon: string;
+  startDate: string;
+  endDate: string;
+  title: string;
+  tier: typeof UpdateCycle200ObjectivesItemTier[keyof typeof UpdateCycle200ObjectivesItemTier];
+  status: typeof UpdateCycle200ObjectivesItemStatus[keyof typeof UpdateCycle200ObjectivesItemStatus];
+  targetType: typeof UpdateCycle200ObjectivesItemTargetType[keyof typeof UpdateCycle200ObjectivesItemTargetType];
+  targetCount: number | null;
+  targetMinutes: number | null;
+  unit: string | null;
+  startValue: number | null;
+  targetValue: number | null;
+  isCumulative: boolean;
+  levelScale: string[];
+  targetLevel: string | null;
+  milestoneEntryId: string | null;
+  doneAt: string | null;
+  parentObjectiveId: string | null;
+  activityIds: string[];
+  childIds: string[];
+  carriedFromObjectiveId: string | null;
+  checkpoint: UpdateCycle200ObjectivesItemCheckpoint;
+  orderKey: string;
+  progress: number;
+  current: number | string | null;
+  pace: number;
+  version: number;
+};
+
+export type UpdateCycle200CloseRequired = {
+  horizon: string;
+  startDate: string;
+} | null;
+
+export type UpdateCycle200 = {
+  horizon: string;
+  startDate: string;
+  endDate: string;
+  today: string;
+  cycle: UpdateCycle200Cycle;
+  objectives: UpdateCycle200ObjectivesItem[];
+  closeRequired: UpdateCycle200CloseRequired;
+};
+
+export const CreateObjectiveBodyTargetType = {  count: 'count',
+  duration: 'duration',
+  value: 'value',
+  level: 'level',
+  milestone: 'milestone',
+  composite: 'composite',
+} as const
+export const CreateObjectiveBodyTier = {  essential: 'essential',
+  secondary: 'secondary',
+  parked: 'parked',
+} as const
+export type CreateObjectiveBody = {
+  id: string;
+  /**
+     * @minLength 1
+     * @maxLength 200
+     */
+  title: string;
+  targetType: typeof CreateObjectiveBodyTargetType[keyof typeof CreateObjectiveBodyTargetType];
+  tier?: typeof CreateObjectiveBodyTier[keyof typeof CreateObjectiveBodyTier];
+  /** @pattern ^[0-9A-Za-z]{1,64}$ */
+  orderKey?: string;
+  targetCount?: number | null;
+  targetMinutes?: number | null;
+  unit?: string | null;
+  startValue?: number | null;
+  targetValue?: number | null;
+  isCumulative?: boolean;
+  /**
+     * @maxItems 20
+     * @items.minLength 1
+     * @items.maxLength 40
+     */
+  levelScale?: string[];
+  targetLevel?: string | null;
+  milestoneEntryId?: string | null;
+  parentObjectiveId?: string | null;
+  /** @maxItems 50 */
+  activityIds?: string[];
+};
+
+export const CreateObjective201Tier = {  essential: 'essential',
+  secondary: 'secondary',
+  parked: 'parked',
+} as const
+export const CreateObjective201Status = {  active: 'active',
+  done: 'done',
+  carried: 'carried',
+  dropped: 'dropped',
+} as const
+export const CreateObjective201TargetType = {  count: 'count',
+  duration: 'duration',
+  value: 'value',
+  level: 'level',
+  milestone: 'milestone',
+  composite: 'composite',
+} as const
+export type CreateObjective201Checkpoint = {
+  year: number;
+  relevant: boolean;
+  onTrack: boolean;
+  note: string;
+} | null;
+
+export type CreateObjective201 = {
+  id: string;
+  cycleId: string;
+  horizon: string;
+  startDate: string;
+  endDate: string;
+  title: string;
+  tier: typeof CreateObjective201Tier[keyof typeof CreateObjective201Tier];
+  status: typeof CreateObjective201Status[keyof typeof CreateObjective201Status];
+  targetType: typeof CreateObjective201TargetType[keyof typeof CreateObjective201TargetType];
+  targetCount: number | null;
+  targetMinutes: number | null;
+  unit: string | null;
+  startValue: number | null;
+  targetValue: number | null;
+  isCumulative: boolean;
+  levelScale: string[];
+  targetLevel: string | null;
+  milestoneEntryId: string | null;
+  doneAt: string | null;
+  parentObjectiveId: string | null;
+  activityIds: string[];
+  childIds: string[];
+  carriedFromObjectiveId: string | null;
+  checkpoint: CreateObjective201Checkpoint;
+  orderKey: string;
+  progress: number;
+  current: number | string | null;
+  pace: number;
+  version: number;
+};
+
+export const UpdateObjectiveBodyTier = {  essential: 'essential',
+  secondary: 'secondary',
+  parked: 'parked',
+} as const
+export const UpdateObjectiveBodyStatus = {  active: 'active',
+  done: 'done',
+  dropped: 'dropped',
+} as const
+export type UpdateObjectiveBody = {
+  /**
+     * @minLength 1
+     * @maxLength 200
+     */
+  title?: string;
+  tier?: typeof UpdateObjectiveBodyTier[keyof typeof UpdateObjectiveBodyTier];
+  /** @pattern ^[0-9A-Za-z]{1,64}$ */
+  orderKey?: string;
+  targetCount?: number | null;
+  targetMinutes?: number | null;
+  unit?: string | null;
+  startValue?: number | null;
+  targetValue?: number | null;
+  isCumulative?: boolean;
+  /**
+     * @maxItems 20
+     * @items.minLength 1
+     * @items.maxLength 40
+     */
+  levelScale?: string[];
+  targetLevel?: string | null;
+  milestoneEntryId?: string | null;
+  parentObjectiveId?: string | null;
+  /** @maxItems 50 */
+  activityIds?: string[];
+  status?: typeof UpdateObjectiveBodyStatus[keyof typeof UpdateObjectiveBodyStatus];
+  markDone?: boolean;
+};
+
+export const UpdateObjective200Tier = {  essential: 'essential',
+  secondary: 'secondary',
+  parked: 'parked',
+} as const
+export const UpdateObjective200Status = {  active: 'active',
+  done: 'done',
+  carried: 'carried',
+  dropped: 'dropped',
+} as const
+export const UpdateObjective200TargetType = {  count: 'count',
+  duration: 'duration',
+  value: 'value',
+  level: 'level',
+  milestone: 'milestone',
+  composite: 'composite',
+} as const
+export type UpdateObjective200Checkpoint = {
+  year: number;
+  relevant: boolean;
+  onTrack: boolean;
+  note: string;
+} | null;
+
+export type UpdateObjective200 = {
+  id: string;
+  cycleId: string;
+  horizon: string;
+  startDate: string;
+  endDate: string;
+  title: string;
+  tier: typeof UpdateObjective200Tier[keyof typeof UpdateObjective200Tier];
+  status: typeof UpdateObjective200Status[keyof typeof UpdateObjective200Status];
+  targetType: typeof UpdateObjective200TargetType[keyof typeof UpdateObjective200TargetType];
+  targetCount: number | null;
+  targetMinutes: number | null;
+  unit: string | null;
+  startValue: number | null;
+  targetValue: number | null;
+  isCumulative: boolean;
+  levelScale: string[];
+  targetLevel: string | null;
+  milestoneEntryId: string | null;
+  doneAt: string | null;
+  parentObjectiveId: string | null;
+  activityIds: string[];
+  childIds: string[];
+  carriedFromObjectiveId: string | null;
+  checkpoint: UpdateObjective200Checkpoint;
+  orderKey: string;
+  progress: number;
+  current: number | string | null;
+  pace: number;
+  version: number;
+};
+
+export type AddMeasurementBody = {
+  id: string;
+  /** @pattern ^\d{4}-\d{2}-\d{2}$ */
+  recordedOn: string;
+  /**
+     * @minimum -1000000000000
+     * @maximum 1000000000000
+     */
+  value?: number;
+  /** @maxLength 40 */
+  level?: string;
+  /** @maxLength 1000 */
+  note?: string;
+};
+
+export const AddMeasurement201Tier = {  essential: 'essential',
+  secondary: 'secondary',
+  parked: 'parked',
+} as const
+export const AddMeasurement201Status = {  active: 'active',
+  done: 'done',
+  carried: 'carried',
+  dropped: 'dropped',
+} as const
+export const AddMeasurement201TargetType = {  count: 'count',
+  duration: 'duration',
+  value: 'value',
+  level: 'level',
+  milestone: 'milestone',
+  composite: 'composite',
+} as const
+export type AddMeasurement201Checkpoint = {
+  year: number;
+  relevant: boolean;
+  onTrack: boolean;
+  note: string;
+} | null;
+
+export type AddMeasurement201 = {
+  id: string;
+  cycleId: string;
+  horizon: string;
+  startDate: string;
+  endDate: string;
+  title: string;
+  tier: typeof AddMeasurement201Tier[keyof typeof AddMeasurement201Tier];
+  status: typeof AddMeasurement201Status[keyof typeof AddMeasurement201Status];
+  targetType: typeof AddMeasurement201TargetType[keyof typeof AddMeasurement201TargetType];
+  targetCount: number | null;
+  targetMinutes: number | null;
+  unit: string | null;
+  startValue: number | null;
+  targetValue: number | null;
+  isCumulative: boolean;
+  levelScale: string[];
+  targetLevel: string | null;
+  milestoneEntryId: string | null;
+  doneAt: string | null;
+  parentObjectiveId: string | null;
+  activityIds: string[];
+  childIds: string[];
+  carriedFromObjectiveId: string | null;
+  checkpoint: AddMeasurement201Checkpoint;
+  orderKey: string;
+  progress: number;
+  current: number | string | null;
+  pace: number;
+  version: number;
+};
+
+export type GetCycleClose200CycleCloseSnapshot = { [key: string]: unknown } | null;
+
+export type GetCycleClose200Cycle = {
+  id: string | null;
+  notes: string;
+  closedAt: string | null;
+  closeSnapshot: GetCycleClose200CycleCloseSnapshot;
+  version: number;
+};
+
+export const GetCycleClose200ObjectivesItemTier = {  essential: 'essential',
+  secondary: 'secondary',
+  parked: 'parked',
+} as const
+export const GetCycleClose200ObjectivesItemStatus = {  active: 'active',
+  done: 'done',
+  carried: 'carried',
+  dropped: 'dropped',
+} as const
+export const GetCycleClose200ObjectivesItemTargetType = {  count: 'count',
+  duration: 'duration',
+  value: 'value',
+  level: 'level',
+  milestone: 'milestone',
+  composite: 'composite',
+} as const
+export type GetCycleClose200ObjectivesItemCheckpoint = {
+  year: number;
+  relevant: boolean;
+  onTrack: boolean;
+  note: string;
+} | null;
+
+export type GetCycleClose200ObjectivesItem = {
+  id: string;
+  cycleId: string;
+  horizon: string;
+  startDate: string;
+  endDate: string;
+  title: string;
+  tier: typeof GetCycleClose200ObjectivesItemTier[keyof typeof GetCycleClose200ObjectivesItemTier];
+  status: typeof GetCycleClose200ObjectivesItemStatus[keyof typeof GetCycleClose200ObjectivesItemStatus];
+  targetType: typeof GetCycleClose200ObjectivesItemTargetType[keyof typeof GetCycleClose200ObjectivesItemTargetType];
+  targetCount: number | null;
+  targetMinutes: number | null;
+  unit: string | null;
+  startValue: number | null;
+  targetValue: number | null;
+  isCumulative: boolean;
+  levelScale: string[];
+  targetLevel: string | null;
+  milestoneEntryId: string | null;
+  doneAt: string | null;
+  parentObjectiveId: string | null;
+  activityIds: string[];
+  childIds: string[];
+  carriedFromObjectiveId: string | null;
+  checkpoint: GetCycleClose200ObjectivesItemCheckpoint;
+  orderKey: string;
+  progress: number;
+  current: number | string | null;
+  pace: number;
+  version: number;
+};
+
+export type GetCycleClose200CloseRequired = {
+  horizon: string;
+  startDate: string;
+} | null;
+
+export const GetCycleClose200UnfinishedItemTier = {  essential: 'essential',
+  secondary: 'secondary',
+  parked: 'parked',
+} as const
+export const GetCycleClose200UnfinishedItemStatus = {  active: 'active',
+  done: 'done',
+  carried: 'carried',
+  dropped: 'dropped',
+} as const
+export const GetCycleClose200UnfinishedItemTargetType = {  count: 'count',
+  duration: 'duration',
+  value: 'value',
+  level: 'level',
+  milestone: 'milestone',
+  composite: 'composite',
+} as const
+export type GetCycleClose200UnfinishedItemCheckpoint = {
+  year: number;
+  relevant: boolean;
+  onTrack: boolean;
+  note: string;
+} | null;
+
+export type GetCycleClose200UnfinishedItem = {
+  id: string;
+  cycleId: string;
+  horizon: string;
+  startDate: string;
+  endDate: string;
+  title: string;
+  tier: typeof GetCycleClose200UnfinishedItemTier[keyof typeof GetCycleClose200UnfinishedItemTier];
+  status: typeof GetCycleClose200UnfinishedItemStatus[keyof typeof GetCycleClose200UnfinishedItemStatus];
+  targetType: typeof GetCycleClose200UnfinishedItemTargetType[keyof typeof GetCycleClose200UnfinishedItemTargetType];
+  targetCount: number | null;
+  targetMinutes: number | null;
+  unit: string | null;
+  startValue: number | null;
+  targetValue: number | null;
+  isCumulative: boolean;
+  levelScale: string[];
+  targetLevel: string | null;
+  milestoneEntryId: string | null;
+  doneAt: string | null;
+  parentObjectiveId: string | null;
+  activityIds: string[];
+  childIds: string[];
+  carriedFromObjectiveId: string | null;
+  checkpoint: GetCycleClose200UnfinishedItemCheckpoint;
+  orderKey: string;
+  progress: number;
+  current: number | string | null;
+  pace: number;
+  version: number;
+};
+
+export const GetCycleClose200CheckpointsItemTier = {  essential: 'essential',
+  secondary: 'secondary',
+  parked: 'parked',
+} as const
+export const GetCycleClose200CheckpointsItemStatus = {  active: 'active',
+  done: 'done',
+  carried: 'carried',
+  dropped: 'dropped',
+} as const
+export const GetCycleClose200CheckpointsItemTargetType = {  count: 'count',
+  duration: 'duration',
+  value: 'value',
+  level: 'level',
+  milestone: 'milestone',
+  composite: 'composite',
+} as const
+export type GetCycleClose200CheckpointsItemCheckpoint = {
+  year: number;
+  relevant: boolean;
+  onTrack: boolean;
+  note: string;
+} | null;
+
+export type GetCycleClose200CheckpointsItem = {
+  id: string;
+  cycleId: string;
+  horizon: string;
+  startDate: string;
+  endDate: string;
+  title: string;
+  tier: typeof GetCycleClose200CheckpointsItemTier[keyof typeof GetCycleClose200CheckpointsItemTier];
+  status: typeof GetCycleClose200CheckpointsItemStatus[keyof typeof GetCycleClose200CheckpointsItemStatus];
+  targetType: typeof GetCycleClose200CheckpointsItemTargetType[keyof typeof GetCycleClose200CheckpointsItemTargetType];
+  targetCount: number | null;
+  targetMinutes: number | null;
+  unit: string | null;
+  startValue: number | null;
+  targetValue: number | null;
+  isCumulative: boolean;
+  levelScale: string[];
+  targetLevel: string | null;
+  milestoneEntryId: string | null;
+  doneAt: string | null;
+  parentObjectiveId: string | null;
+  activityIds: string[];
+  childIds: string[];
+  carriedFromObjectiveId: string | null;
+  checkpoint: GetCycleClose200CheckpointsItemCheckpoint;
+  orderKey: string;
+  progress: number;
+  current: number | string | null;
+  pace: number;
+  version: number;
+};
+
+export type GetCycleClose200 = {
+  horizon: string;
+  startDate: string;
+  endDate: string;
+  today: string;
+  cycle: GetCycleClose200Cycle;
+  objectives: GetCycleClose200ObjectivesItem[];
+  closeRequired: GetCycleClose200CloseRequired;
+  unfinished: GetCycleClose200UnfinishedItem[];
+  checkpoints: GetCycleClose200CheckpointsItem[];
+};
+
+export const CloseCycleBodyCarriesItemDecision = {  carried: 'carried',
+  dropped: 'dropped',
+} as const
+export type CloseCycleBodyCarriesItem = {
+  objectiveId: string;
+  decision: typeof CloseCycleBodyCarriesItemDecision[keyof typeof CloseCycleBodyCarriesItemDecision];
+};
+
+export type CloseCycleBodyCheckpointsItem = {
+  objectiveId: string;
+  relevant: boolean;
+  onTrack: boolean;
+  /** @maxLength 1000 */
+  note?: string;
+};
+
+export type CloseCycleBody = {
+  /** @maxLength 10000 */
+  notes?: string;
+  /** @maxItems 200 */
+  carries: CloseCycleBodyCarriesItem[];
+  /** @maxItems 100 */
+  checkpoints?: CloseCycleBodyCheckpointsItem[];
+};
+
+export type CloseCycle200CycleCloseSnapshot = { [key: string]: unknown } | null;
+
+export type CloseCycle200Cycle = {
+  id: string | null;
+  notes: string;
+  closedAt: string | null;
+  closeSnapshot: CloseCycle200CycleCloseSnapshot;
+  version: number;
+};
+
+export const CloseCycle200ObjectivesItemTier = {  essential: 'essential',
+  secondary: 'secondary',
+  parked: 'parked',
+} as const
+export const CloseCycle200ObjectivesItemStatus = {  active: 'active',
+  done: 'done',
+  carried: 'carried',
+  dropped: 'dropped',
+} as const
+export const CloseCycle200ObjectivesItemTargetType = {  count: 'count',
+  duration: 'duration',
+  value: 'value',
+  level: 'level',
+  milestone: 'milestone',
+  composite: 'composite',
+} as const
+export type CloseCycle200ObjectivesItemCheckpoint = {
+  year: number;
+  relevant: boolean;
+  onTrack: boolean;
+  note: string;
+} | null;
+
+export type CloseCycle200ObjectivesItem = {
+  id: string;
+  cycleId: string;
+  horizon: string;
+  startDate: string;
+  endDate: string;
+  title: string;
+  tier: typeof CloseCycle200ObjectivesItemTier[keyof typeof CloseCycle200ObjectivesItemTier];
+  status: typeof CloseCycle200ObjectivesItemStatus[keyof typeof CloseCycle200ObjectivesItemStatus];
+  targetType: typeof CloseCycle200ObjectivesItemTargetType[keyof typeof CloseCycle200ObjectivesItemTargetType];
+  targetCount: number | null;
+  targetMinutes: number | null;
+  unit: string | null;
+  startValue: number | null;
+  targetValue: number | null;
+  isCumulative: boolean;
+  levelScale: string[];
+  targetLevel: string | null;
+  milestoneEntryId: string | null;
+  doneAt: string | null;
+  parentObjectiveId: string | null;
+  activityIds: string[];
+  childIds: string[];
+  carriedFromObjectiveId: string | null;
+  checkpoint: CloseCycle200ObjectivesItemCheckpoint;
+  orderKey: string;
+  progress: number;
+  current: number | string | null;
+  pace: number;
+  version: number;
+};
+
+export type CloseCycle200CloseRequired = {
+  horizon: string;
+  startDate: string;
+} | null;
+
+export type CloseCycle200 = {
+  horizon: string;
+  startDate: string;
+  endDate: string;
+  today: string;
+  cycle: CloseCycle200Cycle;
+  objectives: CloseCycle200ObjectivesItem[];
+  closeRequired: CloseCycle200CloseRequired;
+};
+
+export const ListObjectiveTemplates200ItemTier = {  essential: 'essential',
+  secondary: 'secondary',
+  parked: 'parked',
+} as const
+export const ListObjectiveTemplates200ItemTargetType = {  count: 'count',
+  duration: 'duration',
+} as const
+export type ListObjectiveTemplates200Item = {
+  id: string;
+  title: string;
+  tier: typeof ListObjectiveTemplates200ItemTier[keyof typeof ListObjectiveTemplates200ItemTier];
+  targetType: typeof ListObjectiveTemplates200ItemTargetType[keyof typeof ListObjectiveTemplates200ItemTargetType];
+  targetCount: number | null;
+  targetMinutes: number | null;
+  activityIds: string[];
+  orderKey: string;
+  archivedAt: string | null;
+  version: number;
+};
+
+export const CreateObjectiveTemplateBodyTargetType = {  count: 'count',
+  duration: 'duration',
+} as const
+export const CreateObjectiveTemplateBodyTier = {  essential: 'essential',
+  secondary: 'secondary',
+  parked: 'parked',
+} as const
+export type CreateObjectiveTemplateBody = {
+  id: string;
+  /**
+     * @minLength 1
+     * @maxLength 200
+     */
+  title: string;
+  targetType: typeof CreateObjectiveTemplateBodyTargetType[keyof typeof CreateObjectiveTemplateBodyTargetType];
+  tier?: typeof CreateObjectiveTemplateBodyTier[keyof typeof CreateObjectiveTemplateBodyTier];
+  targetCount?: number | null;
+  targetMinutes?: number | null;
+  /** @maxItems 50 */
+  activityIds?: string[];
+};
+
+export const CreateObjectiveTemplate201Tier = {  essential: 'essential',
+  secondary: 'secondary',
+  parked: 'parked',
+} as const
+export const CreateObjectiveTemplate201TargetType = {  count: 'count',
+  duration: 'duration',
+} as const
+export type CreateObjectiveTemplate201 = {
+  id: string;
+  title: string;
+  tier: typeof CreateObjectiveTemplate201Tier[keyof typeof CreateObjectiveTemplate201Tier];
+  targetType: typeof CreateObjectiveTemplate201TargetType[keyof typeof CreateObjectiveTemplate201TargetType];
+  targetCount: number | null;
+  targetMinutes: number | null;
+  activityIds: string[];
+  orderKey: string;
+  archivedAt: string | null;
+  version: number;
+};
+
+export const UpdateObjectiveTemplateBodyTier = {  essential: 'essential',
+  secondary: 'secondary',
+  parked: 'parked',
+} as const
+export const UpdateObjectiveTemplateBodyTargetType = {  count: 'count',
+  duration: 'duration',
+} as const
+export type UpdateObjectiveTemplateBody = {
+  /**
+     * @minLength 1
+     * @maxLength 200
+     */
+  title?: string;
+  tier?: typeof UpdateObjectiveTemplateBodyTier[keyof typeof UpdateObjectiveTemplateBodyTier];
+  targetType?: typeof UpdateObjectiveTemplateBodyTargetType[keyof typeof UpdateObjectiveTemplateBodyTargetType];
+  targetCount?: number | null;
+  targetMinutes?: number | null;
+  /** @maxItems 50 */
+  activityIds?: string[];
+  archived?: boolean;
+};
+
+export const UpdateObjectiveTemplate200Tier = {  essential: 'essential',
+  secondary: 'secondary',
+  parked: 'parked',
+} as const
+export const UpdateObjectiveTemplate200TargetType = {  count: 'count',
+  duration: 'duration',
+} as const
+export type UpdateObjectiveTemplate200 = {
+  id: string;
+  title: string;
+  tier: typeof UpdateObjectiveTemplate200Tier[keyof typeof UpdateObjectiveTemplate200Tier];
+  targetType: typeof UpdateObjectiveTemplate200TargetType[keyof typeof UpdateObjectiveTemplate200TargetType];
+  targetCount: number | null;
+  targetMinutes: number | null;
+  activityIds: string[];
+  orderKey: string;
+  archivedAt: string | null;
+  version: number;
+};
+
+export const GetTemplateProposals200TemplatesItemTier = {  essential: 'essential',
+  secondary: 'secondary',
+  parked: 'parked',
+} as const
+export const GetTemplateProposals200TemplatesItemTargetType = {  count: 'count',
+  duration: 'duration',
+} as const
+export type GetTemplateProposals200TemplatesItem = {
+  id: string;
+  title: string;
+  tier: typeof GetTemplateProposals200TemplatesItemTier[keyof typeof GetTemplateProposals200TemplatesItemTier];
+  targetType: typeof GetTemplateProposals200TemplatesItemTargetType[keyof typeof GetTemplateProposals200TemplatesItemTargetType];
+  targetCount: number | null;
+  targetMinutes: number | null;
+  activityIds: string[];
+  orderKey: string;
+  archivedAt: string | null;
+  version: number;
+};
+
+export type GetTemplateProposals200 = {
+  startDate: string;
+  templates: GetTemplateProposals200TemplatesItem[];
+};
+
+export type ApplyTemplatesBodyAcceptItem = {
+  templateId: string;
+  objectiveId: string;
+};
+
+export type ApplyTemplatesBody = {
+  /** @maxItems 100 */
+  accept: ApplyTemplatesBodyAcceptItem[];
+  /** @maxItems 100 */
+  skip: string[];
+};
+
+export const ApplyTemplates201ItemTier = {  essential: 'essential',
+  secondary: 'secondary',
+  parked: 'parked',
+} as const
+export const ApplyTemplates201ItemStatus = {  active: 'active',
+  done: 'done',
+  carried: 'carried',
+  dropped: 'dropped',
+} as const
+export const ApplyTemplates201ItemTargetType = {  count: 'count',
+  duration: 'duration',
+  value: 'value',
+  level: 'level',
+  milestone: 'milestone',
+  composite: 'composite',
+} as const
+export type ApplyTemplates201ItemCheckpoint = {
+  year: number;
+  relevant: boolean;
+  onTrack: boolean;
+  note: string;
+} | null;
+
+export type ApplyTemplates201Item = {
+  id: string;
+  cycleId: string;
+  horizon: string;
+  startDate: string;
+  endDate: string;
+  title: string;
+  tier: typeof ApplyTemplates201ItemTier[keyof typeof ApplyTemplates201ItemTier];
+  status: typeof ApplyTemplates201ItemStatus[keyof typeof ApplyTemplates201ItemStatus];
+  targetType: typeof ApplyTemplates201ItemTargetType[keyof typeof ApplyTemplates201ItemTargetType];
+  targetCount: number | null;
+  targetMinutes: number | null;
+  unit: string | null;
+  startValue: number | null;
+  targetValue: number | null;
+  isCumulative: boolean;
+  levelScale: string[];
+  targetLevel: string | null;
+  milestoneEntryId: string | null;
+  doneAt: string | null;
+  parentObjectiveId: string | null;
+  activityIds: string[];
+  childIds: string[];
+  carriedFromObjectiveId: string | null;
+  checkpoint: ApplyTemplates201ItemCheckpoint;
+  orderKey: string;
+  progress: number;
+  current: number | string | null;
+  pace: number;
+  version: number;
+};
+

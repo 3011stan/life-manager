@@ -680,3 +680,75 @@ h2 {
   padding-left: 18px;
   color: var(--muted);
 }
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.tab {
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--foreground);
+}
+
+.tab--active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  font-weight: 600;
+}
+
+.objective-row {
+  display: grid;
+  padding: 2px 6px 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.objective-row--dropped .entry-row__title,
+.objective-row--carried .entry-row__title {
+  color: var(--muted);
+}
+
+.pace {
+  position: relative;
+  height: 6px;
+  margin: 0 4px;
+  border-radius: 3px;
+  background: var(--soft);
+}
+
+.pace__progress {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: 3px;
+  background: var(--accent);
+}
+
+.pace__marker {
+  position: absolute;
+  top: -3px;
+  width: 2px;
+  height: 12px;
+  background: var(--foreground);
+}
+
+.week-line {
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.check-list--scroll {
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.close {
+  gap: 18px;
+}

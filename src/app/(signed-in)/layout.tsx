@@ -14,6 +14,7 @@ import type { MessageKey } from "@/lib/i18n/en";
 
 const NAV: { href: string; label: MessageKey }[] = [
   { href: "/day", label: "nav.day" },
+  { href: "/cycles", label: "nav.cycles" },
   { href: "/catalog", label: "nav.catalog" },
   { href: "/settings", label: "nav.settings" },
   { href: "/account", label: "nav.account" },

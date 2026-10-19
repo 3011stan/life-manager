@@ -5422,6 +5422,5569 @@
           }
         }
       }
+    },
+    "/v1/cycles/{horizon}/{date}": {
+      "get": {
+        "operationId": "getCycle",
+        "tags": [
+          "objectives"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "week"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "month"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "year"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "y5"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "y10"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "y20"
+                  ]
+                }
+              ]
+            },
+            "in": "path",
+            "name": "horizon",
+            "required": true
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "current"
+                  ]
+                }
+              ]
+            },
+            "in": "path",
+            "name": "date",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "horizon",
+                    "startDate",
+                    "endDate",
+                    "today",
+                    "cycle",
+                    "objectives",
+                    "closeRequired"
+                  ],
+                  "properties": {
+                    "horizon": {
+                      "type": "string"
+                    },
+                    "startDate": {
+                      "type": "string"
+                    },
+                    "endDate": {
+                      "type": "string"
+                    },
+                    "today": {
+                      "type": "string"
+                    },
+                    "cycle": {
+                      "type": "object",
+                      "required": [
+                        "id",
+                        "notes",
+                        "closedAt",
+                        "closeSnapshot",
+                        "version"
+                      ],
+                      "properties": {
+                        "id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "notes": {
+                          "type": "string"
+                        },
+                        "closedAt": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "closeSnapshot": {
+                          "anyOf": [
+                            {
+                              "type": "object",
+                              "properties": {},
+                              "additionalProperties": true
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "version": {
+                          "type": "integer"
+                        }
+                      }
+                    },
+                    "objectives": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "cycleId",
+                          "horizon",
+                          "startDate",
+                          "endDate",
+                          "title",
+                          "tier",
+                          "status",
+                          "targetType",
+                          "targetCount",
+                          "targetMinutes",
+                          "unit",
+                          "startValue",
+                          "targetValue",
+                          "isCumulative",
+                          "levelScale",
+                          "targetLevel",
+                          "milestoneEntryId",
+                          "doneAt",
+                          "parentObjectiveId",
+                          "activityIds",
+                          "childIds",
+                          "carriedFromObjectiveId",
+                          "checkpoint",
+                          "orderKey",
+                          "progress",
+                          "current",
+                          "pace",
+                          "version"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "cycleId": {
+                            "type": "string"
+                          },
+                          "horizon": {
+                            "type": "string"
+                          },
+                          "startDate": {
+                            "type": "string"
+                          },
+                          "endDate": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "tier": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "essential"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "secondary"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "parked"
+                                ]
+                              }
+                            ]
+                          },
+                          "status": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "active"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "done"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "carried"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "dropped"
+                                ]
+                              }
+                            ]
+                          },
+                          "targetType": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "count"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "duration"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "value"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "level"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "milestone"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "composite"
+                                ]
+                              }
+                            ]
+                          },
+                          "targetCount": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "targetMinutes": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "unit": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "startValue": {
+                            "anyOf": [
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "targetValue": {
+                            "anyOf": [
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "isCumulative": {
+                            "type": "boolean"
+                          },
+                          "levelScale": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "targetLevel": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "milestoneEntryId": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "doneAt": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "parentObjectiveId": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "activityIds": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "childIds": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "carriedFromObjectiveId": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "checkpoint": {
+                            "anyOf": [
+                              {
+                                "type": "object",
+                                "required": [
+                                  "year",
+                                  "relevant",
+                                  "onTrack",
+                                  "note"
+                                ],
+                                "properties": {
+                                  "year": {
+                                    "type": "integer"
+                                  },
+                                  "relevant": {
+                                    "type": "boolean"
+                                  },
+                                  "onTrack": {
+                                    "type": "boolean"
+                                  },
+                                  "note": {
+                                    "type": "string"
+                                  }
+                                }
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "orderKey": {
+                            "type": "string"
+                          },
+                          "progress": {
+                            "type": "number"
+                          },
+                          "current": {
+                            "anyOf": [
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "pace": {
+                            "type": "number"
+                          },
+                          "version": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    },
+                    "closeRequired": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "required": [
+                            "horizon",
+                            "startDate"
+                          ],
+                          "properties": {
+                            "horizon": {
+                              "type": "string"
+                            },
+                            "startDate": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateCycle",
+        "tags": [
+          "objectives"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "notes"
+                ],
+                "properties": {
+                  "notes": {
+                    "type": "string",
+                    "maxLength": 10000
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "week"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "month"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "year"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "y5"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "y10"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "y20"
+                  ]
+                }
+              ]
+            },
+            "in": "path",
+            "name": "horizon",
+            "required": true
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "current"
+                  ]
+                }
+              ]
+            },
+            "in": "path",
+            "name": "date",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "in": "header",
+            "name": "idempotency-key",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "horizon",
+                    "startDate",
+                    "endDate",
+                    "today",
+                    "cycle",
+                    "objectives",
+                    "closeRequired"
+                  ],
+                  "properties": {
+                    "horizon": {
+                      "type": "string"
+                    },
+                    "startDate": {
+                      "type": "string"
+                    },
+                    "endDate": {
+                      "type": "string"
+                    },
+                    "today": {
+                      "type": "string"
+                    },
+                    "cycle": {
+                      "type": "object",
+                      "required": [
+                        "id",
+                        "notes",
+                        "closedAt",
+                        "closeSnapshot",
+                        "version"
+                      ],
+                      "properties": {
+                        "id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "notes": {
+                          "type": "string"
+                        },
+                        "closedAt": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "closeSnapshot": {
+                          "anyOf": [
+                            {
+                              "type": "object",
+                              "properties": {},
+                              "additionalProperties": true
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "version": {
+                          "type": "integer"
+                        }
+                      }
+                    },
+                    "objectives": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "cycleId",
+                          "horizon",
+                          "startDate",
+                          "endDate",
+                          "title",
+                          "tier",
+                          "status",
+                          "targetType",
+                          "targetCount",
+                          "targetMinutes",
+                          "unit",
+                          "startValue",
+                          "targetValue",
+                          "isCumulative",
+                          "levelScale",
+                          "targetLevel",
+                          "milestoneEntryId",
+                          "doneAt",
+                          "parentObjectiveId",
+                          "activityIds",
+                          "childIds",
+                          "carriedFromObjectiveId",
+                          "checkpoint",
+                          "orderKey",
+                          "progress",
+                          "current",
+                          "pace",
+                          "version"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "cycleId": {
+                            "type": "string"
+                          },
+                          "horizon": {
+                            "type": "string"
+                          },
+                          "startDate": {
+                            "type": "string"
+                          },
+                          "endDate": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "tier": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "essential"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "secondary"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "parked"
+                                ]
+                              }
+                            ]
+                          },
+                          "status": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "active"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "done"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "carried"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "dropped"
+                                ]
+                              }
+                            ]
+                          },
+                          "targetType": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "count"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "duration"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "value"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "level"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "milestone"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "composite"
+                                ]
+                              }
+                            ]
+                          },
+                          "targetCount": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "targetMinutes": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "unit": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "startValue": {
+                            "anyOf": [
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "targetValue": {
+                            "anyOf": [
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "isCumulative": {
+                            "type": "boolean"
+                          },
+                          "levelScale": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "targetLevel": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "milestoneEntryId": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "doneAt": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "parentObjectiveId": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "activityIds": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "childIds": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "carriedFromObjectiveId": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "checkpoint": {
+                            "anyOf": [
+                              {
+                                "type": "object",
+                                "required": [
+                                  "year",
+                                  "relevant",
+                                  "onTrack",
+                                  "note"
+                                ],
+                                "properties": {
+                                  "year": {
+                                    "type": "integer"
+                                  },
+                                  "relevant": {
+                                    "type": "boolean"
+                                  },
+                                  "onTrack": {
+                                    "type": "boolean"
+                                  },
+                                  "note": {
+                                    "type": "string"
+                                  }
+                                }
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "orderKey": {
+                            "type": "string"
+                          },
+                          "progress": {
+                            "type": "number"
+                          },
+                          "current": {
+                            "anyOf": [
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "pace": {
+                            "type": "number"
+                          },
+                          "version": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    },
+                    "closeRequired": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "required": [
+                            "horizon",
+                            "startDate"
+                          ],
+                          "properties": {
+                            "horizon": {
+                              "type": "string"
+                            },
+                            "startDate": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/cycles/{horizon}/{date}/objectives": {
+      "post": {
+        "operationId": "createObjective",
+        "tags": [
+          "objectives"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "title",
+                  "targetType"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "title": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "targetType": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "count"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "duration"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "value"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "level"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "milestone"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "composite"
+                        ]
+                      }
+                    ]
+                  },
+                  "tier": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "essential"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "secondary"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "parked"
+                        ]
+                      }
+                    ]
+                  },
+                  "orderKey": {
+                    "type": "string",
+                    "pattern": "^[0-9A-Za-z]{1,64}$"
+                  },
+                  "targetCount": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 10000
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "targetMinutes": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 1000000
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "unit": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 20
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "startValue": {
+                    "anyOf": [
+                      {
+                        "type": "number",
+                        "minimum": -1000000000000,
+                        "maximum": 1000000000000
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "targetValue": {
+                    "anyOf": [
+                      {
+                        "type": "number",
+                        "minimum": -1000000000000,
+                        "maximum": 1000000000000
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "isCumulative": {
+                    "type": "boolean"
+                  },
+                  "levelScale": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 40
+                    },
+                    "maxItems": 20
+                  },
+                  "targetLevel": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "maxLength": 40
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "milestoneEntryId": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "parentObjectiveId": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "activityIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "maxItems": 50
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "week"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "month"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "year"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "y5"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "y10"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "y20"
+                  ]
+                }
+              ]
+            },
+            "in": "path",
+            "name": "horizon",
+            "required": true
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "current"
+                  ]
+                }
+              ]
+            },
+            "in": "path",
+            "name": "date",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "in": "header",
+            "name": "idempotency-key",
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "cycleId",
+                    "horizon",
+                    "startDate",
+                    "endDate",
+                    "title",
+                    "tier",
+                    "status",
+                    "targetType",
+                    "targetCount",
+                    "targetMinutes",
+                    "unit",
+                    "startValue",
+                    "targetValue",
+                    "isCumulative",
+                    "levelScale",
+                    "targetLevel",
+                    "milestoneEntryId",
+                    "doneAt",
+                    "parentObjectiveId",
+                    "activityIds",
+                    "childIds",
+                    "carriedFromObjectiveId",
+                    "checkpoint",
+                    "orderKey",
+                    "progress",
+                    "current",
+                    "pace",
+                    "version"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "cycleId": {
+                      "type": "string"
+                    },
+                    "horizon": {
+                      "type": "string"
+                    },
+                    "startDate": {
+                      "type": "string"
+                    },
+                    "endDate": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "tier": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "essential"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "secondary"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "parked"
+                          ]
+                        }
+                      ]
+                    },
+                    "status": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "active"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "done"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "carried"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "dropped"
+                          ]
+                        }
+                      ]
+                    },
+                    "targetType": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "count"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "duration"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "value"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "level"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "milestone"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "composite"
+                          ]
+                        }
+                      ]
+                    },
+                    "targetCount": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "targetMinutes": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "unit": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "startValue": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "targetValue": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "isCumulative": {
+                      "type": "boolean"
+                    },
+                    "levelScale": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "targetLevel": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "milestoneEntryId": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "doneAt": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "parentObjectiveId": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "activityIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "childIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "carriedFromObjectiveId": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "checkpoint": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "required": [
+                            "year",
+                            "relevant",
+                            "onTrack",
+                            "note"
+                          ],
+                          "properties": {
+                            "year": {
+                              "type": "integer"
+                            },
+                            "relevant": {
+                              "type": "boolean"
+                            },
+                            "onTrack": {
+                              "type": "boolean"
+                            },
+                            "note": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "orderKey": {
+                      "type": "string"
+                    },
+                    "progress": {
+                      "type": "number"
+                    },
+                    "current": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "pace": {
+                      "type": "number"
+                    },
+                    "version": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/objectives/{id}": {
+      "patch": {
+        "operationId": "updateObjective",
+        "tags": [
+          "objectives"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "tier": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "essential"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "secondary"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "parked"
+                        ]
+                      }
+                    ]
+                  },
+                  "orderKey": {
+                    "type": "string",
+                    "pattern": "^[0-9A-Za-z]{1,64}$"
+                  },
+                  "targetCount": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 10000
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "targetMinutes": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 1000000
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "unit": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 20
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "startValue": {
+                    "anyOf": [
+                      {
+                        "type": "number",
+                        "minimum": -1000000000000,
+                        "maximum": 1000000000000
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "targetValue": {
+                    "anyOf": [
+                      {
+                        "type": "number",
+                        "minimum": -1000000000000,
+                        "maximum": 1000000000000
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "isCumulative": {
+                    "type": "boolean"
+                  },
+                  "levelScale": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 40
+                    },
+                    "maxItems": 20
+                  },
+                  "targetLevel": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "maxLength": 40
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "milestoneEntryId": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "parentObjectiveId": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "activityIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "maxItems": 50
+                  },
+                  "status": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "active"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "done"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "dropped"
+                        ]
+                      }
+                    ]
+                  },
+                  "markDone": {
+                    "type": "boolean"
+                  }
+                },
+                "additionalProperties": false,
+                "minProperties": 1
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "in": "header",
+            "name": "idempotency-key",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "cycleId",
+                    "horizon",
+                    "startDate",
+                    "endDate",
+                    "title",
+                    "tier",
+                    "status",
+                    "targetType",
+                    "targetCount",
+                    "targetMinutes",
+                    "unit",
+                    "startValue",
+                    "targetValue",
+                    "isCumulative",
+                    "levelScale",
+                    "targetLevel",
+                    "milestoneEntryId",
+                    "doneAt",
+                    "parentObjectiveId",
+                    "activityIds",
+                    "childIds",
+                    "carriedFromObjectiveId",
+                    "checkpoint",
+                    "orderKey",
+                    "progress",
+                    "current",
+                    "pace",
+                    "version"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "cycleId": {
+                      "type": "string"
+                    },
+                    "horizon": {
+                      "type": "string"
+                    },
+                    "startDate": {
+                      "type": "string"
+                    },
+                    "endDate": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "tier": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "essential"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "secondary"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "parked"
+                          ]
+                        }
+                      ]
+                    },
+                    "status": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "active"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "done"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "carried"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "dropped"
+                          ]
+                        }
+                      ]
+                    },
+                    "targetType": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "count"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "duration"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "value"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "level"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "milestone"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "composite"
+                          ]
+                        }
+                      ]
+                    },
+                    "targetCount": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "targetMinutes": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "unit": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "startValue": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "targetValue": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "isCumulative": {
+                      "type": "boolean"
+                    },
+                    "levelScale": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "targetLevel": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "milestoneEntryId": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "doneAt": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "parentObjectiveId": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "activityIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "childIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "carriedFromObjectiveId": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "checkpoint": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "required": [
+                            "year",
+                            "relevant",
+                            "onTrack",
+                            "note"
+                          ],
+                          "properties": {
+                            "year": {
+                              "type": "integer"
+                            },
+                            "relevant": {
+                              "type": "boolean"
+                            },
+                            "onTrack": {
+                              "type": "boolean"
+                            },
+                            "note": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "orderKey": {
+                      "type": "string"
+                    },
+                    "progress": {
+                      "type": "number"
+                    },
+                    "current": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "pace": {
+                      "type": "number"
+                    },
+                    "version": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteObjective",
+        "tags": [
+          "objectives"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "in": "header",
+            "name": "idempotency-key",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/objectives/{id}/measurements": {
+      "post": {
+        "operationId": "addMeasurement",
+        "tags": [
+          "objectives"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "recordedOn"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "recordedOn": {
+                    "type": "string",
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                  },
+                  "value": {
+                    "type": "number",
+                    "minimum": -1000000000000,
+                    "maximum": 1000000000000
+                  },
+                  "level": {
+                    "type": "string",
+                    "maxLength": 40
+                  },
+                  "note": {
+                    "type": "string",
+                    "maxLength": 1000
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "in": "header",
+            "name": "idempotency-key",
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "cycleId",
+                    "horizon",
+                    "startDate",
+                    "endDate",
+                    "title",
+                    "tier",
+                    "status",
+                    "targetType",
+                    "targetCount",
+                    "targetMinutes",
+                    "unit",
+                    "startValue",
+                    "targetValue",
+                    "isCumulative",
+                    "levelScale",
+                    "targetLevel",
+                    "milestoneEntryId",
+                    "doneAt",
+                    "parentObjectiveId",
+                    "activityIds",
+                    "childIds",
+                    "carriedFromObjectiveId",
+                    "checkpoint",
+                    "orderKey",
+                    "progress",
+                    "current",
+                    "pace",
+                    "version"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "cycleId": {
+                      "type": "string"
+                    },
+                    "horizon": {
+                      "type": "string"
+                    },
+                    "startDate": {
+                      "type": "string"
+                    },
+                    "endDate": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "tier": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "essential"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "secondary"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "parked"
+                          ]
+                        }
+                      ]
+                    },
+                    "status": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "active"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "done"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "carried"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "dropped"
+                          ]
+                        }
+                      ]
+                    },
+                    "targetType": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "count"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "duration"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "value"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "level"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "milestone"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "composite"
+                          ]
+                        }
+                      ]
+                    },
+                    "targetCount": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "targetMinutes": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "unit": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "startValue": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "targetValue": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "isCumulative": {
+                      "type": "boolean"
+                    },
+                    "levelScale": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "targetLevel": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "milestoneEntryId": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "doneAt": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "parentObjectiveId": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "activityIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "childIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "carriedFromObjectiveId": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "checkpoint": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "required": [
+                            "year",
+                            "relevant",
+                            "onTrack",
+                            "note"
+                          ],
+                          "properties": {
+                            "year": {
+                              "type": "integer"
+                            },
+                            "relevant": {
+                              "type": "boolean"
+                            },
+                            "onTrack": {
+                              "type": "boolean"
+                            },
+                            "note": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "orderKey": {
+                      "type": "string"
+                    },
+                    "progress": {
+                      "type": "number"
+                    },
+                    "current": {
+                      "anyOf": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "pace": {
+                      "type": "number"
+                    },
+                    "version": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/measurements/{id}": {
+      "delete": {
+        "operationId": "deleteMeasurement",
+        "tags": [
+          "objectives"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "in": "header",
+            "name": "idempotency-key",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/cycles/{horizon}/{date}/close": {
+      "get": {
+        "operationId": "getCycleClose",
+        "tags": [
+          "objectives"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "week"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "month"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "year"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "y5"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "y10"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "y20"
+                  ]
+                }
+              ]
+            },
+            "in": "path",
+            "name": "horizon",
+            "required": true
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "current"
+                  ]
+                }
+              ]
+            },
+            "in": "path",
+            "name": "date",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "horizon",
+                    "startDate",
+                    "endDate",
+                    "today",
+                    "cycle",
+                    "objectives",
+                    "closeRequired",
+                    "unfinished",
+                    "checkpoints"
+                  ],
+                  "properties": {
+                    "horizon": {
+                      "type": "string"
+                    },
+                    "startDate": {
+                      "type": "string"
+                    },
+                    "endDate": {
+                      "type": "string"
+                    },
+                    "today": {
+                      "type": "string"
+                    },
+                    "cycle": {
+                      "type": "object",
+                      "required": [
+                        "id",
+                        "notes",
+                        "closedAt",
+                        "closeSnapshot",
+                        "version"
+                      ],
+                      "properties": {
+                        "id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "notes": {
+                          "type": "string"
+                        },
+                        "closedAt": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "closeSnapshot": {
+                          "anyOf": [
+                            {
+                              "type": "object",
+                              "properties": {},
+                              "additionalProperties": true
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "version": {
+                          "type": "integer"
+                        }
+                      }
+                    },
+                    "objectives": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "cycleId",
+                          "horizon",
+                          "startDate",
+                          "endDate",
+                          "title",
+                          "tier",
+                          "status",
+                          "targetType",
+                          "targetCount",
+                          "targetMinutes",
+                          "unit",
+                          "startValue",
+                          "targetValue",
+                          "isCumulative",
+                          "levelScale",
+                          "targetLevel",
+                          "milestoneEntryId",
+                          "doneAt",
+                          "parentObjectiveId",
+                          "activityIds",
+                          "childIds",
+                          "carriedFromObjectiveId",
+                          "checkpoint",
+                          "orderKey",
+                          "progress",
+                          "current",
+                          "pace",
+                          "version"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "cycleId": {
+                            "type": "string"
+                          },
+                          "horizon": {
+                            "type": "string"
+                          },
+                          "startDate": {
+                            "type": "string"
+                          },
+                          "endDate": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "tier": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "essential"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "secondary"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "parked"
+                                ]
+                              }
+                            ]
+                          },
+                          "status": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "active"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "done"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "carried"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "dropped"
+                                ]
+                              }
+                            ]
+                          },
+                          "targetType": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "count"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "duration"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "value"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "level"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "milestone"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "composite"
+                                ]
+                              }
+                            ]
+                          },
+                          "targetCount": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "targetMinutes": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "unit": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "startValue": {
+                            "anyOf": [
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "targetValue": {
+                            "anyOf": [
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "isCumulative": {
+                            "type": "boolean"
+                          },
+                          "levelScale": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "targetLevel": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "milestoneEntryId": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "doneAt": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "parentObjectiveId": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "activityIds": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "childIds": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "carriedFromObjectiveId": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "checkpoint": {
+                            "anyOf": [
+                              {
+                                "type": "object",
+                                "required": [
+                                  "year",
+                                  "relevant",
+                                  "onTrack",
+                                  "note"
+                                ],
+                                "properties": {
+                                  "year": {
+                                    "type": "integer"
+                                  },
+                                  "relevant": {
+                                    "type": "boolean"
+                                  },
+                                  "onTrack": {
+                                    "type": "boolean"
+                                  },
+                                  "note": {
+                                    "type": "string"
+                                  }
+                                }
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "orderKey": {
+                            "type": "string"
+                          },
+                          "progress": {
+                            "type": "number"
+                          },
+                          "current": {
+                            "anyOf": [
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "pace": {
+                            "type": "number"
+                          },
+                          "version": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    },
+                    "closeRequired": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "required": [
+                            "horizon",
+                            "startDate"
+                          ],
+                          "properties": {
+                            "horizon": {
+                              "type": "string"
+                            },
+                            "startDate": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "unfinished": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "cycleId",
+                          "horizon",
+                          "startDate",
+                          "endDate",
+                          "title",
+                          "tier",
+                          "status",
+                          "targetType",
+                          "targetCount",
+                          "targetMinutes",
+                          "unit",
+                          "startValue",
+                          "targetValue",
+                          "isCumulative",
+                          "levelScale",
+                          "targetLevel",
+                          "milestoneEntryId",
+                          "doneAt",
+                          "parentObjectiveId",
+                          "activityIds",
+                          "childIds",
+                          "carriedFromObjectiveId",
+                          "checkpoint",
+                          "orderKey",
+                          "progress",
+                          "current",
+                          "pace",
+                          "version"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "cycleId": {
+                            "type": "string"
+                          },
+                          "horizon": {
+                            "type": "string"
+                          },
+                          "startDate": {
+                            "type": "string"
+                          },
+                          "endDate": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "tier": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "essential"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "secondary"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "parked"
+                                ]
+                              }
+                            ]
+                          },
+                          "status": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "active"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "done"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "carried"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "dropped"
+                                ]
+                              }
+                            ]
+                          },
+                          "targetType": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "count"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "duration"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "value"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "level"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "milestone"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "composite"
+                                ]
+                              }
+                            ]
+                          },
+                          "targetCount": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "targetMinutes": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "unit": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "startValue": {
+                            "anyOf": [
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "targetValue": {
+                            "anyOf": [
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "isCumulative": {
+                            "type": "boolean"
+                          },
+                          "levelScale": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "targetLevel": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "milestoneEntryId": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "doneAt": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "parentObjectiveId": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "activityIds": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "childIds": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "carriedFromObjectiveId": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "checkpoint": {
+                            "anyOf": [
+                              {
+                                "type": "object",
+                                "required": [
+                                  "year",
+                                  "relevant",
+                                  "onTrack",
+                                  "note"
+                                ],
+                                "properties": {
+                                  "year": {
+                                    "type": "integer"
+                                  },
+                                  "relevant": {
+                                    "type": "boolean"
+                                  },
+                                  "onTrack": {
+                                    "type": "boolean"
+                                  },
+                                  "note": {
+                                    "type": "string"
+                                  }
+                                }
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "orderKey": {
+                            "type": "string"
+                          },
+                          "progress": {
+                            "type": "number"
+                          },
+                          "current": {
+                            "anyOf": [
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "pace": {
+                            "type": "number"
+                          },
+                          "version": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    },
+                    "checkpoints": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "cycleId",
+                          "horizon",
+                          "startDate",
+                          "endDate",
+                          "title",
+                          "tier",
+                          "status",
+                          "targetType",
+                          "targetCount",
+                          "targetMinutes",
+                          "unit",
+                          "startValue",
+                          "targetValue",
+                          "isCumulative",
+                          "levelScale",
+                          "targetLevel",
+                          "milestoneEntryId",
+                          "doneAt",
+                          "parentObjectiveId",
+                          "activityIds",
+                          "childIds",
+                          "carriedFromObjectiveId",
+                          "checkpoint",
+                          "orderKey",
+                          "progress",
+                          "current",
+                          "pace",
+                          "version"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "cycleId": {
+                            "type": "string"
+                          },
+                          "horizon": {
+                            "type": "string"
+                          },
+                          "startDate": {
+                            "type": "string"
+                          },
+                          "endDate": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "tier": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "essential"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "secondary"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "parked"
+                                ]
+                              }
+                            ]
+                          },
+                          "status": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "active"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "done"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "carried"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "dropped"
+                                ]
+                              }
+                            ]
+                          },
+                          "targetType": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "count"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "duration"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "value"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "level"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "milestone"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "composite"
+                                ]
+                              }
+                            ]
+                          },
+                          "targetCount": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "targetMinutes": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "unit": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "startValue": {
+                            "anyOf": [
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "targetValue": {
+                            "anyOf": [
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "isCumulative": {
+                            "type": "boolean"
+                          },
+                          "levelScale": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "targetLevel": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "milestoneEntryId": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "doneAt": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "parentObjectiveId": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "activityIds": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "childIds": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "carriedFromObjectiveId": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "checkpoint": {
+                            "anyOf": [
+                              {
+                                "type": "object",
+                                "required": [
+                                  "year",
+                                  "relevant",
+                                  "onTrack",
+                                  "note"
+                                ],
+                                "properties": {
+                                  "year": {
+                                    "type": "integer"
+                                  },
+                                  "relevant": {
+                                    "type": "boolean"
+                                  },
+                                  "onTrack": {
+                                    "type": "boolean"
+                                  },
+                                  "note": {
+                                    "type": "string"
+                                  }
+                                }
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "orderKey": {
+                            "type": "string"
+                          },
+                          "progress": {
+                            "type": "number"
+                          },
+                          "current": {
+                            "anyOf": [
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "pace": {
+                            "type": "number"
+                          },
+                          "version": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "closeCycle",
+        "tags": [
+          "objectives"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "carries"
+                ],
+                "properties": {
+                  "notes": {
+                    "type": "string",
+                    "maxLength": 10000
+                  },
+                  "carries": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "objectiveId",
+                        "decision"
+                      ],
+                      "properties": {
+                        "objectiveId": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "decision": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "enum": [
+                                "carried"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "dropped"
+                              ]
+                            }
+                          ]
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "maxItems": 200
+                  },
+                  "checkpoints": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "objectiveId",
+                        "relevant",
+                        "onTrack"
+                      ],
+                      "properties": {
+                        "objectiveId": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "relevant": {
+                          "type": "boolean"
+                        },
+                        "onTrack": {
+                          "type": "boolean"
+                        },
+                        "note": {
+                          "type": "string",
+                          "maxLength": 1000
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "maxItems": 100
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "week"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "month"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "year"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "y5"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "y10"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "y20"
+                  ]
+                }
+              ]
+            },
+            "in": "path",
+            "name": "horizon",
+            "required": true
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "current"
+                  ]
+                }
+              ]
+            },
+            "in": "path",
+            "name": "date",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "in": "header",
+            "name": "idempotency-key",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "horizon",
+                    "startDate",
+                    "endDate",
+                    "today",
+                    "cycle",
+                    "objectives",
+                    "closeRequired"
+                  ],
+                  "properties": {
+                    "horizon": {
+                      "type": "string"
+                    },
+                    "startDate": {
+                      "type": "string"
+                    },
+                    "endDate": {
+                      "type": "string"
+                    },
+                    "today": {
+                      "type": "string"
+                    },
+                    "cycle": {
+                      "type": "object",
+                      "required": [
+                        "id",
+                        "notes",
+                        "closedAt",
+                        "closeSnapshot",
+                        "version"
+                      ],
+                      "properties": {
+                        "id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "notes": {
+                          "type": "string"
+                        },
+                        "closedAt": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "closeSnapshot": {
+                          "anyOf": [
+                            {
+                              "type": "object",
+                              "properties": {},
+                              "additionalProperties": true
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "version": {
+                          "type": "integer"
+                        }
+                      }
+                    },
+                    "objectives": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "cycleId",
+                          "horizon",
+                          "startDate",
+                          "endDate",
+                          "title",
+                          "tier",
+                          "status",
+                          "targetType",
+                          "targetCount",
+                          "targetMinutes",
+                          "unit",
+                          "startValue",
+                          "targetValue",
+                          "isCumulative",
+                          "levelScale",
+                          "targetLevel",
+                          "milestoneEntryId",
+                          "doneAt",
+                          "parentObjectiveId",
+                          "activityIds",
+                          "childIds",
+                          "carriedFromObjectiveId",
+                          "checkpoint",
+                          "orderKey",
+                          "progress",
+                          "current",
+                          "pace",
+                          "version"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "cycleId": {
+                            "type": "string"
+                          },
+                          "horizon": {
+                            "type": "string"
+                          },
+                          "startDate": {
+                            "type": "string"
+                          },
+                          "endDate": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "tier": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "essential"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "secondary"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "parked"
+                                ]
+                              }
+                            ]
+                          },
+                          "status": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "active"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "done"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "carried"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "dropped"
+                                ]
+                              }
+                            ]
+                          },
+                          "targetType": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "count"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "duration"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "value"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "level"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "milestone"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "composite"
+                                ]
+                              }
+                            ]
+                          },
+                          "targetCount": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "targetMinutes": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "unit": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "startValue": {
+                            "anyOf": [
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "targetValue": {
+                            "anyOf": [
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "isCumulative": {
+                            "type": "boolean"
+                          },
+                          "levelScale": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "targetLevel": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "milestoneEntryId": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "doneAt": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "parentObjectiveId": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "activityIds": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "childIds": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "carriedFromObjectiveId": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "checkpoint": {
+                            "anyOf": [
+                              {
+                                "type": "object",
+                                "required": [
+                                  "year",
+                                  "relevant",
+                                  "onTrack",
+                                  "note"
+                                ],
+                                "properties": {
+                                  "year": {
+                                    "type": "integer"
+                                  },
+                                  "relevant": {
+                                    "type": "boolean"
+                                  },
+                                  "onTrack": {
+                                    "type": "boolean"
+                                  },
+                                  "note": {
+                                    "type": "string"
+                                  }
+                                }
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "orderKey": {
+                            "type": "string"
+                          },
+                          "progress": {
+                            "type": "number"
+                          },
+                          "current": {
+                            "anyOf": [
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "pace": {
+                            "type": "number"
+                          },
+                          "version": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    },
+                    "closeRequired": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "required": [
+                            "horizon",
+                            "startDate"
+                          ],
+                          "properties": {
+                            "horizon": {
+                              "type": "string"
+                            },
+                            "startDate": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/objective-templates": {
+      "get": {
+        "operationId": "listObjectiveTemplates",
+        "tags": [
+          "templates"
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "title",
+                      "tier",
+                      "targetType",
+                      "targetCount",
+                      "targetMinutes",
+                      "activityIds",
+                      "orderKey",
+                      "archivedAt",
+                      "version"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "tier": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "enum": [
+                              "essential"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "secondary"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "parked"
+                            ]
+                          }
+                        ]
+                      },
+                      "targetType": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "enum": [
+                              "count"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "duration"
+                            ]
+                          }
+                        ]
+                      },
+                      "targetCount": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "targetMinutes": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "activityIds": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "orderKey": {
+                        "type": "string"
+                      },
+                      "archivedAt": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "version": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createObjectiveTemplate",
+        "tags": [
+          "templates"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "title",
+                  "targetType"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "title": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "targetType": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "count"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "duration"
+                        ]
+                      }
+                    ]
+                  },
+                  "tier": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "essential"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "secondary"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "parked"
+                        ]
+                      }
+                    ]
+                  },
+                  "targetCount": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 10000
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "targetMinutes": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 1000000
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "activityIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "maxItems": 50
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "in": "header",
+            "name": "idempotency-key",
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "title",
+                    "tier",
+                    "targetType",
+                    "targetCount",
+                    "targetMinutes",
+                    "activityIds",
+                    "orderKey",
+                    "archivedAt",
+                    "version"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "tier": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "essential"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "secondary"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "parked"
+                          ]
+                        }
+                      ]
+                    },
+                    "targetType": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "count"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "duration"
+                          ]
+                        }
+                      ]
+                    },
+                    "targetCount": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "targetMinutes": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "activityIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "orderKey": {
+                      "type": "string"
+                    },
+                    "archivedAt": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "version": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/objective-templates/{id}": {
+      "patch": {
+        "operationId": "updateObjectiveTemplate",
+        "tags": [
+          "templates"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200
+                  },
+                  "tier": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "essential"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "secondary"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "parked"
+                        ]
+                      }
+                    ]
+                  },
+                  "targetType": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "count"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "duration"
+                        ]
+                      }
+                    ]
+                  },
+                  "targetCount": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 10000
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "targetMinutes": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 1000000
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "activityIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "maxItems": 50
+                  },
+                  "archived": {
+                    "type": "boolean"
+                  }
+                },
+                "additionalProperties": false,
+                "minProperties": 1
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "in": "header",
+            "name": "idempotency-key",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "title",
+                    "tier",
+                    "targetType",
+                    "targetCount",
+                    "targetMinutes",
+                    "activityIds",
+                    "orderKey",
+                    "archivedAt",
+                    "version"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "tier": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "essential"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "secondary"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "parked"
+                          ]
+                        }
+                      ]
+                    },
+                    "targetType": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "count"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "duration"
+                          ]
+                        }
+                      ]
+                    },
+                    "targetCount": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "targetMinutes": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "activityIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "orderKey": {
+                      "type": "string"
+                    },
+                    "archivedAt": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "version": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteObjectiveTemplate",
+        "tags": [
+          "templates"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "in": "header",
+            "name": "idempotency-key",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/weeks/{date}/template-proposals": {
+      "get": {
+        "operationId": "getTemplateProposals",
+        "tags": [
+          "templates"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+            },
+            "in": "path",
+            "name": "date",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "startDate",
+                    "templates"
+                  ],
+                  "properties": {
+                    "startDate": {
+                      "type": "string"
+                    },
+                    "templates": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "title",
+                          "tier",
+                          "targetType",
+                          "targetCount",
+                          "targetMinutes",
+                          "activityIds",
+                          "orderKey",
+                          "archivedAt",
+                          "version"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "tier": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "essential"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "secondary"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "parked"
+                                ]
+                              }
+                            ]
+                          },
+                          "targetType": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "count"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "duration"
+                                ]
+                              }
+                            ]
+                          },
+                          "targetCount": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "targetMinutes": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "activityIds": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "orderKey": {
+                            "type": "string"
+                          },
+                          "archivedAt": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "version": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/weeks/{date}/apply-templates": {
+      "post": {
+        "operationId": "applyTemplates",
+        "tags": [
+          "templates"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "accept",
+                  "skip"
+                ],
+                "properties": {
+                  "accept": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "templateId",
+                        "objectiveId"
+                      ],
+                      "properties": {
+                        "templateId": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "objectiveId": {
+                          "type": "string",
+                          "format": "uuid"
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "maxItems": 100
+                  },
+                  "skip": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "maxItems": 100
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+            },
+            "in": "path",
+            "name": "date",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "in": "header",
+            "name": "idempotency-key",
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "cycleId",
+                      "horizon",
+                      "startDate",
+                      "endDate",
+                      "title",
+                      "tier",
+                      "status",
+                      "targetType",
+                      "targetCount",
+                      "targetMinutes",
+                      "unit",
+                      "startValue",
+                      "targetValue",
+                      "isCumulative",
+                      "levelScale",
+                      "targetLevel",
+                      "milestoneEntryId",
+                      "doneAt",
+                      "parentObjectiveId",
+                      "activityIds",
+                      "childIds",
+                      "carriedFromObjectiveId",
+                      "checkpoint",
+                      "orderKey",
+                      "progress",
+                      "current",
+                      "pace",
+                      "version"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "cycleId": {
+                        "type": "string"
+                      },
+                      "horizon": {
+                        "type": "string"
+                      },
+                      "startDate": {
+                        "type": "string"
+                      },
+                      "endDate": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "tier": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "enum": [
+                              "essential"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "secondary"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "parked"
+                            ]
+                          }
+                        ]
+                      },
+                      "status": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "enum": [
+                              "active"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "done"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "carried"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "dropped"
+                            ]
+                          }
+                        ]
+                      },
+                      "targetType": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "enum": [
+                              "count"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "duration"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "value"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "level"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "milestone"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "composite"
+                            ]
+                          }
+                        ]
+                      },
+                      "targetCount": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "targetMinutes": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "unit": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "startValue": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "targetValue": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "isCumulative": {
+                        "type": "boolean"
+                      },
+                      "levelScale": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "targetLevel": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "milestoneEntryId": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "doneAt": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "parentObjectiveId": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "activityIds": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "childIds": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "carriedFromObjectiveId": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "checkpoint": {
+                        "anyOf": [
+                          {
+                            "type": "object",
+                            "required": [
+                              "year",
+                              "relevant",
+                              "onTrack",
+                              "note"
+                            ],
+                            "properties": {
+                              "year": {
+                                "type": "integer"
+                              },
+                              "relevant": {
+                                "type": "boolean"
+                              },
+                              "onTrack": {
+                                "type": "boolean"
+                              },
+                              "note": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "orderKey": {
+                        "type": "string"
+                      },
+                      "progress": {
+                        "type": "number"
+                      },
+                      "current": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "pace": {
+                        "type": "number"
+                      },
+                      "version": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "servers": [

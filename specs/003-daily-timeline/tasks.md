@@ -28,6 +28,9 @@ tables before code; every new route joins the cross-tenant registry.
 
 - Screens use static routes with query parameters (`/day?date=`, later `/cycles?h=&start=`) instead of dynamic segments, so one cached shell serves every date offline.
 - Tags exist in the API (FR-026) but have no screen yet; adding them to the activity sheet is pending.
+- Manual entry → objective links (FR-034) exist in the API; the entry sheet does not offer them yet. Contributions come from the objective's activities.
+- FR-035's second rule (a direct link to a higher horizon only when no lower objective has that parent) is not enforced yet.
+- Template proposals and application use `/v1/weeks/{date}/…` instead of `/v1/cycles/week/{date}/…` (contracts/api.md).
 
 ## Phase 1: Setup
 
@@ -68,16 +71,16 @@ tables before code; every new route joins the cross-tenant registry.
 - [x] T023 [US5] Close, carry, gate, and copy routes in `backend/src/modules/days/close.ts`
 - [x] T024 [US5] Web close page `web/src/app/(signed-in)/day/[date]/close/` (unresolved, scores with why, carries edit/confirm/dismiss, check-in, notes); gate message on the add field; "Log done" toggle; copy-from-day dialog
 - [x] T025 [US5] E2E `web/e2e/day-close.spec.ts` (US4 and US5 independent tests)
-- [ ] T026 Slice 2 release (as T020)
+- [x] T026 Slice 2 release (as T020)
 
 ## Phase 6: US6 + US7 Objectives and cycle closes (P2)
 
-- [ ] T027 [US6] Integration tests for cycles and objectives (create per type, parent validation, progress through the chain, measurements, foreign 404) in `backend/test/integration/objectives.test.ts`; registry entries
-- [ ] T028 [US6] Cycle, objective, and measurement routes in `backend/src/modules/objectives/`; `contributesTo` and `weekEssentials` in the day bundle
-- [ ] T029 [US7] Integration tests and routes for cycle close (carry/drop, notes, year checkpoints, close-before-plan 409) and templates (CRUD, proposals, apply) in `backend/test/integration/cycle-close.test.ts`, `backend/src/modules/templates/`
-- [ ] T030 [US6] Web cycles screen `web/src/app/(signed-in)/cycles/[horizon]/[start]/` (tabs, tiers, progress and pace, objective sheet with "more types", measurement quick input also from the day view)
-- [ ] T031 [US7] Web cycle close and template proposals; templates editor in settings
-- [ ] T032 [US7] E2E `web/e2e/objectives.spec.ts` (US6 and US7 independent tests)
+- [x] T027 [US6] Integration tests for cycles and objectives (create per type, parent validation, progress through the chain, measurements, foreign 404) in `backend/test/integration/objectives.test.ts`; registry entries
+- [x] T028 [US6] Cycle, objective, and measurement routes in `backend/src/modules/objectives/`; `contributesTo` and `weekEssentials` in the day bundle
+- [x] T029 [US7] Integration tests and routes for cycle close (carry/drop, notes, year checkpoints, close-before-plan 409) and templates (CRUD, proposals, apply) in `backend/test/integration/cycle-close.test.ts`, `backend/src/modules/templates/`
+- [x] T030 [US6] Web cycles screen `web/src/app/(signed-in)/cycles/[horizon]/[start]/` (tabs, tiers, progress and pace, objective sheet with "more types", measurement quick input also from the day view)
+- [x] T031 [US7] Web cycle close and template proposals; templates editor in settings
+- [x] T032 [US7] E2E `web/e2e/objectives.spec.ts` (US6 and US7 independent tests)
 - [ ] T033 Slice 3 release (as T020)
 
 ## Phase 7: US8 Capture and finish (P3)
