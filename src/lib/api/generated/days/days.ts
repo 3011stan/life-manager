@@ -24,11 +24,14 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  CloseDay200,
+  CloseDayBody,
   CopyEntries201Item,
   CopyEntriesBody,
   CreateEntry201,
   CreateEntryBody,
   GetDay200,
+  GetDayClose200,
   UpdateDay200,
   UpdateDayBody,
   UpdateEntry200,
@@ -617,4 +620,204 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
         TContext
       > => {
       return useMutation(getCopyEntriesMutationOptions(options), queryClient);
+    }
+    export type getDayCloseResponse200 = {
+  data: GetDayClose200
+  status: 200
+}
+
+export type getDayCloseResponseSuccess = (getDayCloseResponse200) & {
+  headers: Headers;
+};
+;
+
+export type getDayCloseResponse = (getDayCloseResponseSuccess)
+
+export const getGetDayCloseUrl = (date: string,) => {
+
+
+
+
+  return `/v1/days/${date}/close`
+}
+
+export const getDayClose = async (date: string, options?: Parameters<typeof apiFetch>[1]): Promise<getDayCloseResponse> => {
+
+  return apiFetch<getDayCloseResponse>(getGetDayCloseUrl(date),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetDayCloseQueryKey = (date: string,) => {
+    return [
+    `/v1/days/${date}/close`
+    ] as const;
+    }
+
+
+export const getGetDayCloseQueryOptions = <TData = Awaited<ReturnType<typeof getDayClose>>, TError = unknown>(date: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDayClose>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetDayCloseQueryKey(date);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDayClose>>> = ({ signal }) => getDayClose(date, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: date !== null && date !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDayClose>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetDayCloseQueryResult = NonNullable<Awaited<ReturnType<typeof getDayClose>>>
+export type GetDayCloseQueryError = unknown
+
+
+export function useGetDayClose<TData = Awaited<ReturnType<typeof getDayClose>>, TError = unknown>(
+ date: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDayClose>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDayClose>>,
+          TError,
+          Awaited<ReturnType<typeof getDayClose>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDayClose<TData = Awaited<ReturnType<typeof getDayClose>>, TError = unknown>(
+ date: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDayClose>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getDayClose>>,
+          TError,
+          Awaited<ReturnType<typeof getDayClose>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetDayClose<TData = Awaited<ReturnType<typeof getDayClose>>, TError = unknown>(
+ date: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDayClose>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetDayClose<TData = Awaited<ReturnType<typeof getDayClose>>, TError = unknown>(
+ date: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getDayClose>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetDayCloseQueryOptions(date,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export type closeDayResponse200 = {
+  data: CloseDay200
+  status: 200
+}
+
+export type closeDayResponseSuccess = (closeDayResponse200) & {
+  headers: Headers;
+};
+;
+
+export type closeDayResponse = (closeDayResponseSuccess)
+
+export const getCloseDayUrl = (date: string,) => {
+
+
+
+
+  return `/v1/days/${date}/close`
+}
+
+export const closeDay = async (date: string,
+    closeDayBody: CloseDayBody, options?: Parameters<typeof apiFetch>[1]): Promise<closeDayResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<closeDayResponse>(getCloseDayUrl(date),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(closeDayBody)
+  }
+);}
+
+
+
+
+
+export const getCloseDayMutationKey = () => ['closeDay'] as const;
+
+export const getCloseDayMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof closeDay>>, TError,CloseDayMutationVariables, TContext>, request?: SecondParameter<typeof apiFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof closeDay>>, TError,CloseDayMutationVariables, TContext> => {
+
+const mutationKey = getCloseDayMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof closeDay>>, CloseDayMutationVariables> = (props) => {
+          const {date,data} = props ?? {};
+
+          return  closeDay(date,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CloseDayMutationResult = NonNullable<Awaited<ReturnType<typeof closeDay>>>
+    export type CloseDayMutationBody = CloseDayBody
+    export type CloseDayMutationError = unknown
+    export type CloseDayMutationVariables = {date: string;data: CloseDayBody}
+
+    export const useCloseDay = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof closeDay>>, TError,CloseDayMutationVariables, TContext>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof closeDay>>,
+        TError,
+        CloseDayMutationVariables,
+        TContext
+      > => {
+      return useMutation(getCloseDayMutationOptions(options), queryClient);
     }

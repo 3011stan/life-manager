@@ -997,3 +997,288 @@ export type CopyEntries201Item = {
   version: number;
 };
 
+export const GetDayClose200UnresolvedItemStatus = {  planned: 'planned',
+  completed: 'completed',
+  skipped: 'skipped',
+  cancelled: 'cancelled',
+} as const
+export const GetDayClose200UnresolvedItemTimeValue = {  useful: 'useful',
+  support: 'support',
+} as const
+export const GetDayClose200UnresolvedItemSegmentsItemTimeValue = {  useful: 'useful',
+  support: 'support',
+} as const
+export type GetDayClose200UnresolvedItemSegmentsItem = {
+  id: string;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  title: string;
+  /**
+     * @minimum 1
+     * @maximum 1440
+     */
+  minutes: number;
+  timeValue: typeof GetDayClose200UnresolvedItemSegmentsItemTimeValue[keyof typeof GetDayClose200UnresolvedItemSegmentsItemTimeValue];
+};
+
+export type GetDayClose200UnresolvedItem = {
+  id: string;
+  date: string;
+  title: string;
+  activityId: string | null;
+  orderKey: string;
+  startTime: string | null;
+  plannedMinutes: number;
+  actualMinutes: number | null;
+  status: typeof GetDayClose200UnresolvedItemStatus[keyof typeof GetDayClose200UnresolvedItemStatus];
+  isUnplanned: boolean;
+  isTimeBlock: boolean;
+  timeValue: typeof GetDayClose200UnresolvedItemTimeValue[keyof typeof GetDayClose200UnresolvedItemTimeValue];
+  deepWork: boolean;
+  /** @maxItems 20 */
+  segments: GetDayClose200UnresolvedItemSegmentsItem[];
+  notes: string;
+  objectiveIds: string[];
+  contributesTo: string[];
+  carriedFromEntryId: string | null;
+  version: number;
+};
+
+export type GetDayClose200Scores = {
+  execution: number | null;
+  alignment: number | null;
+};
+
+export type GetDayClose200ExplanationExecutionItem = {
+  entryId: string;
+  minutes: number;
+  credited: number;
+};
+
+export type GetDayClose200ExplanationAlignmentItem = {
+  entryId: string;
+  minutes: number;
+  credited: number;
+};
+
+export type GetDayClose200Explanation = {
+  execution: GetDayClose200ExplanationExecutionItem[];
+  alignment: GetDayClose200ExplanationAlignmentItem[];
+};
+
+export type GetDayClose200Totals = {
+  capacity: number;
+  planned: number;
+  remaining: number;
+  useful: number;
+  support: number;
+  deepWorkActual: number;
+};
+
+export const GetDayClose200CarryCandidatesItemEntryStatus = {  planned: 'planned',
+  completed: 'completed',
+  skipped: 'skipped',
+  cancelled: 'cancelled',
+} as const
+export const GetDayClose200CarryCandidatesItemEntryTimeValue = {  useful: 'useful',
+  support: 'support',
+} as const
+export const GetDayClose200CarryCandidatesItemEntrySegmentsItemTimeValue = {  useful: 'useful',
+  support: 'support',
+} as const
+export type GetDayClose200CarryCandidatesItemEntrySegmentsItem = {
+  id: string;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  title: string;
+  /**
+     * @minimum 1
+     * @maximum 1440
+     */
+  minutes: number;
+  timeValue: typeof GetDayClose200CarryCandidatesItemEntrySegmentsItemTimeValue[keyof typeof GetDayClose200CarryCandidatesItemEntrySegmentsItemTimeValue];
+};
+
+export type GetDayClose200CarryCandidatesItemEntry = {
+  id: string;
+  date: string;
+  title: string;
+  activityId: string | null;
+  orderKey: string;
+  startTime: string | null;
+  plannedMinutes: number;
+  actualMinutes: number | null;
+  status: typeof GetDayClose200CarryCandidatesItemEntryStatus[keyof typeof GetDayClose200CarryCandidatesItemEntryStatus];
+  isUnplanned: boolean;
+  isTimeBlock: boolean;
+  timeValue: typeof GetDayClose200CarryCandidatesItemEntryTimeValue[keyof typeof GetDayClose200CarryCandidatesItemEntryTimeValue];
+  deepWork: boolean;
+  /** @maxItems 20 */
+  segments: GetDayClose200CarryCandidatesItemEntrySegmentsItem[];
+  notes: string;
+  objectiveIds: string[];
+  contributesTo: string[];
+  carriedFromEntryId: string | null;
+  version: number;
+};
+
+export type GetDayClose200CarryCandidatesItem = {
+  entry: GetDayClose200CarryCandidatesItemEntry;
+  suggestedTitle: string;
+  suggestedMinutes: number;
+  decision: 'confirmed' | 'dismissed' | null;
+};
+
+export type GetDayClose200 = {
+  date: string;
+  closedAt: string | null;
+  unresolved: GetDayClose200UnresolvedItem[];
+  scores: GetDayClose200Scores;
+  explanation: GetDayClose200Explanation;
+  totals: GetDayClose200Totals;
+  carryCandidates: GetDayClose200CarryCandidatesItem[];
+};
+
+export type CloseDayBodyCheckIn = {
+  physicalEnergy: number | null;
+  mentalEnergy: number | null;
+  emotionalEnergy: number | null;
+  satisfaction: number | null;
+} | null;
+
+export const CloseDayBodyCarriesItemDecision = {  confirmed: 'confirmed',
+  dismissed: 'dismissed',
+} as const
+export type CloseDayBodyCarriesItem = {
+  entryId: string;
+  decision: typeof CloseDayBodyCarriesItemDecision[keyof typeof CloseDayBodyCarriesItemDecision];
+  /**
+     * @minLength 1
+     * @maxLength 200
+     */
+  title?: string;
+  /**
+     * @minimum 1
+     * @maximum 1440
+     */
+  plannedMinutes?: number;
+};
+
+export type CloseDayBody = {
+  /** @maxLength 10000 */
+  notes?: string;
+  checkIn?: CloseDayBodyCheckIn;
+  /** @maxItems 100 */
+  carries: CloseDayBodyCarriesItem[];
+};
+
+export type CloseDay200CycleCheckIn = {
+  physicalEnergy: number | null;
+  mentalEnergy: number | null;
+  emotionalEnergy: number | null;
+  satisfaction: number | null;
+} | null;
+
+export type CloseDay200CycleCloseSnapshot = { [key: string]: unknown } | null;
+
+export type CloseDay200Cycle = {
+  id: string | null;
+  capacityMinutes: number;
+  captureText: string;
+  checkIn: CloseDay200CycleCheckIn;
+  notes: string;
+  closedAt: string | null;
+  closeSnapshot: CloseDay200CycleCloseSnapshot;
+  version: number;
+};
+
+export const CloseDay200EntriesItemStatus = {  planned: 'planned',
+  completed: 'completed',
+  skipped: 'skipped',
+  cancelled: 'cancelled',
+} as const
+export const CloseDay200EntriesItemTimeValue = {  useful: 'useful',
+  support: 'support',
+} as const
+export const CloseDay200EntriesItemSegmentsItemTimeValue = {  useful: 'useful',
+  support: 'support',
+} as const
+export type CloseDay200EntriesItemSegmentsItem = {
+  id: string;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  title: string;
+  /**
+     * @minimum 1
+     * @maximum 1440
+     */
+  minutes: number;
+  timeValue: typeof CloseDay200EntriesItemSegmentsItemTimeValue[keyof typeof CloseDay200EntriesItemSegmentsItemTimeValue];
+};
+
+export type CloseDay200EntriesItem = {
+  id: string;
+  date: string;
+  title: string;
+  activityId: string | null;
+  orderKey: string;
+  startTime: string | null;
+  plannedMinutes: number;
+  actualMinutes: number | null;
+  status: typeof CloseDay200EntriesItemStatus[keyof typeof CloseDay200EntriesItemStatus];
+  isUnplanned: boolean;
+  isTimeBlock: boolean;
+  timeValue: typeof CloseDay200EntriesItemTimeValue[keyof typeof CloseDay200EntriesItemTimeValue];
+  deepWork: boolean;
+  /** @maxItems 20 */
+  segments: CloseDay200EntriesItemSegmentsItem[];
+  notes: string;
+  objectiveIds: string[];
+  contributesTo: string[];
+  carriedFromEntryId: string | null;
+  version: number;
+};
+
+export type CloseDay200Totals = {
+  capacity: number;
+  planned: number;
+  remaining: number;
+  useful: number;
+  support: number;
+  deepWorkActual: number;
+};
+
+export type CloseDay200Scores = {
+  execution: number | null;
+  alignment: number | null;
+};
+
+export type CloseDay200CloseRequired = {
+  horizon: string;
+  startDate: string;
+} | null;
+
+export type CloseDay200WeekEssentialsItem = {
+  id: string;
+  title: string;
+  progress: number;
+};
+
+export type CloseDay200 = {
+  date: string;
+  today: string;
+  timeZone: string;
+  cycle: CloseDay200Cycle;
+  entries: CloseDay200EntriesItem[];
+  totals: CloseDay200Totals;
+  scores: CloseDay200Scores;
+  closeRequired: CloseDay200CloseRequired;
+  weekEssentials: CloseDay200WeekEssentialsItem[];
+};
+

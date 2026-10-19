@@ -4190,6 +4190,1238 @@
           }
         }
       }
+    },
+    "/v1/days/{date}/close": {
+      "get": {
+        "operationId": "getDayClose",
+        "tags": [
+          "days"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+            },
+            "in": "path",
+            "name": "date",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "date",
+                    "closedAt",
+                    "unresolved",
+                    "scores",
+                    "explanation",
+                    "totals",
+                    "carryCandidates"
+                  ],
+                  "properties": {
+                    "date": {
+                      "type": "string"
+                    },
+                    "closedAt": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "unresolved": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "date",
+                          "title",
+                          "activityId",
+                          "orderKey",
+                          "startTime",
+                          "plannedMinutes",
+                          "actualMinutes",
+                          "status",
+                          "isUnplanned",
+                          "isTimeBlock",
+                          "timeValue",
+                          "deepWork",
+                          "segments",
+                          "notes",
+                          "objectiveIds",
+                          "contributesTo",
+                          "carriedFromEntryId",
+                          "version"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "date": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "activityId": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "orderKey": {
+                            "type": "string"
+                          },
+                          "startTime": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "plannedMinutes": {
+                            "type": "integer"
+                          },
+                          "actualMinutes": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "status": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "planned"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "completed"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "skipped"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "cancelled"
+                                ]
+                              }
+                            ]
+                          },
+                          "isUnplanned": {
+                            "type": "boolean"
+                          },
+                          "isTimeBlock": {
+                            "type": "boolean"
+                          },
+                          "timeValue": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "useful"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "support"
+                                ]
+                              }
+                            ]
+                          },
+                          "deepWork": {
+                            "type": "boolean"
+                          },
+                          "segments": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "required": [
+                                "id",
+                                "title",
+                                "minutes",
+                                "timeValue"
+                              ],
+                              "properties": {
+                                "id": {
+                                  "type": "string",
+                                  "format": "uuid"
+                                },
+                                "title": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 120
+                                },
+                                "minutes": {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 1440
+                                },
+                                "timeValue": {
+                                  "anyOf": [
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "useful"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "support"
+                                      ]
+                                    }
+                                  ]
+                                }
+                              },
+                              "additionalProperties": false
+                            },
+                            "maxItems": 20
+                          },
+                          "notes": {
+                            "type": "string"
+                          },
+                          "objectiveIds": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "contributesTo": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "carriedFromEntryId": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "version": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    },
+                    "scores": {
+                      "type": "object",
+                      "required": [
+                        "execution",
+                        "alignment"
+                      ],
+                      "properties": {
+                        "execution": {
+                          "anyOf": [
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "alignment": {
+                          "anyOf": [
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "explanation": {
+                      "type": "object",
+                      "required": [
+                        "execution",
+                        "alignment"
+                      ],
+                      "properties": {
+                        "execution": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "required": [
+                              "entryId",
+                              "minutes",
+                              "credited"
+                            ],
+                            "properties": {
+                              "entryId": {
+                                "type": "string"
+                              },
+                              "minutes": {
+                                "type": "integer"
+                              },
+                              "credited": {
+                                "type": "integer"
+                              }
+                            }
+                          }
+                        },
+                        "alignment": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "required": [
+                              "entryId",
+                              "minutes",
+                              "credited"
+                            ],
+                            "properties": {
+                              "entryId": {
+                                "type": "string"
+                              },
+                              "minutes": {
+                                "type": "integer"
+                              },
+                              "credited": {
+                                "type": "integer"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "totals": {
+                      "type": "object",
+                      "required": [
+                        "capacity",
+                        "planned",
+                        "remaining",
+                        "useful",
+                        "support",
+                        "deepWorkActual"
+                      ],
+                      "properties": {
+                        "capacity": {
+                          "type": "integer"
+                        },
+                        "planned": {
+                          "type": "integer"
+                        },
+                        "remaining": {
+                          "type": "integer"
+                        },
+                        "useful": {
+                          "type": "integer"
+                        },
+                        "support": {
+                          "type": "integer"
+                        },
+                        "deepWorkActual": {
+                          "type": "integer"
+                        }
+                      }
+                    },
+                    "carryCandidates": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "entry",
+                          "suggestedTitle",
+                          "suggestedMinutes",
+                          "decision"
+                        ],
+                        "properties": {
+                          "entry": {
+                            "type": "object",
+                            "required": [
+                              "id",
+                              "date",
+                              "title",
+                              "activityId",
+                              "orderKey",
+                              "startTime",
+                              "plannedMinutes",
+                              "actualMinutes",
+                              "status",
+                              "isUnplanned",
+                              "isTimeBlock",
+                              "timeValue",
+                              "deepWork",
+                              "segments",
+                              "notes",
+                              "objectiveIds",
+                              "contributesTo",
+                              "carriedFromEntryId",
+                              "version"
+                            ],
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "date": {
+                                "type": "string"
+                              },
+                              "title": {
+                                "type": "string"
+                              },
+                              "activityId": {
+                                "anyOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ]
+                              },
+                              "orderKey": {
+                                "type": "string"
+                              },
+                              "startTime": {
+                                "anyOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ]
+                              },
+                              "plannedMinutes": {
+                                "type": "integer"
+                              },
+                              "actualMinutes": {
+                                "anyOf": [
+                                  {
+                                    "type": "integer"
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ]
+                              },
+                              "status": {
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "planned"
+                                    ]
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "completed"
+                                    ]
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "skipped"
+                                    ]
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "cancelled"
+                                    ]
+                                  }
+                                ]
+                              },
+                              "isUnplanned": {
+                                "type": "boolean"
+                              },
+                              "isTimeBlock": {
+                                "type": "boolean"
+                              },
+                              "timeValue": {
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "useful"
+                                    ]
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "support"
+                                    ]
+                                  }
+                                ]
+                              },
+                              "deepWork": {
+                                "type": "boolean"
+                              },
+                              "segments": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "required": [
+                                    "id",
+                                    "title",
+                                    "minutes",
+                                    "timeValue"
+                                  ],
+                                  "properties": {
+                                    "id": {
+                                      "type": "string",
+                                      "format": "uuid"
+                                    },
+                                    "title": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "maxLength": 120
+                                    },
+                                    "minutes": {
+                                      "type": "integer",
+                                      "minimum": 1,
+                                      "maximum": 1440
+                                    },
+                                    "timeValue": {
+                                      "anyOf": [
+                                        {
+                                          "type": "string",
+                                          "enum": [
+                                            "useful"
+                                          ]
+                                        },
+                                        {
+                                          "type": "string",
+                                          "enum": [
+                                            "support"
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "additionalProperties": false
+                                },
+                                "maxItems": 20
+                              },
+                              "notes": {
+                                "type": "string"
+                              },
+                              "objectiveIds": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "contributesTo": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "carriedFromEntryId": {
+                                "anyOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ]
+                              },
+                              "version": {
+                                "type": "integer"
+                              }
+                            }
+                          },
+                          "suggestedTitle": {
+                            "type": "string"
+                          },
+                          "suggestedMinutes": {
+                            "type": "integer"
+                          },
+                          "decision": {
+                            "anyOf": [
+                              {
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "confirmed"
+                                    ]
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "dismissed"
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "closeDay",
+        "tags": [
+          "days"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "carries"
+                ],
+                "properties": {
+                  "notes": {
+                    "type": "string",
+                    "maxLength": 10000
+                  },
+                  "checkIn": {
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "required": [
+                          "physicalEnergy",
+                          "mentalEnergy",
+                          "emotionalEnergy",
+                          "satisfaction"
+                        ],
+                        "properties": {
+                          "physicalEnergy": {
+                            "anyOf": [
+                              {
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": 5
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "mentalEnergy": {
+                            "anyOf": [
+                              {
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": 5
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "emotionalEnergy": {
+                            "anyOf": [
+                              {
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": 5
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "satisfaction": {
+                            "anyOf": [
+                              {
+                                "type": "integer",
+                                "minimum": 1,
+                                "maximum": 5
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "carries": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "entryId",
+                        "decision"
+                      ],
+                      "properties": {
+                        "entryId": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "decision": {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "enum": [
+                                "confirmed"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "dismissed"
+                              ]
+                            }
+                          ]
+                        },
+                        "title": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        },
+                        "plannedMinutes": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 1440
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "maxItems": 100
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+            },
+            "in": "path",
+            "name": "date",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "in": "header",
+            "name": "idempotency-key",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "date",
+                    "today",
+                    "timeZone",
+                    "cycle",
+                    "entries",
+                    "totals",
+                    "scores",
+                    "closeRequired",
+                    "weekEssentials"
+                  ],
+                  "properties": {
+                    "date": {
+                      "type": "string"
+                    },
+                    "today": {
+                      "type": "string"
+                    },
+                    "timeZone": {
+                      "type": "string"
+                    },
+                    "cycle": {
+                      "type": "object",
+                      "required": [
+                        "id",
+                        "capacityMinutes",
+                        "captureText",
+                        "checkIn",
+                        "notes",
+                        "closedAt",
+                        "closeSnapshot",
+                        "version"
+                      ],
+                      "properties": {
+                        "id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "capacityMinutes": {
+                          "type": "integer"
+                        },
+                        "captureText": {
+                          "type": "string"
+                        },
+                        "checkIn": {
+                          "anyOf": [
+                            {
+                              "type": "object",
+                              "required": [
+                                "physicalEnergy",
+                                "mentalEnergy",
+                                "emotionalEnergy",
+                                "satisfaction"
+                              ],
+                              "properties": {
+                                "physicalEnergy": {
+                                  "anyOf": [
+                                    {
+                                      "type": "integer",
+                                      "minimum": 1,
+                                      "maximum": 5
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ]
+                                },
+                                "mentalEnergy": {
+                                  "anyOf": [
+                                    {
+                                      "type": "integer",
+                                      "minimum": 1,
+                                      "maximum": 5
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ]
+                                },
+                                "emotionalEnergy": {
+                                  "anyOf": [
+                                    {
+                                      "type": "integer",
+                                      "minimum": 1,
+                                      "maximum": 5
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ]
+                                },
+                                "satisfaction": {
+                                  "anyOf": [
+                                    {
+                                      "type": "integer",
+                                      "minimum": 1,
+                                      "maximum": 5
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ]
+                                }
+                              },
+                              "additionalProperties": false
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "notes": {
+                          "type": "string"
+                        },
+                        "closedAt": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "closeSnapshot": {
+                          "anyOf": [
+                            {
+                              "type": "object",
+                              "properties": {},
+                              "additionalProperties": true
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "version": {
+                          "type": "integer"
+                        }
+                      }
+                    },
+                    "entries": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "date",
+                          "title",
+                          "activityId",
+                          "orderKey",
+                          "startTime",
+                          "plannedMinutes",
+                          "actualMinutes",
+                          "status",
+                          "isUnplanned",
+                          "isTimeBlock",
+                          "timeValue",
+                          "deepWork",
+                          "segments",
+                          "notes",
+                          "objectiveIds",
+                          "contributesTo",
+                          "carriedFromEntryId",
+                          "version"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "date": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "activityId": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "orderKey": {
+                            "type": "string"
+                          },
+                          "startTime": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "plannedMinutes": {
+                            "type": "integer"
+                          },
+                          "actualMinutes": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "status": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "planned"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "completed"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "skipped"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "cancelled"
+                                ]
+                              }
+                            ]
+                          },
+                          "isUnplanned": {
+                            "type": "boolean"
+                          },
+                          "isTimeBlock": {
+                            "type": "boolean"
+                          },
+                          "timeValue": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "useful"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "support"
+                                ]
+                              }
+                            ]
+                          },
+                          "deepWork": {
+                            "type": "boolean"
+                          },
+                          "segments": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "required": [
+                                "id",
+                                "title",
+                                "minutes",
+                                "timeValue"
+                              ],
+                              "properties": {
+                                "id": {
+                                  "type": "string",
+                                  "format": "uuid"
+                                },
+                                "title": {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "maxLength": 120
+                                },
+                                "minutes": {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 1440
+                                },
+                                "timeValue": {
+                                  "anyOf": [
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "useful"
+                                      ]
+                                    },
+                                    {
+                                      "type": "string",
+                                      "enum": [
+                                        "support"
+                                      ]
+                                    }
+                                  ]
+                                }
+                              },
+                              "additionalProperties": false
+                            },
+                            "maxItems": 20
+                          },
+                          "notes": {
+                            "type": "string"
+                          },
+                          "objectiveIds": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "contributesTo": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "carriedFromEntryId": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "version": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    },
+                    "totals": {
+                      "type": "object",
+                      "required": [
+                        "capacity",
+                        "planned",
+                        "remaining",
+                        "useful",
+                        "support",
+                        "deepWorkActual"
+                      ],
+                      "properties": {
+                        "capacity": {
+                          "type": "integer"
+                        },
+                        "planned": {
+                          "type": "integer"
+                        },
+                        "remaining": {
+                          "type": "integer"
+                        },
+                        "useful": {
+                          "type": "integer"
+                        },
+                        "support": {
+                          "type": "integer"
+                        },
+                        "deepWorkActual": {
+                          "type": "integer"
+                        }
+                      }
+                    },
+                    "scores": {
+                      "type": "object",
+                      "required": [
+                        "execution",
+                        "alignment"
+                      ],
+                      "properties": {
+                        "execution": {
+                          "anyOf": [
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        },
+                        "alignment": {
+                          "anyOf": [
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "closeRequired": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "required": [
+                            "horizon",
+                            "startDate"
+                          ],
+                          "properties": {
+                            "horizon": {
+                              "type": "string"
+                            },
+                            "startDate": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "weekEssentials": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "title",
+                          "progress"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "progress": {
+                            "type": "number"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "servers": [

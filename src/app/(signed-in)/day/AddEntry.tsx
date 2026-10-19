@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState, type FormEvent } from "react";
 import type { CreateEntryBody } from "@/lib/api/generated/lifeManagerAPI.schemas";
 import { formatDate, useI18n } from "@/lib/i18n";
@@ -53,7 +54,10 @@ export function AddEntry({ activities, closeRequired, disabled, onAdd }: Props) 
     <form className="add-entry" onSubmit={submit}>
       {closeRequired ? (
         <p className="notice" role="status">
-          {t("day.closeFirst", { date: formatDate(locale, closeRequired.startDate, { day: "numeric", month: "short" }) })}
+          {t("day.closeFirst", { date: formatDate(locale, closeRequired.startDate, { day: "numeric", month: "short" }) })}{" "}
+          <Link className="link-button" href={`/day/close?date=${closeRequired.startDate}`}>
+            {t("day.openClose", { date: formatDate(locale, closeRequired.startDate, { day: "numeric", month: "short" }) })}
+          </Link>
         </p>
       ) : null}
       <div className="add-entry__row">

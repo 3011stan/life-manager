@@ -63,11 +63,11 @@ tables before code; every new route joins the cross-tenant registry.
 
 ## Phase 5: US4 + US5 Log and day close (P2)
 
-- [ ] T021 [US5] Integration tests for close preview, close, carries (entry created next day, reopen), check-in, reopen on change, Rule Zero 409, copy from day in `backend/test/integration/day-close.test.ts`; registry entries
-- [ ] T022 [US4] Unplanned log rules in `backend/src/modules/days/` (status completed, planned 0, excluded from execution)
-- [ ] T023 [US5] Close, carry, gate, and copy routes in `backend/src/modules/days/close.ts`
-- [ ] T024 [US5] Web close page `web/src/app/(signed-in)/day/[date]/close/` (unresolved, scores with why, carries edit/confirm/dismiss, check-in, notes); gate message on the add field; "Log done" toggle; copy-from-day dialog
-- [ ] T025 [US5] E2E `web/e2e/day-close.spec.ts` (US4 and US5 independent tests)
+- [x] T021 [US5] Integration tests for close preview, close, carries (entry created next day, reopen), check-in, reopen on change, Rule Zero 409, copy from day in `backend/test/integration/day-close.test.ts`; registry entries
+- [x] T022 [US4] Unplanned log rules in `backend/src/modules/days/` (status completed, planned 0, excluded from execution)
+- [x] T023 [US5] Close, carry, gate, and copy routes in `backend/src/modules/days/close.ts`
+- [x] T024 [US5] Web close page `web/src/app/(signed-in)/day/[date]/close/` (unresolved, scores with why, carries edit/confirm/dismiss, check-in, notes); gate message on the add field; "Log done" toggle; copy-from-day dialog
+- [x] T025 [US5] E2E `web/e2e/day-close.spec.ts` (US4 and US5 independent tests)
 - [ ] T026 Slice 2 release (as T020)
 
 ## Phase 6: US6 + US7 Objectives and cycle closes (P2)

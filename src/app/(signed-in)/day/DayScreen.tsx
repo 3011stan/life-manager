@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
 import { useGetCatalog } from "@/lib/api/generated/catalog/catalog";
@@ -78,7 +79,15 @@ export function DayScreen() {
               ? t("day.over", { n: formatMinutes(-data.totals.remaining) })
               : t("day.left", { n: formatMinutes(data.totals.remaining) })}
           </p>
-          {data.cycle.closedAt ? <p className="notice notice--ok">{t("day.closed")}</p> : null}
+          {data.cycle.closedAt ? (
+            <p className="notice notice--ok">
+              {t("day.closed")}
+              {" · "}
+              {t("close.execution")} {data.scores.execution === null ? t("close.noPlanned") : `${String(Math.round(data.scores.execution * 100))}%`}
+              {" · "}
+              {t("close.alignment")} {data.scores.alignment === null ? t("close.noWork") : `${String(Math.round(data.scores.alignment * 100))}%`}
+            </p>
+          ) : null}
           {error ? (
             <p role="alert" className="notice notice--error">
               {error}
@@ -107,6 +116,11 @@ export function DayScreen() {
           />
 
           <div className="day-tools">
+            {!data.cycle.closedAt && data.entries.length > 0 ? (
+              <Link className="ghost-button button-link" href={`/day/close?date=${date}`}>
+                {t("close.open")}
+              </Link>
+            ) : null}
             <CopyDialog date={date} disabled={readOnly} onCopy={(fromDate, entryIds) => mutations.copy.mutateAsync({ fromDate, entryIds }).then(() => undefined, report)} />
           </div>
 

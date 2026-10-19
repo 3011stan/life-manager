@@ -624,3 +624,59 @@ h2 {
 .catalog-item--archived .catalog-item__name {
   color: var(--muted);
 }
+
+.button-link {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.resolve-row,
+.carry-row,
+.tap-scale {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.carry-row input {
+  min-height: 44px;
+  min-width: 0;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+
+.carry-row input:first-child {
+  flex: 1 1 160px;
+}
+
+.carry-row input[type="number"] {
+  width: 80px;
+}
+
+.tap-scale span {
+  flex: 1 0 100%;
+  color: var(--muted);
+}
+
+.tap-scale button {
+  min-width: 44px;
+  padding: 0;
+}
+
+.score summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+  min-height: 44px;
+  cursor: pointer;
+}
+
+.score ul {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+}
