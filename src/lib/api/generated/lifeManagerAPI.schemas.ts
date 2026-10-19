@@ -37,6 +37,9 @@ export type DeleteAccountBody = {
   confirmation: string;
 };
 
+export const GetWorkspaceSettings200Locale = {  'pt-BR': 'pt-BR',
+  en: 'en',
+} as const
 export type GetWorkspaceSettings200 = {
   /**
      * 0 = Sunday
@@ -51,10 +54,19 @@ export type GetWorkspaceSettings200 = {
      * @maximum 1440
      */
   defaultDailyCapacityMinutes: number;
+  locale: typeof GetWorkspaceSettings200Locale[keyof typeof GetWorkspaceSettings200Locale];
+  /**
+     * @minimum 2000
+     * @maximum 2100
+     */
+  longHorizonStartYear: number;
   version: number;
   updatedAt: string;
 };
 
+export const UpdateWorkspaceSettingsBodyLocale = {  'pt-BR': 'pt-BR',
+  en: 'en',
+} as const
 export type UpdateWorkspaceSettingsBody = {
   /**
      * @minimum 0
@@ -71,8 +83,17 @@ export type UpdateWorkspaceSettingsBody = {
      * @maximum 1440
      */
   defaultDailyCapacityMinutes?: number;
+  locale?: typeof UpdateWorkspaceSettingsBodyLocale[keyof typeof UpdateWorkspaceSettingsBodyLocale];
+  /**
+     * @minimum 2000
+     * @maximum 2100
+     */
+  longHorizonStartYear?: number;
 };
 
+export const UpdateWorkspaceSettings200Locale = {  'pt-BR': 'pt-BR',
+  en: 'en',
+} as const
 export type UpdateWorkspaceSettings200 = {
   /**
      * 0 = Sunday
@@ -87,6 +108,12 @@ export type UpdateWorkspaceSettings200 = {
      * @maximum 1440
      */
   defaultDailyCapacityMinutes: number;
+  locale: typeof UpdateWorkspaceSettings200Locale[keyof typeof UpdateWorkspaceSettings200Locale];
+  /**
+     * @minimum 2000
+     * @maximum 2100
+     */
+  longHorizonStartYear: number;
   version: number;
   updatedAt: string;
 };
@@ -135,5 +162,838 @@ export type ExportAccountData200One = {
   account: ExportAccountData200OneAccount;
   workspace: ExportAccountData200OneWorkspace;
   securityEvents: ExportAccountData200OneSecurityEventsItem[];
+};
+
+export type GetCatalog200PillarsItem = {
+  id: string;
+  name: string;
+  orderKey: string;
+  archivedAt: string | null;
+  version: number;
+};
+
+export type GetCatalog200AreasItem = {
+  id: string;
+  pillarId: string;
+  name: string;
+  orderKey: string;
+  archivedAt: string | null;
+  version: number;
+};
+
+export type GetCatalog200TagsItem = {
+  id: string;
+  name: string;
+  archivedAt: string | null;
+  version: number;
+};
+
+export const GetCatalog200ActivitiesItemDefaultTimeValue = {  useful: 'useful',
+  support: 'support',
+} as const
+export const GetCatalog200ActivitiesItemDefaultSegmentsItemTimeValue = {  useful: 'useful',
+  support: 'support',
+} as const
+export type GetCatalog200ActivitiesItemDefaultSegmentsItem = {
+  id: string;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  title: string;
+  /**
+     * @minimum 1
+     * @maximum 1440
+     */
+  minutes: number;
+  timeValue: typeof GetCatalog200ActivitiesItemDefaultSegmentsItemTimeValue[keyof typeof GetCatalog200ActivitiesItemDefaultSegmentsItemTimeValue];
+};
+
+export type GetCatalog200ActivitiesItem = {
+  id: string;
+  areaId: string;
+  name: string;
+  tagIds: string[];
+  defaultMinutes: number;
+  defaultDeepWork: boolean;
+  defaultIsTimeBlock: boolean;
+  defaultTimeValue: typeof GetCatalog200ActivitiesItemDefaultTimeValue[keyof typeof GetCatalog200ActivitiesItemDefaultTimeValue];
+  /** @maxItems 20 */
+  defaultSegments: GetCatalog200ActivitiesItemDefaultSegmentsItem[];
+  archivedAt: string | null;
+  version: number;
+};
+
+export type GetCatalog200 = {
+  pillars: GetCatalog200PillarsItem[];
+  areas: GetCatalog200AreasItem[];
+  tags: GetCatalog200TagsItem[];
+  activities: GetCatalog200ActivitiesItem[];
+};
+
+export type CreatePillarBody = {
+  id: string;
+  /**
+     * @minLength 1
+     * @maxLength 60
+     */
+  name: string;
+};
+
+export type CreatePillar201 = {
+  id: string;
+  name: string;
+  orderKey: string;
+  archivedAt: string | null;
+  version: number;
+};
+
+export type UpdatePillarBody = {
+  /**
+     * @minLength 1
+     * @maxLength 60
+     */
+  name?: string;
+  /** @minLength 1 */
+  orderKey?: string;
+  archived?: boolean;
+};
+
+export type UpdatePillar200 = {
+  id: string;
+  name: string;
+  orderKey: string;
+  archivedAt: string | null;
+  version: number;
+};
+
+export type CreateAreaBody = {
+  id: string;
+  pillarId: string;
+  /**
+     * @minLength 1
+     * @maxLength 60
+     */
+  name: string;
+};
+
+export type CreateArea201 = {
+  id: string;
+  pillarId: string;
+  name: string;
+  orderKey: string;
+  archivedAt: string | null;
+  version: number;
+};
+
+export type UpdateAreaBody = {
+  /**
+     * @minLength 1
+     * @maxLength 60
+     */
+  name?: string;
+  pillarId?: string;
+  /** @minLength 1 */
+  orderKey?: string;
+  archived?: boolean;
+};
+
+export type UpdateArea200 = {
+  id: string;
+  pillarId: string;
+  name: string;
+  orderKey: string;
+  archivedAt: string | null;
+  version: number;
+};
+
+export type CreateTagBody = {
+  id: string;
+  /**
+     * @minLength 1
+     * @maxLength 40
+     */
+  name: string;
+};
+
+export type CreateTag201 = {
+  id: string;
+  name: string;
+  archivedAt: string | null;
+  version: number;
+};
+
+export type UpdateTagBody = {
+  /**
+     * @minLength 1
+     * @maxLength 40
+     */
+  name?: string;
+  archived?: boolean;
+};
+
+export type UpdateTag200 = {
+  id: string;
+  name: string;
+  archivedAt: string | null;
+  version: number;
+};
+
+export const CreateActivityBodyDefaultTimeValue = {  useful: 'useful',
+  support: 'support',
+} as const
+export const CreateActivityBodyDefaultSegmentsItemTimeValue = {  useful: 'useful',
+  support: 'support',
+} as const
+export type CreateActivityBodyDefaultSegmentsItem = {
+  id: string;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  title: string;
+  /**
+     * @minimum 1
+     * @maximum 1440
+     */
+  minutes: number;
+  timeValue: typeof CreateActivityBodyDefaultSegmentsItemTimeValue[keyof typeof CreateActivityBodyDefaultSegmentsItemTimeValue];
+};
+
+export type CreateActivityBody = {
+  id: string;
+  /**
+     * @minLength 1
+     * @maxLength 80
+     */
+  name: string;
+  areaId: string;
+  /** @maxItems 20 */
+  tagIds?: string[];
+  /**
+     * @minimum 0
+     * @maximum 1440
+     */
+  defaultMinutes?: number;
+  defaultDeepWork?: boolean;
+  defaultIsTimeBlock?: boolean;
+  defaultTimeValue?: typeof CreateActivityBodyDefaultTimeValue[keyof typeof CreateActivityBodyDefaultTimeValue];
+  /** @maxItems 20 */
+  defaultSegments?: CreateActivityBodyDefaultSegmentsItem[];
+};
+
+export const CreateActivity201DefaultTimeValue = {  useful: 'useful',
+  support: 'support',
+} as const
+export const CreateActivity201DefaultSegmentsItemTimeValue = {  useful: 'useful',
+  support: 'support',
+} as const
+export type CreateActivity201DefaultSegmentsItem = {
+  id: string;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  title: string;
+  /**
+     * @minimum 1
+     * @maximum 1440
+     */
+  minutes: number;
+  timeValue: typeof CreateActivity201DefaultSegmentsItemTimeValue[keyof typeof CreateActivity201DefaultSegmentsItemTimeValue];
+};
+
+export type CreateActivity201 = {
+  id: string;
+  areaId: string;
+  name: string;
+  tagIds: string[];
+  defaultMinutes: number;
+  defaultDeepWork: boolean;
+  defaultIsTimeBlock: boolean;
+  defaultTimeValue: typeof CreateActivity201DefaultTimeValue[keyof typeof CreateActivity201DefaultTimeValue];
+  /** @maxItems 20 */
+  defaultSegments: CreateActivity201DefaultSegmentsItem[];
+  archivedAt: string | null;
+  version: number;
+};
+
+export const UpdateActivityBodyDefaultTimeValue = {  useful: 'useful',
+  support: 'support',
+} as const
+export const UpdateActivityBodyDefaultSegmentsItemTimeValue = {  useful: 'useful',
+  support: 'support',
+} as const
+export type UpdateActivityBodyDefaultSegmentsItem = {
+  id: string;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  title: string;
+  /**
+     * @minimum 1
+     * @maximum 1440
+     */
+  minutes: number;
+  timeValue: typeof UpdateActivityBodyDefaultSegmentsItemTimeValue[keyof typeof UpdateActivityBodyDefaultSegmentsItemTimeValue];
+};
+
+export type UpdateActivityBody = {
+  /**
+     * @minLength 1
+     * @maxLength 80
+     */
+  name?: string;
+  areaId?: string;
+  /** @maxItems 20 */
+  tagIds?: string[];
+  /**
+     * @minimum 0
+     * @maximum 1440
+     */
+  defaultMinutes?: number;
+  defaultDeepWork?: boolean;
+  defaultIsTimeBlock?: boolean;
+  defaultTimeValue?: typeof UpdateActivityBodyDefaultTimeValue[keyof typeof UpdateActivityBodyDefaultTimeValue];
+  /** @maxItems 20 */
+  defaultSegments?: UpdateActivityBodyDefaultSegmentsItem[];
+  archived?: boolean;
+};
+
+export const UpdateActivity200DefaultTimeValue = {  useful: 'useful',
+  support: 'support',
+} as const
+export const UpdateActivity200DefaultSegmentsItemTimeValue = {  useful: 'useful',
+  support: 'support',
+} as const
+export type UpdateActivity200DefaultSegmentsItem = {
+  id: string;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  title: string;
+  /**
+     * @minimum 1
+     * @maximum 1440
+     */
+  minutes: number;
+  timeValue: typeof UpdateActivity200DefaultSegmentsItemTimeValue[keyof typeof UpdateActivity200DefaultSegmentsItemTimeValue];
+};
+
+export type UpdateActivity200 = {
+  id: string;
+  areaId: string;
+  name: string;
+  tagIds: string[];
+  defaultMinutes: number;
+  defaultDeepWork: boolean;
+  defaultIsTimeBlock: boolean;
+  defaultTimeValue: typeof UpdateActivity200DefaultTimeValue[keyof typeof UpdateActivity200DefaultTimeValue];
+  /** @maxItems 20 */
+  defaultSegments: UpdateActivity200DefaultSegmentsItem[];
+  archivedAt: string | null;
+  version: number;
+};
+
+export type GetDay200CycleCheckIn = {
+  physicalEnergy: number | null;
+  mentalEnergy: number | null;
+  emotionalEnergy: number | null;
+  satisfaction: number | null;
+} | null;
+
+export type GetDay200CycleCloseSnapshot = { [key: string]: unknown } | null;
+
+export type GetDay200Cycle = {
+  id: string | null;
+  capacityMinutes: number;
+  captureText: string;
+  checkIn: GetDay200CycleCheckIn;
+  notes: string;
+  closedAt: string | null;
+  closeSnapshot: GetDay200CycleCloseSnapshot;
+  version: number;
+};
+
+export const GetDay200EntriesItemStatus = {  planned: 'planned',
+  completed: 'completed',
+  skipped: 'skipped',
+  cancelled: 'cancelled',
+} as const
+export const GetDay200EntriesItemTimeValue = {  useful: 'useful',
+  support: 'support',
+} as const
+export const GetDay200EntriesItemSegmentsItemTimeValue = {  useful: 'useful',
+  support: 'support',
+} as const
+export type GetDay200EntriesItemSegmentsItem = {
+  id: string;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  title: string;
+  /**
+     * @minimum 1
+     * @maximum 1440
+     */
+  minutes: number;
+  timeValue: typeof GetDay200EntriesItemSegmentsItemTimeValue[keyof typeof GetDay200EntriesItemSegmentsItemTimeValue];
+};
+
+export type GetDay200EntriesItem = {
+  id: string;
+  date: string;
+  title: string;
+  activityId: string | null;
+  orderKey: string;
+  startTime: string | null;
+  plannedMinutes: number;
+  actualMinutes: number | null;
+  status: typeof GetDay200EntriesItemStatus[keyof typeof GetDay200EntriesItemStatus];
+  isUnplanned: boolean;
+  isTimeBlock: boolean;
+  timeValue: typeof GetDay200EntriesItemTimeValue[keyof typeof GetDay200EntriesItemTimeValue];
+  deepWork: boolean;
+  /** @maxItems 20 */
+  segments: GetDay200EntriesItemSegmentsItem[];
+  notes: string;
+  objectiveIds: string[];
+  contributesTo: string[];
+  carriedFromEntryId: string | null;
+  version: number;
+};
+
+export type GetDay200Totals = {
+  capacity: number;
+  planned: number;
+  remaining: number;
+  useful: number;
+  support: number;
+  deepWorkActual: number;
+};
+
+export type GetDay200Scores = {
+  execution: number | null;
+  alignment: number | null;
+};
+
+export type GetDay200CloseRequired = {
+  horizon: string;
+  startDate: string;
+} | null;
+
+export type GetDay200WeekEssentialsItem = {
+  id: string;
+  title: string;
+  progress: number;
+};
+
+export type GetDay200 = {
+  date: string;
+  today: string;
+  timeZone: string;
+  cycle: GetDay200Cycle;
+  entries: GetDay200EntriesItem[];
+  totals: GetDay200Totals;
+  scores: GetDay200Scores;
+  closeRequired: GetDay200CloseRequired;
+  weekEssentials: GetDay200WeekEssentialsItem[];
+};
+
+export type UpdateDayBodyCheckIn = {
+  physicalEnergy: number | null;
+  mentalEnergy: number | null;
+  emotionalEnergy: number | null;
+  satisfaction: number | null;
+} | null;
+
+export type UpdateDayBody = {
+  capacityMinutes?: number | null;
+  /** @maxLength 10000 */
+  captureText?: string;
+  checkIn?: UpdateDayBodyCheckIn;
+  /** @maxLength 10000 */
+  notes?: string;
+};
+
+export type UpdateDay200CycleCheckIn = {
+  physicalEnergy: number | null;
+  mentalEnergy: number | null;
+  emotionalEnergy: number | null;
+  satisfaction: number | null;
+} | null;
+
+export type UpdateDay200CycleCloseSnapshot = { [key: string]: unknown } | null;
+
+export type UpdateDay200Cycle = {
+  id: string | null;
+  capacityMinutes: number;
+  captureText: string;
+  checkIn: UpdateDay200CycleCheckIn;
+  notes: string;
+  closedAt: string | null;
+  closeSnapshot: UpdateDay200CycleCloseSnapshot;
+  version: number;
+};
+
+export const UpdateDay200EntriesItemStatus = {  planned: 'planned',
+  completed: 'completed',
+  skipped: 'skipped',
+  cancelled: 'cancelled',
+} as const
+export const UpdateDay200EntriesItemTimeValue = {  useful: 'useful',
+  support: 'support',
+} as const
+export const UpdateDay200EntriesItemSegmentsItemTimeValue = {  useful: 'useful',
+  support: 'support',
+} as const
+export type UpdateDay200EntriesItemSegmentsItem = {
+  id: string;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  title: string;
+  /**
+     * @minimum 1
+     * @maximum 1440
+     */
+  minutes: number;
+  timeValue: typeof UpdateDay200EntriesItemSegmentsItemTimeValue[keyof typeof UpdateDay200EntriesItemSegmentsItemTimeValue];
+};
+
+export type UpdateDay200EntriesItem = {
+  id: string;
+  date: string;
+  title: string;
+  activityId: string | null;
+  orderKey: string;
+  startTime: string | null;
+  plannedMinutes: number;
+  actualMinutes: number | null;
+  status: typeof UpdateDay200EntriesItemStatus[keyof typeof UpdateDay200EntriesItemStatus];
+  isUnplanned: boolean;
+  isTimeBlock: boolean;
+  timeValue: typeof UpdateDay200EntriesItemTimeValue[keyof typeof UpdateDay200EntriesItemTimeValue];
+  deepWork: boolean;
+  /** @maxItems 20 */
+  segments: UpdateDay200EntriesItemSegmentsItem[];
+  notes: string;
+  objectiveIds: string[];
+  contributesTo: string[];
+  carriedFromEntryId: string | null;
+  version: number;
+};
+
+export type UpdateDay200Totals = {
+  capacity: number;
+  planned: number;
+  remaining: number;
+  useful: number;
+  support: number;
+  deepWorkActual: number;
+};
+
+export type UpdateDay200Scores = {
+  execution: number | null;
+  alignment: number | null;
+};
+
+export type UpdateDay200CloseRequired = {
+  horizon: string;
+  startDate: string;
+} | null;
+
+export type UpdateDay200WeekEssentialsItem = {
+  id: string;
+  title: string;
+  progress: number;
+};
+
+export type UpdateDay200 = {
+  date: string;
+  today: string;
+  timeZone: string;
+  cycle: UpdateDay200Cycle;
+  entries: UpdateDay200EntriesItem[];
+  totals: UpdateDay200Totals;
+  scores: UpdateDay200Scores;
+  closeRequired: UpdateDay200CloseRequired;
+  weekEssentials: UpdateDay200WeekEssentialsItem[];
+};
+
+export const CreateEntryBodyStatus = {  planned: 'planned',
+  completed: 'completed',
+  skipped: 'skipped',
+  cancelled: 'cancelled',
+} as const
+export const CreateEntryBodyTimeValue = {  useful: 'useful',
+  support: 'support',
+} as const
+export const CreateEntryBodySegmentsItemTimeValue = {  useful: 'useful',
+  support: 'support',
+} as const
+export type CreateEntryBodySegmentsItem = {
+  id: string;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  title: string;
+  /**
+     * @minimum 1
+     * @maximum 1440
+     */
+  minutes: number;
+  timeValue: typeof CreateEntryBodySegmentsItemTimeValue[keyof typeof CreateEntryBodySegmentsItemTimeValue];
+};
+
+export type CreateEntryBody = {
+  id: string;
+  /**
+     * @minLength 1
+     * @maxLength 200
+     */
+  title: string;
+  activityId?: string | null;
+  /** @pattern ^[0-9A-Za-z]{1,64}$ */
+  orderKey?: string;
+  startTime?: string | null;
+  /**
+     * @minimum 0
+     * @maximum 1440
+     */
+  plannedMinutes?: number;
+  actualMinutes?: number | null;
+  status?: typeof CreateEntryBodyStatus[keyof typeof CreateEntryBodyStatus];
+  isUnplanned?: boolean;
+  isTimeBlock?: boolean;
+  timeValue?: typeof CreateEntryBodyTimeValue[keyof typeof CreateEntryBodyTimeValue];
+  deepWork?: boolean;
+  /** @maxItems 20 */
+  segments?: CreateEntryBodySegmentsItem[];
+  /** @maxLength 10000 */
+  notes?: string;
+  /** @maxItems 20 */
+  objectiveIds?: string[];
+};
+
+export const CreateEntry201Status = {  planned: 'planned',
+  completed: 'completed',
+  skipped: 'skipped',
+  cancelled: 'cancelled',
+} as const
+export const CreateEntry201TimeValue = {  useful: 'useful',
+  support: 'support',
+} as const
+export const CreateEntry201SegmentsItemTimeValue = {  useful: 'useful',
+  support: 'support',
+} as const
+export type CreateEntry201SegmentsItem = {
+  id: string;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  title: string;
+  /**
+     * @minimum 1
+     * @maximum 1440
+     */
+  minutes: number;
+  timeValue: typeof CreateEntry201SegmentsItemTimeValue[keyof typeof CreateEntry201SegmentsItemTimeValue];
+};
+
+export type CreateEntry201 = {
+  id: string;
+  date: string;
+  title: string;
+  activityId: string | null;
+  orderKey: string;
+  startTime: string | null;
+  plannedMinutes: number;
+  actualMinutes: number | null;
+  status: typeof CreateEntry201Status[keyof typeof CreateEntry201Status];
+  isUnplanned: boolean;
+  isTimeBlock: boolean;
+  timeValue: typeof CreateEntry201TimeValue[keyof typeof CreateEntry201TimeValue];
+  deepWork: boolean;
+  /** @maxItems 20 */
+  segments: CreateEntry201SegmentsItem[];
+  notes: string;
+  objectiveIds: string[];
+  contributesTo: string[];
+  carriedFromEntryId: string | null;
+  version: number;
+  cycleReopened: boolean;
+};
+
+export const UpdateEntryBodyStatus = {  planned: 'planned',
+  completed: 'completed',
+  skipped: 'skipped',
+  cancelled: 'cancelled',
+} as const
+export const UpdateEntryBodyTimeValue = {  useful: 'useful',
+  support: 'support',
+} as const
+export const UpdateEntryBodySegmentsItemTimeValue = {  useful: 'useful',
+  support: 'support',
+} as const
+export type UpdateEntryBodySegmentsItem = {
+  id: string;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  title: string;
+  /**
+     * @minimum 1
+     * @maximum 1440
+     */
+  minutes: number;
+  timeValue: typeof UpdateEntryBodySegmentsItemTimeValue[keyof typeof UpdateEntryBodySegmentsItemTimeValue];
+};
+
+export type UpdateEntryBody = {
+  activityId?: string | null;
+  /** @pattern ^[0-9A-Za-z]{1,64}$ */
+  orderKey?: string;
+  startTime?: string | null;
+  /**
+     * @minimum 0
+     * @maximum 1440
+     */
+  plannedMinutes?: number;
+  actualMinutes?: number | null;
+  status?: typeof UpdateEntryBodyStatus[keyof typeof UpdateEntryBodyStatus];
+  isUnplanned?: boolean;
+  isTimeBlock?: boolean;
+  timeValue?: typeof UpdateEntryBodyTimeValue[keyof typeof UpdateEntryBodyTimeValue];
+  deepWork?: boolean;
+  /** @maxItems 20 */
+  segments?: UpdateEntryBodySegmentsItem[];
+  /** @maxLength 10000 */
+  notes?: string;
+  /** @maxItems 20 */
+  objectiveIds?: string[];
+  /**
+     * @minLength 1
+     * @maxLength 200
+     */
+  title?: string;
+  /** @pattern ^\d{4}-\d{2}-\d{2}$ */
+  date?: string;
+};
+
+export const UpdateEntry200Status = {  planned: 'planned',
+  completed: 'completed',
+  skipped: 'skipped',
+  cancelled: 'cancelled',
+} as const
+export const UpdateEntry200TimeValue = {  useful: 'useful',
+  support: 'support',
+} as const
+export const UpdateEntry200SegmentsItemTimeValue = {  useful: 'useful',
+  support: 'support',
+} as const
+export type UpdateEntry200SegmentsItem = {
+  id: string;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  title: string;
+  /**
+     * @minimum 1
+     * @maximum 1440
+     */
+  minutes: number;
+  timeValue: typeof UpdateEntry200SegmentsItemTimeValue[keyof typeof UpdateEntry200SegmentsItemTimeValue];
+};
+
+export type UpdateEntry200 = {
+  id: string;
+  date: string;
+  title: string;
+  activityId: string | null;
+  orderKey: string;
+  startTime: string | null;
+  plannedMinutes: number;
+  actualMinutes: number | null;
+  status: typeof UpdateEntry200Status[keyof typeof UpdateEntry200Status];
+  isUnplanned: boolean;
+  isTimeBlock: boolean;
+  timeValue: typeof UpdateEntry200TimeValue[keyof typeof UpdateEntry200TimeValue];
+  deepWork: boolean;
+  /** @maxItems 20 */
+  segments: UpdateEntry200SegmentsItem[];
+  notes: string;
+  objectiveIds: string[];
+  contributesTo: string[];
+  carriedFromEntryId: string | null;
+  version: number;
+  cycleReopened: boolean;
+};
+
+export type CopyEntriesBody = {
+  /** @pattern ^\d{4}-\d{2}-\d{2}$ */
+  fromDate: string;
+  /**
+     * @minItems 1
+     * @maxItems 100
+     */
+  entryIds: string[];
+};
+
+export const CopyEntries201ItemStatus = {  planned: 'planned',
+  completed: 'completed',
+  skipped: 'skipped',
+  cancelled: 'cancelled',
+} as const
+export const CopyEntries201ItemTimeValue = {  useful: 'useful',
+  support: 'support',
+} as const
+export const CopyEntries201ItemSegmentsItemTimeValue = {  useful: 'useful',
+  support: 'support',
+} as const
+export type CopyEntries201ItemSegmentsItem = {
+  id: string;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  title: string;
+  /**
+     * @minimum 1
+     * @maximum 1440
+     */
+  minutes: number;
+  timeValue: typeof CopyEntries201ItemSegmentsItemTimeValue[keyof typeof CopyEntries201ItemSegmentsItemTimeValue];
+};
+
+export type CopyEntries201Item = {
+  id: string;
+  date: string;
+  title: string;
+  activityId: string | null;
+  orderKey: string;
+  startTime: string | null;
+  plannedMinutes: number;
+  actualMinutes: number | null;
+  status: typeof CopyEntries201ItemStatus[keyof typeof CopyEntries201ItemStatus];
+  isUnplanned: boolean;
+  isTimeBlock: boolean;
+  timeValue: typeof CopyEntries201ItemTimeValue[keyof typeof CopyEntries201ItemTimeValue];
+  deepWork: boolean;
+  /** @maxItems 20 */
+  segments: CopyEntries201ItemSegmentsItem[];
+  notes: string;
+  objectiveIds: string[];
+  contributesTo: string[];
+  carriedFromEntryId: string | null;
+  version: number;
 };
 

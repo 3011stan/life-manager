@@ -4,19 +4,20 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { safeNext, startGoogleSignIn, testSignIn, testSignInEnabled } from "@/lib/api/auth";
 import { ApiError } from "@/lib/api/mutator";
+import { useT, type Translate } from "@/lib/i18n";
 
-const MESSAGES: Record<string, string> = {
-  invitation_only: "Access is by invitation only.",
-};
+function errorMessage(t: Translate, code: string): string {
+  return code === "invitation_only" ? t("signIn.invitationOnly") : t("signIn.failed");
+}
 
 export function SignInForm() {
   const params = useSearchParams();
   const router = useRouter();
+  const t = useT();
   const next = safeNext(params.get("next"));
   const errorCode = params.get("error");
-  const [error, setError] = useState<string | undefined>(
-    errorCode ? (MESSAGES[errorCode] ?? "Sign-in failed. Try again.") : undefined,
-  );
+  // Store the error code, not the text, so a locale switch re-translates it.
+  const [error, setError] = useState<string | undefined>(errorCode ?? undefined);
   const [busy, setBusy] = useState(false);
   const deleted = params.get("deleted") === "1";
 
@@ -25,7 +26,7 @@ export function SignInForm() {
     try {
       await startGoogleSignIn(next);
     } catch {
-      setError("Sign-in is temporarily unavailable. Try again in a moment.");
+      setError("unavailable");
       setBusy(false);
     }
   }
@@ -40,7 +41,7 @@ export function SignInForm() {
       await testSignIn(email, secret);
       router.replace(next);
     } catch (e) {
-      setError(e instanceof ApiError && e.status === 403 ? MESSAGES.invitation_only : "Sign-in failed. Try again.");
+      setError(e instanceof ApiError && e.status === 403 ? "invitation_only" : "failed");
       setBusy(false);
     }
   }
@@ -49,29 +50,29 @@ export function SignInForm() {
     <section className="panel">
       {deleted ? (
         <p role="status" className="notice notice--ok">
-          Your account was deleted.
+          {t("signIn.deleted")}
         </p>
       ) : null}
       {error ? (
         <p role="alert" className="notice notice--error">
-          {error}
+          {error === "unavailable" ? t("signIn.unavailable") : errorMessage(t, error)}
         </p>
       ) : null}
       <button type="button" className="primary-button" onClick={() => void google()} disabled={busy}>
-        Continue with Google
+        {t("signIn.google")}
       </button>
       {testSignInEnabled ? (
         <form className="stack" onSubmit={(e) => void submitTest(e)}>
           <label className="field">
-            Test sign-in email
+            {t("signIn.testEmail")}
             <input name="email" type="email" required autoComplete="email" />
           </label>
           <label className="field">
-            Test sign-in secret
+            {t("signIn.testSecret")}
             <input name="secret" type="password" required autoComplete="current-password" />
           </label>
           <button type="submit" className="ghost-button" disabled={busy}>
-            Test sign-in
+            {t("signIn.test")}
           </button>
         </form>
       ) : null}

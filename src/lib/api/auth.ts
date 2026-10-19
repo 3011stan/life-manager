@@ -29,5 +29,5 @@ export async function testSignIn(email: string, secret: string): Promise<void> {
 export const testSignInEnabled = process.env.NEXT_PUBLIC_TEST_SIGN_IN === "true";
 
 export function safeNext(value: string | null): string {
-  return value?.startsWith("/") && !value.startsWith("//") ? value : "/settings";
+  return value?.startsWith("/") && !value.startsWith("//") ? value : "/day";
 }

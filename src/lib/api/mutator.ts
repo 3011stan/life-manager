@@ -52,7 +52,8 @@ export async function apiFetch<T>(url: string, options: RequestInit): Promise<T>
   try {
     res = await fetch(`${API_BASE_URL}${url}`, { ...options, method, headers, credentials: "include" });
   } catch (error) {
-    connectivity.markApiReachable(false);
+    // A request cancelled by navigation says nothing about the connection.
+    if (!(error instanceof DOMException && error.name === "AbortError")) connectivity.markApiReachable(false);
     throw error;
   }
   connectivity.markApiReachable(true);

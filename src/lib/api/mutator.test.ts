@@ -48,4 +48,12 @@ describe("apiFetch", () => {
     await apiFetch("/health", { method: "GET" });
     expect(fetchMock).toHaveBeenCalledTimes(1);
   });
+
+  // Regression: a read cancelled by navigation marked the API unreachable, so
+  // the next mutation (the test sign-in) was refused as read-only.
+  it("does not treat a cancelled request as the API being unreachable", async () => {
+    vi.stubGlobal("fetch", vi.fn<typeof fetch>(() => Promise.reject(new DOMException("The user aborted a request.", "AbortError"))));
+    await expect(apiFetch("/v1/workspace/settings", { method: "GET" })).rejects.toThrow();
+    expect(connectivity.getSnapshot().readOnly).toBe(false);
+  });
 });

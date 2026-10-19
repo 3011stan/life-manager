@@ -260,3 +260,367 @@ h2 {
   flex-shrink: 0;
   white-space: nowrap;
 }
+
+/* 003: navigation, day timeline, entry sheet, catalog. Color only marks state. */
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.small {
+  font-size: 0.85rem;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.icon-button,
+.link-button {
+  min-width: 44px;
+  min-height: 44px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--foreground);
+  font-size: 1.2rem;
+}
+
+.link-button {
+  min-width: 0;
+  padding: 0 8px;
+  color: var(--accent);
+  font-size: 0.95rem;
+  text-decoration: underline;
+}
+
+@media (max-width: 640px) {
+  .app-shell--nav {
+    padding-bottom: 88px;
+  }
+
+  .main-nav {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 10;
+    justify-content: space-around;
+    padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--line);
+    background: var(--surface);
+  }
+}
+
+.day {
+  display: grid;
+  gap: 12px;
+}
+
+.day-header {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) 44px;
+  align-items: center;
+  gap: 4px;
+}
+
+.day-header__title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 4px 8px;
+  text-align: center;
+}
+
+.day-header h1 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.capacity {
+  margin: 0;
+  color: var(--muted);
+}
+
+.capacity--over {
+  color: var(--danger);
+  font-weight: 600;
+}
+
+.timeline {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.entry-row {
+  display: grid;
+  grid-template-columns: 44px 44px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  touch-action: manipulation;
+}
+
+.entry-row--block {
+  background: var(--soft);
+}
+
+.entry-row--skipped .entry-row__title,
+.entry-row--cancelled .entry-row__title {
+  color: var(--muted);
+  text-decoration: line-through;
+}
+
+.entry-row--dragging {
+  z-index: 2;
+  box-shadow: var(--shadow);
+}
+
+.drag-handle {
+  min-width: 44px;
+  min-height: 44px;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  cursor: grab;
+  touch-action: none;
+}
+
+.status-button {
+  width: 32px;
+  height: 32px;
+  margin: 6px;
+  border: 2px solid var(--line);
+  border-radius: 50%;
+  background: var(--surface-strong);
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.status-button--done {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+}
+
+.entry-row__main {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px 10px;
+  min-width: 0;
+  min-height: 44px;
+  padding: 4px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+}
+
+.entry-row__title {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.entry-row__time {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.mark {
+  padding: 0 6px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+}
+
+.mark--warn {
+  background: #f6ead6;
+  color: #7a5320;
+}
+
+.time-split {
+  display: flex;
+  grid-column: 3 / -1;
+  height: 4px;
+  margin: 0 8px 6px 4px;
+  overflow: hidden;
+  border-radius: 2px;
+}
+
+.time-split__useful {
+  background: var(--accent);
+}
+
+.time-split__support {
+  background: var(--support);
+}
+
+.segments {
+  display: grid;
+  grid-column: 3 / -1;
+  gap: 2px;
+  margin: 0 8px 8px 4px;
+  padding: 0;
+  list-style: none;
+  font-size: 0.9rem;
+}
+
+.segment {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 8px;
+  border-left: 3px solid var(--accent);
+}
+
+.segment--support {
+  border-left-color: var(--support);
+}
+
+.add-entry {
+  display: grid;
+  gap: 8px;
+}
+
+.add-entry__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+}
+
+.add-entry input:not([type="checkbox"]),
+.dialog input:not([type="checkbox"]),
+.dialog select,
+.dialog textarea {
+  min-height: 44px;
+  min-width: 0;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface-strong);
+  color: var(--foreground);
+}
+
+.dialog textarea {
+  padding: 10px 12px;
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+}
+
+.toggle input {
+  width: 22px;
+  height: 22px;
+}
+
+.suggestions,
+.check-list {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.suggestion {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+  color: inherit;
+}
+
+.day-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.sheet {
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 10px;
+}
+
+.field textarea {
+  width: 100%;
+}
+
+.segment-edit {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 72px minmax(0, 96px) 44px;
+  gap: 6px;
+}
+
+.inline-create {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 6px;
+}
+
+.sheet__actions {
+  align-items: center;
+}
+
+.catalog-tree {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.catalog-tree ul {
+  display: grid;
+  gap: 4px;
+  margin: 6px 0 0;
+  padding: 0 0 0 14px;
+  list-style: none;
+}
+
+.catalog-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+}
+
+.catalog-item__name {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.catalog-item--archived .catalog-item__name {
+  color: var(--muted);
+}
