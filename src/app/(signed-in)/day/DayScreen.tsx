@@ -12,6 +12,7 @@ import type { Activity, Entry } from "@/lib/day/types";
 import { formatDate, useI18n } from "@/lib/i18n";
 import { useConnectivity } from "@/lib/offline/use-connectivity";
 import { AddEntry } from "./AddEntry";
+import { CapturePanel } from "./CapturePanel";
 import { CopyDialog } from "./CopyDialog";
 import { EntrySheet } from "./EntrySheet";
 import { Timeline } from "./Timeline";
@@ -117,6 +118,15 @@ export function DayScreen() {
             activities={catalog.data?.data.activities ?? []}
             closeRequired={date === today ? data.closeRequired : null}
             disabled={readOnly || mutations.create.isPending}
+            onAdd={(body) => mutations.create.mutateAsync(body).then(() => setError(undefined), report)}
+          />
+
+          <CapturePanel
+            key={`${date}-capture`}
+            text={data.cycle.captureText}
+            activities={catalog.data?.data.activities ?? []}
+            disabled={readOnly}
+            onSaveText={(body) => mutations.updateDay.mutateAsync(body).catch(report)}
             onAdd={(body) => mutations.create.mutateAsync(body).then(() => setError(undefined), report)}
           />
 

@@ -81,14 +81,14 @@ tables before code; every new route joins the cross-tenant registry.
 - [x] T030 [US6] Web cycles screen `web/src/app/(signed-in)/cycles/[horizon]/[start]/` (tabs, tiers, progress and pace, objective sheet with "more types", measurement quick input also from the day view)
 - [x] T031 [US7] Web cycle close and template proposals; templates editor in settings
 - [x] T032 [US7] E2E `web/e2e/objectives.spec.ts` (US6 and US7 independent tests)
-- [ ] T033 Slice 3 release (as T020)
+- [x] T033 Slice 3 release (as T020)
 
 ## Phase 7: US8 Capture and finish (P3)
 
-- [ ] T034 [P] [US8] Parser tests then `web/src/lib/capture/parse.ts` (pt and en; start vs duration; activity linking; 001 F1 lines)
-- [ ] T035 [US8] Capture panel on the day screen (text saved on the day, suggestions edit/accept/dismiss)
-- [ ] T036 [P] Export formatVersion 2 and Markdown in the chosen locale in `backend/src/modules/export/`, `backend/docs/export-format.md`, and `backend/test/integration/export*.test.ts`; account deletion test covers new tables
-- [ ] T037 [US8] E2E `web/e2e/capture.spec.ts` and a locale e2e (`web/e2e/locale.spec.ts`)
+- [x] T034 [P] [US8] Parser tests then `web/src/lib/capture/parse.ts` (pt and en; start vs duration; activity linking; 001 F1 lines)
+- [x] T035 [US8] Capture panel on the day screen (text saved on the day, suggestions edit/accept/dismiss)
+- [x] T036 [P] Export formatVersion 2 and Markdown in the chosen locale in `backend/src/modules/export/`, `backend/docs/export-format.md`, and `backend/test/integration/export*.test.ts`; account deletion test covers new tables
+- [x] T037 [US8] E2E `web/e2e/capture.spec.ts` and a locale e2e (`web/e2e/locale.spec.ts`)
 - [ ] T038 Slice 4 release (as T020)
 
 ## Phase 8: Verification

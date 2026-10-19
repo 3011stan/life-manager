@@ -752,3 +752,18 @@ h2 {
 .close {
   gap: 18px;
 }
+
+.suggestion-edit {
+  display: grid;
+  gap: 6px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.suggestion-edit > input {
+  min-height: 44px;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}

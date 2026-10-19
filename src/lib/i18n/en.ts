@@ -236,6 +236,15 @@ export const en = {
   "templates.add": "Add template",
   "templates.none": "No templates yet.",
 
+  "capture.title": "Capture",
+  "capture.open": "Capture as text",
+  "capture.label": "Write loose lines, one per item",
+  "capture.suggest": "Suggest entries",
+  "capture.none": "No suggestions from this text.",
+  "capture.accept": "Add",
+  "capture.dismiss": "Dismiss",
+  "capture.from": "From: {source}",
+
   "catalog.title": "Activities",
   "catalog.addPillar": "Add pillar",
   "catalog.addArea": "Add area",

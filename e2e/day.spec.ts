@@ -6,7 +6,8 @@ import { TEST_SIGN_IN_SECRET } from "./env";
 const ALLOWED = process.env.E2E_ALLOWED_EMAIL ?? "e2e@example.test";
 
 function uniqueDate(): string {
-  const day = new Date(Date.UTC(2090, 0, 1) + Math.floor(Math.random() * 3000) * 86_400_000);
+  // Days far apart from 2100 to about 7500, so runs practically never meet.
+  const day = new Date(Date.UTC(2100, 0, 1) + Math.floor(Math.random() * 2_000_000) * 86_400_000);
   return day.toISOString().slice(0, 10);
 }
 

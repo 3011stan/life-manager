@@ -7,7 +7,7 @@ const ALLOWED = process.env.E2E_CYCLES_EMAIL ?? "e2e-cycles@example.test";
 // A random far-future Sunday, so runs never share a week and no earlier week
 // has to be closed first.
 function uniqueSunday(): string {
-  const base = Date.UTC(2090, 0, 1) + Math.floor(Math.random() * 400) * 7 * 86_400_000;
+  const base = Date.UTC(2100, 0, 1) + Math.floor(Math.random() * 280_000) * 7 * 86_400_000;
   const d = new Date(base);
   d.setUTCDate(d.getUTCDate() - d.getUTCDay());
   return d.toISOString().slice(0, 10);
@@ -46,7 +46,7 @@ test("a weekly objective counts done entries of its activity and carries at the 
   // Do it once, on the same day the week was opened with (another spec may
   // change the week start day).
   await page.goto(`/day?date=${week}`);
-  await page.getByLabel("New entry").fill(activity.slice(0, 12));
+  await page.getByLabel("New entry").fill(activity);
   await page.getByRole("button", { name: new RegExp(`^${activity}`) }).click();
   await page.getByRole("button", { name: `Mark ${activity} done` }).click();
   await expect(page.getByText(/This week: Practice 3× 33%/)).toBeVisible();

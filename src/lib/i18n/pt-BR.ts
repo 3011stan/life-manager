@@ -237,6 +237,15 @@ export const ptBR: Dictionary = {
   "templates.add": "Adicionar template",
   "templates.none": "Nenhum template ainda.",
 
+  "capture.title": "Captura",
+  "capture.open": "Capturar em texto",
+  "capture.label": "Escreva linhas soltas, uma por item",
+  "capture.suggest": "Sugerir entradas",
+  "capture.none": "Nenhuma sugestão para este texto.",
+  "capture.accept": "Adicionar",
+  "capture.dismiss": "Descartar",
+  "capture.from": "De: {source}",
+
   "catalog.title": "Atividades",
   "catalog.addPillar": "Adicionar pilar",
   "catalog.addArea": "Adicionar área",
