@@ -5,10 +5,19 @@ import { getDay } from "@/lib/api/generated/days/days";
 import { addDays } from "@/lib/day/dates";
 import type { Entry } from "@/lib/day/types";
 import { useT } from "@/lib/i18n";
+import { closeOnBackdrop } from "@/components/dialog";
 
 // FR-016: copy chosen entries from another day; the routine stand-in until
 // recurrence exists.
-export function CopyDialog({ date, disabled, onCopy }: { date: string; disabled: boolean; onCopy: (fromDate: string, ids: string[]) => Promise<void> }) {
+interface Props {
+  date: string;
+  // Source entries this day already received by carry or copy (004 FR-003).
+  present: Set<string>;
+  disabled: boolean;
+  onCopy: (fromDate: string, ids: string[]) => Promise<void>;
+}
+
+export function CopyDialog({ date, present, disabled, onCopy }: Props) {
   const t = useT();
   const dialog = useRef<HTMLDialogElement>(null);
   const [fromDate, setFromDate] = useState(addDays(date, -1));
@@ -19,7 +28,7 @@ export function CopyDialog({ date, disabled, onCopy }: { date: string; disabled:
     setFromDate(target);
     const res = await getDay(target);
     setEntries(res.data.entries);
-    setChosen(new Set(res.data.entries.map((e) => e.id)));
+    setChosen(new Set(res.data.entries.map((e) => e.id).filter((id) => !present.has(id))));
   }
 
   function open() {
@@ -37,7 +46,7 @@ export function CopyDialog({ date, disabled, onCopy }: { date: string; disabled:
       <button type="button" className="ghost-button" onClick={open} disabled={disabled}>
         {t("day.copyFrom")}
       </button>
-      <dialog ref={dialog} className="dialog" aria-labelledby="copy-title">
+      <dialog onClick={closeOnBackdrop} ref={dialog} className="dialog" aria-labelledby="copy-title">
         <div className="stack">
           <h2 id="copy-title">{t("day.copyPick")}</h2>
           <input type="date" aria-label={t("day.copyPick")} value={fromDate} onChange={(e) => void load(e.target.value)} />
@@ -49,6 +58,7 @@ export function CopyDialog({ date, disabled, onCopy }: { date: string; disabled:
                   <input
                     type="checkbox"
                     checked={chosen.has(e.id)}
+                    disabled={present.has(e.id)}
                     onChange={(ev) =>
                       setChosen((prev) => {
                         const next = new Set(prev);
@@ -59,6 +69,7 @@ export function CopyDialog({ date, disabled, onCopy }: { date: string; disabled:
                     }
                   />
                   {e.title}
+                  {present.has(e.id) ? <span className="muted small"> · {t("day.copyPresent")}</span> : null}
                 </label>
               </li>
             ))}

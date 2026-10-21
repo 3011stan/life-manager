@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { Activity, Catalog, Segment } from "@/lib/day/types";
 import { useT } from "@/lib/i18n";
+import { closeOnBackdrop } from "@/components/dialog";
 
 export interface ActivityBody {
   name: string;
@@ -43,7 +44,7 @@ export function ActivitySheet({ activity, areaId, areas, onClose, onSave }: Prop
   const segmentTotal = form.defaultSegments.reduce((n, s) => n + s.minutes, 0);
 
   return (
-    <dialog ref={dialog} className="dialog sheet" aria-labelledby="activity-name" onClose={onClose}>
+    <dialog onClick={closeOnBackdrop} ref={dialog} className="dialog sheet" aria-labelledby="activity-name" onClose={onClose}>
       <form
         className="stack"
         onSubmit={(e) => {

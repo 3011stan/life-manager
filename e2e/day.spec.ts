@@ -102,3 +102,43 @@ test("the day fits a phone: no horizontal scroll and 44 px controls (SC-009)", a
   const handle = await page.getByRole("button", { name: /Move A long entry/ }).boundingBox();
   expect(handle?.height ?? 0).toBeGreaterThanOrEqual(44);
 });
+
+// Regression (004 finding 9): an entry moved to the top jumped back after a
+// refresh on databases that sort text by language rules (staging).
+test("an entry moved to the top stays there after a reload", async ({ page }) => {
+  const date = uniqueDate();
+  await signIn(page, date);
+  for (const title of ["First", "Second", "Third"]) await add(page, title);
+  // Keyboard reordering: same code path as drag, works on desktop and mobile.
+  const handle = page.getByRole("button", { name: "Move Third" });
+  await handle.focus();
+  // dnd-kit animates each keyboard step; give it a moment between keys.
+  for (const key of ["Space", "ArrowUp", "ArrowUp", "Space"]) {
+    await page.keyboard.press(key);
+    await page.waitForTimeout(250);
+  }
+  await expect(page.getByTestId("entry-row").first()).toContainText("Third");
+  await page.reload();
+  await expect(page.getByTestId("entry-row").first()).toContainText("Third");
+});
+
+// Regression (004 finding 11): checking an entry while typing the next one
+// cleared the text and moved rows.
+test("checking an entry keeps the add field and the order", async ({ page }) => {
+  await signIn(page, uniqueDate());
+  for (const title of ["One", "Two", "Three"]) await add(page, title);
+  await page.getByLabel("New entry").fill("Four, half typed");
+  await row(page, "Two").getByRole("button", { name: "Mark Two done" }).click();
+  await expect(page.getByLabel("New entry")).toHaveValue("Four, half typed");
+  await expect(page.getByTestId("entry-row")).toHaveText([/One/, /Two/, /Three/]);
+});
+
+// Regression (004 finding 2): the entry sheet did not close on an outside click.
+test("the entry sheet closes on a click outside it", async ({ page }) => {
+  await signIn(page, uniqueDate());
+  await add(page, "Sheet test");
+  await row(page, "Sheet test").locator(".entry-row__main").click();
+  await expect(page.getByLabel("Title")).toBeVisible();
+  await page.mouse.click(5, 5);
+  await expect(page.getByLabel("Title")).toHaveCount(0);
+});

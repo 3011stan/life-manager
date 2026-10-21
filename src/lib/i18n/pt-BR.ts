@@ -105,6 +105,7 @@ export const ptBR: Dictionary = {
   "day.copyFrom": "Copiar de outro dia",
   "day.copyPick": "Copiar entradas de",
   "day.copySelected": "Copiar selecionadas",
+  "day.copyPresent": "já está neste dia",
   "day.copyNone": "Nenhuma entrada nesse dia.",
   "day.weekEssentials": "Esta semana",
 

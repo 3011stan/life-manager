@@ -66,6 +66,13 @@ test("close a day: resolve, read the scores, carry one, drop one (US4, US5)", as
   await page.getByRole("button", { name: "Next day" }).click();
   await expect(page.getByTestId("entry-row")).toHaveCount(1);
   await expect(page.getByTestId("entry-row")).toContainText("Errands, part two");
+
+  // Regression (004 finding 12): copying the closed day again must not
+  // duplicate what was carried.
+  await page.getByRole("button", { name: "Copy from another day" }).click();
+  await expect(page.locator(".check-list li").filter({ hasText: "Errands" }).getByText("already on this day")).toBeVisible();
+  await page.getByRole("button", { name: "Copy selected" }).click();
+  await expect(page.getByTestId("entry-row").filter({ hasText: "Errands" })).toHaveCount(1);
 });
 
 test("planning today waits for yesterday's close; logging does not (Rule Zero)", async ({ page }, testInfo) => {

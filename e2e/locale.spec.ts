@@ -11,6 +11,10 @@ test("the interface switches between English and Portuguese (FR-044, SC-010)", a
   await page.getByLabel("Test sign-in email").fill(ALLOWED);
   await page.getByLabel("Test sign-in secret").fill(TEST_SIGN_IN_SECRET);
   await page.getByRole("button", { name: "Test sign-in" }).click();
+  // Start from English even if an earlier run stopped halfway.
+  const language = page.getByLabel(/Language|Idioma/);
+  await language.selectOption("en");
+  await page.getByRole("button", { name: /^(Save|Salvar)$/ }).click();
   await expect(page.getByRole("heading", { name: "Settings" })).toBeVisible();
 
   await page.getByLabel("Language").selectOption("pt-BR");

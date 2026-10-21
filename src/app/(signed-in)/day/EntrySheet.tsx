@@ -7,6 +7,7 @@ import { formatMinutes } from "@/lib/day/dates";
 import { keyForMove } from "@/lib/day/order";
 import type { Catalog, Entry, Segment } from "@/lib/day/types";
 import { useT } from "@/lib/i18n";
+import { closeOnBackdrop } from "@/components/dialog";
 
 type Status = Entry["status"];
 const STATUSES: Status[] = ["planned", "completed", "skipped", "cancelled"];
@@ -81,7 +82,7 @@ export function EntrySheet({ entry, entries, catalog, disabled, onClose, onSave,
   }
 
   return (
-    <dialog ref={dialog} className="dialog sheet" aria-labelledby="entry-title" onClose={onClose}>
+    <dialog onClick={closeOnBackdrop} ref={dialog} className="dialog sheet" aria-labelledby="entry-title" onClose={onClose}>
       <form
         className="stack"
         onSubmit={(e) => {

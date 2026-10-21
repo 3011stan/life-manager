@@ -390,7 +390,11 @@
                     "exportedAt",
                     "account",
                     "workspace",
-                    "securityEvents"
+                    "securityEvents",
+                    "catalog",
+                    "days",
+                    "cycles",
+                    "objectiveTemplates"
                   ],
                   "properties": {
                     "formatVersion": {
@@ -452,6 +456,8 @@
                             "weekStartDay",
                             "timeZone",
                             "defaultDailyCapacityMinutes",
+                            "locale",
+                            "longHorizonStartYear",
                             "updatedAt"
                           ],
                           "properties": {
@@ -466,6 +472,12 @@
                               "description": "IANA time zone"
                             },
                             "defaultDailyCapacityMinutes": {
+                              "type": "integer"
+                            },
+                            "locale": {
+                              "type": "string"
+                            },
+                            "longHorizonStartYear": {
                               "type": "integer"
                             },
                             "updatedAt": {
@@ -494,6 +506,23 @@
                           }
                         }
                       }
+                    },
+                    "catalog": {
+                      "type": "object",
+                      "properties": {},
+                      "additionalProperties": true
+                    },
+                    "days": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "cycles": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "objectiveTemplates": {
+                      "type": "array",
+                      "items": {}
                     }
                   }
                 }
@@ -2175,6 +2204,7 @@
                           "objectiveIds",
                           "contributesTo",
                           "carriedFromEntryId",
+                          "copiedFromEntryId",
                           "version"
                         ],
                         "properties": {
@@ -2338,6 +2368,16 @@
                             }
                           },
                           "carriedFromEntryId": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "copiedFromEntryId": {
                             "anyOf": [
                               {
                                 "type": "string"
@@ -2767,6 +2807,7 @@
                           "objectiveIds",
                           "contributesTo",
                           "carriedFromEntryId",
+                          "copiedFromEntryId",
                           "version"
                         ],
                         "properties": {
@@ -2930,6 +2971,16 @@
                             }
                           },
                           "carriedFromEntryId": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "copiedFromEntryId": {
                             "anyOf": [
                               {
                                 "type": "string"
@@ -3289,6 +3340,7 @@
                     "objectiveIds",
                     "contributesTo",
                     "carriedFromEntryId",
+                    "copiedFromEntryId",
                     "version",
                     "cycleReopened"
                   ],
@@ -3453,6 +3505,16 @@
                       }
                     },
                     "carriedFromEntryId": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "copiedFromEntryId": {
                       "anyOf": [
                         {
                           "type": "string"
@@ -3705,6 +3767,7 @@
                     "objectiveIds",
                     "contributesTo",
                     "carriedFromEntryId",
+                    "copiedFromEntryId",
                     "version",
                     "cycleReopened"
                   ],
@@ -3878,6 +3941,16 @@
                         }
                       ]
                     },
+                    "copiedFromEntryId": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
                     "version": {
                       "type": "integer"
                     },
@@ -4007,6 +4080,7 @@
                       "objectiveIds",
                       "contributesTo",
                       "carriedFromEntryId",
+                      "copiedFromEntryId",
                       "version"
                     ],
                     "properties": {
@@ -4179,6 +4253,16 @@
                           }
                         ]
                       },
+                      "copiedFromEntryId": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
                       "version": {
                         "type": "integer"
                       }
@@ -4261,6 +4345,7 @@
                           "objectiveIds",
                           "contributesTo",
                           "carriedFromEntryId",
+                          "copiedFromEntryId",
                           "version"
                         ],
                         "properties": {
@@ -4433,6 +4518,16 @@
                               }
                             ]
                           },
+                          "copiedFromEntryId": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
                           "version": {
                             "type": "integer"
                           }
@@ -4584,6 +4679,7 @@
                               "objectiveIds",
                               "contributesTo",
                               "carriedFromEntryId",
+                              "copiedFromEntryId",
                               "version"
                             ],
                             "properties": {
@@ -4747,6 +4843,16 @@
                                 }
                               },
                               "carriedFromEntryId": {
+                                "anyOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ]
+                              },
+                              "copiedFromEntryId": {
                                 "anyOf": [
                                   {
                                     "type": "string"
@@ -5133,6 +5239,7 @@
                           "objectiveIds",
                           "contributesTo",
                           "carriedFromEntryId",
+                          "copiedFromEntryId",
                           "version"
                         ],
                         "properties": {
@@ -5296,6 +5403,16 @@
                             }
                           },
                           "carriedFromEntryId": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "copiedFromEntryId": {
                             "anyOf": [
                               {
                                 "type": "string"

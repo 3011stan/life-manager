@@ -7,12 +7,12 @@ starts with a test that fails without the fix (constitution VIII).
 
 ## Phase 1: Defects (US1)
 
-- [ ] T001 [US1] Create the test template database with ICU `en-US` collation in `backend/test/helpers/global-setup.ts` and `backend/docker-compose.yml`; regression test "moving to the top survives a refetch" in `backend/test/integration/days.test.ts` (fails on the current schema)
-- [ ] T002 [US1] Migration: `order_key` columns `COLLATE "C"` in `backend/src/db/migrations/`; schema files updated
-- [ ] T003 [P] [US1] Regression e2e: drag to top, refresh, same order; check an entry while typing keeps focus and order, in `web/e2e/day.spec.ts`
-- [ ] T004 [US1] Optimistic updates without reorder and without disabling the add field in `web/src/app/(signed-in)/day/use-day.ts`, `AddEntry.tsx`, `Timeline.tsx` (memoized rows)
-- [ ] T005 [US1] Regression tests for copy after carry and copy twice in `backend/test/integration/days.test.ts`; `copied_from_entry_id` migration; copy skips present sources; copy dialog marks them in `web/src/app/(signed-in)/day/CopyDialog.tsx`
-- [ ] T006 [US1] Shared `Sheet` component closing on backdrop and Escape in `web/src/components/Sheet.tsx`; move entry, objective, activity, copy dialogs to it; e2e "click outside closes"
+- [x] T001 [US1] Create the test template database with ICU `en-US` collation in `backend/test/helpers/global-setup.ts` and `backend/docker-compose.yml`; regression test "moving to the top survives a refetch" in `backend/test/integration/days.test.ts` (fails on the current schema)
+- [x] T002 [US1] Migration: `order_key` columns `COLLATE "C"` in `backend/src/db/migrations/`; schema files updated
+- [x] T003 [P] [US1] Regression e2e: drag to top, refresh, same order; check an entry while typing keeps focus and order, in `web/e2e/day.spec.ts`
+- [x] T004 [US1] Optimistic updates without reorder and without disabling the add field in `web/src/app/(signed-in)/day/use-day.ts`, `AddEntry.tsx`, `Timeline.tsx` (memoized rows)
+- [x] T005 [US1] Regression tests for copy after carry and copy twice in `backend/test/integration/days.test.ts`; `copied_from_entry_id` migration; copy skips present sources; copy dialog marks them in `web/src/app/(signed-in)/day/CopyDialog.tsx`
+- [x] T006 [US1] Shared `Sheet` component closing on backdrop and Escape in `web/src/components/Sheet.tsx`; move entry, objective, activity, copy dialogs to it; e2e "click outside closes"
 
 ## Phase 2: Running-app tests (US2)
 

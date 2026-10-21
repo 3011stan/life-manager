@@ -104,6 +104,7 @@ export const en = {
   "day.copyFrom": "Copy from another day",
   "day.copyPick": "Copy entries from",
   "day.copySelected": "Copy selected",
+  "day.copyPresent": "already on this day",
   "day.copyNone": "No entries on that day.",
   "day.weekEssentials": "This week",
 

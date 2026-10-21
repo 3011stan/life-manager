@@ -142,6 +142,8 @@ export type ExportAccountData200OneWorkspaceSettings = {
   /** IANA time zone */
   timeZone: string;
   defaultDailyCapacityMinutes: number;
+  locale: string;
+  longHorizonStartYear: number;
   updatedAt: string;
 };
 
@@ -156,12 +158,18 @@ export type ExportAccountData200OneSecurityEventsItem = {
   occurredAt: string;
 };
 
+export type ExportAccountData200OneCatalog = { [key: string]: unknown };
+
 export type ExportAccountData200One = {
   formatVersion: number;
   exportedAt: string;
   account: ExportAccountData200OneAccount;
   workspace: ExportAccountData200OneWorkspace;
   securityEvents: ExportAccountData200OneSecurityEventsItem[];
+  catalog: ExportAccountData200OneCatalog;
+  days: unknown[];
+  cycles: unknown[];
+  objectiveTemplates: unknown[];
 };
 
 export type GetCatalog200PillarsItem = {
@@ -563,6 +571,7 @@ export type GetDay200EntriesItem = {
   objectiveIds: string[];
   contributesTo: string[];
   carriedFromEntryId: string | null;
+  copiedFromEntryId: string | null;
   version: number;
 };
 
@@ -685,6 +694,7 @@ export type UpdateDay200EntriesItem = {
   objectiveIds: string[];
   contributesTo: string[];
   carriedFromEntryId: string | null;
+  copiedFromEntryId: string | null;
   version: number;
 };
 
@@ -827,6 +837,7 @@ export type CreateEntry201 = {
   objectiveIds: string[];
   contributesTo: string[];
   carriedFromEntryId: string | null;
+  copiedFromEntryId: string | null;
   version: number;
   cycleReopened: boolean;
 };
@@ -934,6 +945,7 @@ export type UpdateEntry200 = {
   objectiveIds: string[];
   contributesTo: string[];
   carriedFromEntryId: string | null;
+  copiedFromEntryId: string | null;
   version: number;
   cycleReopened: boolean;
 };
@@ -994,6 +1006,7 @@ export type CopyEntries201Item = {
   objectiveIds: string[];
   contributesTo: string[];
   carriedFromEntryId: string | null;
+  copiedFromEntryId: string | null;
   version: number;
 };
 
@@ -1043,6 +1056,7 @@ export type GetDayClose200UnresolvedItem = {
   objectiveIds: string[];
   contributesTo: string[];
   carriedFromEntryId: string | null;
+  copiedFromEntryId: string | null;
   version: number;
 };
 
@@ -1123,6 +1137,7 @@ export type GetDayClose200CarryCandidatesItemEntry = {
   objectiveIds: string[];
   contributesTo: string[];
   carriedFromEntryId: string | null;
+  copiedFromEntryId: string | null;
   version: number;
 };
 
@@ -1242,6 +1257,7 @@ export type CloseDay200EntriesItem = {
   objectiveIds: string[];
   contributesTo: string[];
   carriedFromEntryId: string | null;
+  copiedFromEntryId: string | null;
   version: number;
 };
 

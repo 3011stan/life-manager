@@ -241,11 +241,16 @@ h2 {
 
 .dialog {
   width: min(calc(100% - 32px), 480px);
-  padding: 18px;
+  padding: 0;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--surface);
   color: var(--foreground);
+}
+
+.dialog > * {
+  margin: 0;
+  padding: 18px;
 }
 
 .dialog::backdrop {

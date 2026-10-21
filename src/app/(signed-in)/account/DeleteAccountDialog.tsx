@@ -7,6 +7,7 @@ import { useDeleteAccount } from "@/lib/api/generated/account/account";
 import { ApiError } from "@/lib/api/mutator";
 import { useClearLocalData } from "@/lib/api/query-client";
 import { useT } from "@/lib/i18n";
+import { closeOnBackdrop } from "@/components/dialog";
 
 // API contract: stays literal in every language.
 const PHRASE = "DELETE MY ACCOUNT";
@@ -52,7 +53,7 @@ export function DeleteAccountDialog({ disabled }: { disabled: boolean }) {
       <button type="button" className="danger-button" disabled={disabled} onClick={open}>
         {t("account.deleteButton")}
       </button>
-      <dialog ref={dialog} className="dialog" aria-labelledby="delete-title">
+      <dialog onClick={closeOnBackdrop} ref={dialog} className="dialog" aria-labelledby="delete-title">
         <form className="stack" onSubmit={(e) => void confirm(e)}>
           <h2 id="delete-title">{t("account.deleteConfirmTitle")}</h2>
           <p>{t("account.deleteConfirmText")}</p>

@@ -10,6 +10,7 @@ import { addDays, todayIn, deviceTimeZone } from "@/lib/day/dates";
 import { progressText } from "@/lib/day/objectives";
 import { HORIZONS, type CycleView, type Objective } from "@/lib/day/types";
 import { useT } from "@/lib/i18n";
+import { closeOnBackdrop } from "@/components/dialog";
 
 type TargetType = Objective["targetType"];
 const BASIC: TargetType[] = ["count", "duration"];
@@ -123,7 +124,7 @@ export function ObjectiveSheet({ view, objective, disabled, onClose, onChanged }
   const types = showMore ? [...BASIC, ...MORE] : BASIC;
 
   return (
-    <dialog ref={dialog} className="dialog sheet" aria-labelledby="objective-title" onClose={onClose}>
+    <dialog onClick={closeOnBackdrop} ref={dialog} className="dialog sheet" aria-labelledby="objective-title" onClose={onClose}>
       <form
         className="stack"
         onSubmit={(e) => {

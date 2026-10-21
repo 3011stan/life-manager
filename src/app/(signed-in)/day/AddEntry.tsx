@@ -36,13 +36,14 @@ export function AddEntry({ activities, closeRequired, disabled, onAdd }: Props) 
     const name = activity?.name ?? title.trim();
     if (!name) return;
     const exact = activity ?? activities.find((a) => !a.archivedAt && fold(a.name) === fold(name));
+    // Clear at once so typing the next entry is never wiped by this save (004 finding 11).
+    setTitle("");
     await onAdd({
       id: crypto.randomUUID(),
       title: exact?.name ?? name,
       ...(exact ? { activityId: exact.id } : {}),
       ...(logDone ? { isUnplanned: true, actualMinutes: exact?.defaultMinutes ?? 30 } : {}),
     });
-    setTitle("");
   }
 
   function submit(event: FormEvent<HTMLFormElement>) {

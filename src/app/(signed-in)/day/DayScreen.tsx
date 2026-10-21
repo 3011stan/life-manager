@@ -117,7 +117,7 @@ export function DayScreen() {
           <AddEntry
             activities={catalog.data?.data.activities ?? []}
             closeRequired={date === today ? data.closeRequired : null}
-            disabled={readOnly || mutations.create.isPending}
+            disabled={readOnly}
             onAdd={(body) => mutations.create.mutateAsync(body).then(() => setError(undefined), report)}
           />
 
@@ -136,7 +136,10 @@ export function DayScreen() {
                 {t("close.open")}
               </Link>
             ) : null}
-            <CopyDialog date={date} disabled={readOnly} onCopy={(fromDate, entryIds) => mutations.copy.mutateAsync({ fromDate, entryIds }).then(() => undefined, report)} />
+            <CopyDialog
+              date={date}
+              present={new Set(data.entries.flatMap((e) => [e.carriedFromEntryId, e.copiedFromEntryId]).filter((id): id is string => id !== null))}
+              disabled={readOnly} onCopy={(fromDate, entryIds) => mutations.copy.mutateAsync({ fromDate, entryIds }).then(() => undefined, report)} />
           </div>
 
           {entry ? (
