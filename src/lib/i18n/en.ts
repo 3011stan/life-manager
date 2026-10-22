@@ -261,6 +261,9 @@ export const en = {
   "day.undo": "Undo",
   "day.deleteRow": "Delete {title}",
 
+  "catalog.search": "Search activities",
+  "catalog.parts": "{n} parts",
+  "catalog.organize": "Organize pillars and areas",
   "catalog.title": "Activities",
   "catalog.addPillar": "Add pillar",
   "catalog.addArea": "Add area",

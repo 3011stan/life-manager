@@ -23,9 +23,11 @@ interface Props {
   areas: Catalog["areas"];
   onClose: () => void;
   onSave: (body: ActivityBody) => Promise<void>;
+  onArchive?: (() => Promise<void>) | undefined;
+  onDelete?: (() => Promise<void>) | undefined;
 }
 
-export function ActivitySheet({ activity, areaId, areas, onClose, onSave }: Props) {
+export function ActivitySheet({ activity, areaId, areas, onClose, onSave, onArchive, onDelete }: Props) {
   const t = useT();
   const dialog = useRef<HTMLDialogElement>(null);
   const [form, setForm] = useState<ActivityBody>({
@@ -130,6 +132,16 @@ export function ActivitySheet({ activity, areaId, areas, onClose, onSave }: Prop
           {t("entry.deepWork")}
         </label>
         <div className="button-row">
+          {onArchive ? (
+            <button type="button" className="ghost-button" onClick={() => void onArchive()}>
+              {activity?.archivedAt ? t("common.restore") : t("common.archive")}
+            </button>
+          ) : null}
+          {onDelete ? (
+            <button type="button" className="ghost-button" onClick={() => void onDelete()}>
+              {t("common.delete")}
+            </button>
+          ) : null}
           <span className="spacer" />
           <button type="button" className="ghost-button" onClick={() => dialog.current?.close()}>
             {t("common.cancel")}

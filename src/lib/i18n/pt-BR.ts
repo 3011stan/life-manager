@@ -262,6 +262,9 @@ export const ptBR: Dictionary = {
   "day.undo": "Desfazer",
   "day.deleteRow": "Excluir {title}",
 
+  "catalog.search": "Buscar atividades",
+  "catalog.parts": "{n} partes",
+  "catalog.organize": "Organizar pilares e áreas",
   "catalog.title": "Atividades",
   "catalog.addPillar": "Adicionar pilar",
   "catalog.addArea": "Adicionar área",

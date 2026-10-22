@@ -17,6 +17,7 @@ import {
 } from "@/lib/api/generated/catalog/catalog";
 import { ApiError } from "@/lib/api/mutator";
 import type { Activity } from "@/lib/day/types";
+import { formatMinutes } from "@/lib/day/dates";
 import { useT } from "@/lib/i18n";
 import { useConnectivity } from "@/lib/offline/use-connectivity";
 import { ActivitySheet } from "./ActivitySheet";
@@ -40,6 +41,8 @@ export function CatalogScreen() {
   const [editing, setEditing] = useState<Activity | "new">();
   const [newActivityArea, setNewActivityArea] = useState<string>();
   const [error, setError] = useState<string>();
+  const [organize, setOrganize] = useState(false);
+  const [query, setQuery] = useState("");
 
   const refresh = () => queryClient.invalidateQueries({ queryKey: getGetCatalogQueryKey() });
 
@@ -96,9 +99,90 @@ export function CatalogScreen() {
     </>
   );
 
+  const sheet = editing ? (
+    <ActivitySheet
+      activity={editing === "new" ? undefined : editing}
+      areaId={editing === "new" ? (newActivityArea ?? data.areas.find((a) => !a.archivedAt)?.id ?? "") : editing.areaId}
+      areas={data.areas.filter((a) => !a.archivedAt)}
+      onClose={() => setEditing(undefined)}
+      onArchive={
+        editing === "new"
+          ? undefined
+          : () => run(() => ARCHIVE.activity(editing.id, !editing.archivedAt)).then(() => setEditing(undefined))
+      }
+      onDelete={editing === "new" ? undefined : () => remove("activity", editing.id, editing.name).then(() => setEditing(undefined))}
+      onSave={(body) =>
+        run(() => (editing === "new" ? createActivity({ id: crypto.randomUUID(), ...body }) : updateActivity(editing.id, body))).then(() => setEditing(undefined))
+      }
+    />
+  ) : null;
+
+  // 004 US5: a flat, searchable list; pillars and areas live under "Organize".
+  if (!organize) {
+    const fold = (v: string) => v.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase();
+    const areaById = new Map(data.areas.map((a) => [a.id, a.name]));
+    const list = visible(data.activities)
+      .filter((a) => fold(a.name).includes(fold(query.trim())))
+      .sort((a, b) => a.name.localeCompare(b.name));
+    return (
+      <section className="panel">
+        <h1>{t("catalog.title")}</h1>
+        {error ? (
+          <p role="alert" className="notice notice--error">
+            {error}
+          </p>
+        ) : null}
+        <div className="add-entry__row">
+          <input aria-label={t("catalog.search")} placeholder={t("catalog.search")} value={query} onChange={(e) => setQuery(e.target.value)} />
+          <button
+            type="button"
+            className="primary-button"
+            disabled={readOnly}
+            onClick={() => {
+              setNewActivityArea(undefined);
+              setEditing("new");
+            }}
+          >
+            {t("catalog.addActivity")}
+          </button>
+        </div>
+        <ul className="timeline" data-testid="activity-list">
+          {list.map((a) => (
+            <li key={a.id}>
+              <button type="button" className={`activity-row ${a.archivedAt ? "catalog-item--archived" : ""}`} onClick={() => setEditing(a)}>
+                <span className="catalog-item__name">{a.name}</span>
+                <span className="muted small">
+                  {[
+                    areaById.get(a.areaId),
+                    formatMinutes(a.defaultMinutes),
+                    a.defaultSegments.length > 0 ? t("catalog.parts", { n: a.defaultSegments.length }) : null,
+                    a.archivedAt ? t("catalog.archived") : null,
+                  ]
+                    .filter(Boolean)
+                    .join(" · ")}
+                </span>
+              </button>
+            </li>
+          ))}
+        </ul>
+        <label className="toggle">
+          <input type="checkbox" checked={showArchived} onChange={(e) => setShowArchived(e.target.checked)} />
+          {t("catalog.showArchived")}
+        </label>
+        <button type="button" className="link-button" onClick={() => setOrganize(true)}>
+          {t("catalog.organize")}
+        </button>
+        {sheet}
+      </section>
+    );
+  }
+
   return (
     <section className="panel">
-      <h1>{t("catalog.title")}</h1>
+      <button type="button" className="link-button" onClick={() => setOrganize(false)}>
+        ‹ {t("catalog.title")}
+      </button>
+      <h1>{t("catalog.organize")}</h1>
       {error ? (
         <p role="alert" className="notice notice--error">
           {error}
@@ -159,19 +243,7 @@ export function CatalogScreen() {
       <button type="button" className="ghost-button" disabled={readOnly} onClick={() => add("pillar")}>
         {t("catalog.addPillar")}
       </button>
-      {editing ? (
-        <ActivitySheet
-          activity={editing === "new" ? undefined : editing}
-          areaId={editing === "new" ? (newActivityArea ?? "") : editing.areaId}
-          areas={data.areas.filter((a) => !a.archivedAt)}
-          onClose={() => setEditing(undefined)}
-          onSave={(body) =>
-            run(() => (editing === "new" ? createActivity({ id: crypto.randomUUID(), ...body }) : updateActivity(editing.id, body))).then(() =>
-              setEditing(undefined),
-            )
-          }
-        />
-      ) : null}
+      {sheet}
     </section>
   );
 }

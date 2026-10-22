@@ -35,7 +35,7 @@ starts with a test that fails without the fix (constitution VIII).
 
 ## Phase 5: Activities (US5)
 
-- [ ] T018 [US5] Flat searchable activities list with area label and segment count; "Organize" view for pillars and areas; e2e
+- [x] T018 [US5] Flat searchable activities list with area label and segment count; "Organize" view for pillars and areas; e2e
 
 ## Phase 6: Verification
 
