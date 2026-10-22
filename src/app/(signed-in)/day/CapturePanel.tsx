@@ -5,6 +5,7 @@ import type { CreateEntryBody, UpdateDayBody } from "@/lib/api/generated/lifeMan
 import { parseCapture, type Suggestion } from "@/lib/capture/parse";
 import type { Activity } from "@/lib/day/types";
 import { useT } from "@/lib/i18n";
+import { DurationInput } from "@/components/DurationInput";
 
 interface Props {
   text: string;
@@ -73,7 +74,7 @@ export function CapturePanel({ text, activities, disabled, onSaveText, onAdd }: 
               </label>
               <label className="field">
                 {t("entry.planned")}
-                <input type="number" min={0} max={1440} value={s.minutes ?? ""} onChange={(e) => update(s.key, { minutes: e.target.value === "" ? null : Number(e.target.value) })} />
+                <DurationInput label={t("entry.planned")} value={s.minutes} allowEmpty onChange={(m) => update(s.key, { minutes: m })} />
               </label>
               <label className="field">
                 {t("entry.status")}

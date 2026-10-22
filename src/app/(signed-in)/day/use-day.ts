@@ -7,6 +7,7 @@ import {
   createEntry,
   deleteEntry,
   getGetDayQueryKey,
+  restoreEntry,
   updateDay,
   updateEntry,
   type getDayResponse,
@@ -54,12 +55,28 @@ export function useDayMutations(date: string) {
     onSettled: refresh,
   });
 
-  const remove = useMutation({ mutationFn: (id: string) => deleteEntry(id), onSettled: refresh });
+  // Removal is optimistic so a swipe feels instant; Undo restores (004 D4).
+  const remove = useMutation({
+    mutationFn: (id: string) => deleteEntry(id),
+    onMutate: async (id) => {
+      await queryClient.cancelQueries({ queryKey: key });
+      const previous = queryClient.getQueryData<getDayResponse>(key);
+      queryClient.setQueryData<getDayResponse>(key, (old) =>
+        old ? { ...old, data: { ...old.data, entries: old.data.entries.filter((e) => e.id !== id && e.groupId !== id) } } : old,
+      );
+      return { previous };
+    },
+    onError: (_error, _id, context) => {
+      if (context?.previous) queryClient.setQueryData(key, context.previous);
+    },
+    onSettled: refresh,
+  });
+  const restore = useMutation({ mutationFn: (id: string) => restoreEntry(id), onSettled: refresh });
   const updateDayFields = useMutation({ mutationFn: (body: UpdateDayBody) => updateDay(date, body), onSettled: refresh });
   const copy = useMutation({
     mutationFn: ({ fromDate, entryIds }: { fromDate: string; entryIds: string[] }) => copyEntries(date, { fromDate, entryIds }),
     onSettled: refresh,
   });
 
-  return { create, update, remove, updateDay: updateDayFields, copy };
+  return { create, update, remove, restore, updateDay: updateDayFields, copy };
 }

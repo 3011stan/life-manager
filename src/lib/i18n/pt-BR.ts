@@ -247,6 +247,21 @@ export const ptBR: Dictionary = {
   "capture.dismiss": "Descartar",
   "capture.from": "De: {source}",
 
+  "duration.invalid": "Use minutos ou horas, como 45, 1h ou 1h30.",
+
+  "group.title": "Nome do grupo",
+  "group.label": "Grupo",
+  "group.none": "Sem grupo",
+  "group.delete": "Excluir grupo (mantém as entradas)",
+  "objective.countsFor": "Conta para",
+  "objective.countsForNone": "Nenhum objetivo ainda.",
+  "objective.linkByHand": "Vincular a um objetivo",
+  "objective.mark": "Conta para um objetivo",
+  "day.addHint": "Termine com “:” para criar um grupo, como “JIB:”.",
+  "day.deleted": "“{title}” excluída.",
+  "day.undo": "Desfazer",
+  "day.deleteRow": "Excluir {title}",
+
   "catalog.title": "Atividades",
   "catalog.addPillar": "Adicionar pilar",
   "catalog.addArea": "Adicionar área",

@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import type { Activity, Catalog, Segment } from "@/lib/day/types";
 import { useT } from "@/lib/i18n";
 import { closeOnBackdrop } from "@/components/dialog";
+import { DurationInput } from "@/components/DurationInput";
+import { formatMinutes } from "@/lib/day/dates";
 
 export interface ActivityBody {
   name: string;
@@ -68,15 +70,11 @@ export function ActivitySheet({ activity, areaId, areas, onClose, onSave }: Prop
         </label>
         <label className="field">
           {t("catalog.defaultMinutes")}
-          <input
-            type="number"
-            inputMode="numeric"
-            min={0}
-            max={1440}
-            value={form.defaultSegments.length > 0 ? segmentTotal : form.defaultMinutes}
-            disabled={form.defaultSegments.length > 0}
-            onChange={(e) => set("defaultMinutes", Number(e.target.value))}
-          />
+          {form.defaultSegments.length > 0 ? (
+            <input aria-label={t("catalog.defaultMinutes")} value={formatMinutes(segmentTotal)} disabled />
+          ) : (
+            <DurationInput label={t("catalog.defaultMinutes")} value={form.defaultMinutes} onChange={(m) => set("defaultMinutes", m)} />
+          )}
         </label>
         <fieldset className="stack plain-fieldset">
           <legend className="field">{t("entry.segments")}</legend>
@@ -88,13 +86,10 @@ export function ActivitySheet({ activity, areaId, areas, onClose, onSave }: Prop
                 maxLength={120}
                 onChange={(e) => set("defaultSegments", form.defaultSegments.map((x) => (x.id === s.id ? { ...x, title: e.target.value } : x)))}
               />
-              <input
-                aria-label={t("entry.segmentMinutes")}
-                type="number"
-                min={1}
-                max={1440}
+              <DurationInput
+                label={t("entry.segmentMinutes")}
                 value={s.minutes}
-                onChange={(e) => set("defaultSegments", form.defaultSegments.map((x) => (x.id === s.id ? { ...x, minutes: Number(e.target.value) } : x)))}
+                onChange={(m) => set("defaultSegments", form.defaultSegments.map((x) => (x.id === s.id ? { ...x, minutes: Math.max(1, m) } : x)))}
               />
               <select
                 aria-label={t("entry.timeValue")}

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useGetCatalog } from "@/lib/api/generated/catalog/catalog";
 import { useGetDay } from "@/lib/api/generated/days/days";
 import { useGetWorkspaceSettings } from "@/lib/api/generated/settings/settings";
@@ -32,6 +32,16 @@ export function DayScreen() {
   const { readOnly } = useConnectivity();
   const [editing, setEditing] = useState<string>();
   const [error, setError] = useState<string>();
+  const [undo, setUndo] = useState<{ id: string; title: string }>();
+  const undoTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
+
+  function remove(entry: Entry) {
+    setEditing(undefined);
+    setUndo({ id: entry.id, title: entry.title });
+    clearTimeout(undoTimer.current);
+    undoTimer.current = setTimeout(() => setUndo(undefined), 5000);
+    mutations.remove.mutateAsync(entry.id).catch(report);
+  }
 
   const activities = useMemo(() => new Map<string, Activity>((catalog.data?.data.activities ?? []).map((a) => [a.id, a])), [catalog.data]);
 
@@ -107,6 +117,7 @@ export function DayScreen() {
             disabled={readOnly}
             onOpen={setEditing}
             onMove={(id, orderKey) => mutations.update.mutateAsync({ id, patch: { orderKey } }).catch(report)}
+            onDelete={remove}
             onToggle={(e) =>
               mutations.update
                 .mutateAsync({ id: e.id, patch: { status: e.status === "planned" ? "completed" : "planned" } })
@@ -120,6 +131,22 @@ export function DayScreen() {
             disabled={readOnly}
             onAdd={(body) => mutations.create.mutateAsync(body).then(() => setError(undefined), report)}
           />
+
+          {undo ? (
+            <p className="toast" role="status">
+              {t("day.deleted", { title: undo.title })}{" "}
+              <button
+                type="button"
+                className="link-button"
+                onClick={() => {
+                  mutations.restore.mutateAsync(undo.id).catch(report);
+                  setUndo(undefined);
+                }}
+              >
+                {t("day.undo")}
+              </button>
+            </p>
+          ) : null}
 
           <CapturePanel
             key={`${date}-capture`}
@@ -147,11 +174,12 @@ export function DayScreen() {
               key={entry.id}
               entry={entry}
               entries={data.entries}
+              objectives={data.objectives}
               catalog={catalog.data?.data}
               disabled={readOnly}
               onClose={() => setEditing(undefined)}
               onSave={(patch) => mutations.update.mutateAsync({ id: entry.id, patch }).then(() => setEditing(undefined), report)}
-              onDelete={() => mutations.remove.mutateAsync(entry.id).then(() => setEditing(undefined), report)}
+              onDelete={async () => remove(entry)}
             />
           ) : null}
         </>

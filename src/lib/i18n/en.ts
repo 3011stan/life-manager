@@ -246,6 +246,21 @@ export const en = {
   "capture.dismiss": "Dismiss",
   "capture.from": "From: {source}",
 
+  "duration.invalid": "Use minutes or hours, like 45, 1h, or 1h30.",
+
+  "group.title": "Group name",
+  "group.label": "Group",
+  "group.none": "No group",
+  "group.delete": "Delete group (keeps its entries)",
+  "objective.countsFor": "Counts for",
+  "objective.countsForNone": "No objective yet.",
+  "objective.linkByHand": "Link to an objective",
+  "objective.mark": "Counts for an objective",
+  "day.addHint": "End with “:” to start a group, like “JIB:”.",
+  "day.deleted": "“{title}” deleted.",
+  "day.undo": "Undo",
+  "day.deleteRow": "Delete {title}",
+
   "catalog.title": "Activities",
   "catalog.addPillar": "Add pillar",
   "catalog.addArea": "Add area",

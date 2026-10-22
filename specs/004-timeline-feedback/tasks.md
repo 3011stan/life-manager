@@ -16,22 +16,22 @@ starts with a test that fails without the fix (constitution VIII).
 
 ## Phase 2: Running-app tests (US2)
 
-- [ ] T007 [US2] Reusable e2e workflow (Postgres ICU, migrations, API, web build, Playwright desktop + mobile, allow-listed e2e accounts) in `web/.github/workflows/e2e.yml` and `backend/.github/workflows/e2e.yml`; staging deploy needs it
+- [x] T007 [US2] Reusable e2e workflow (Postgres ICU, migrations, API, web build, Playwright desktop + mobile, allow-listed e2e accounts) in `web/.github/workflows/e2e.yml` and `backend/.github/workflows/e2e.yml`; staging deploy needs it
 - [ ] T008 [US2] Owner: create a fine-grained read-only token for the backend repo and save it as `BACKEND_READ_TOKEN` in the web repo
-- [ ] T009 [US2] `web/e2e/smoke.spec.ts` and a post-deploy job against staging using `VERCEL_AUTOMATION_BYPASS_SECRET` and `TEST_SIGN_IN_SECRET` (002 T061)
-- [ ] T010 [US2] Prove the gate: a throwaway branch with a broken day screen fails CI and does not deploy (002 T067); record in verification
+- [x] T009 [US2] (smoke skips with a warning until the owner adds `VERCEL_AUTOMATION_BYPASS_SECRET` to the backend `staging` environment) `web/e2e/smoke.spec.ts` and a post-deploy job against staging using `VERCEL_AUTOMATION_BYPASS_SECRET` and `TEST_SIGN_IN_SECRET` (002 T061)
+- [x] T010 [US2] Prove the gate: a throwaway branch with a broken day screen fails CI and does not deploy (002 T067); record in verification
 
 ## Phase 3: Readability (US3)
 
-- [ ] T011 [US3] Row shows the title; activity as muted label when different, in `web/src/app/(signed-in)/day/Timeline.tsx`; e2e with two "Study" entries
-- [ ] T012 [US3] Groups: tests then `kind`/`group_id` (schema, routes, scores exclude headings) in `backend/src/modules/days/`; heading rows, indentation, group total, drag moves the group, in the web timeline
-- [ ] T013 [US3] Objective mark on rows; entry sheet lists the objectives an entry counts for with their parent chain; manual link picker of active objectives
-- [ ] T014 [US3] Export formatVersion 3 (`kind`, `groupId`, `copiedFromEntryId`) and `docs/export-format.md`
+- [x] T011 [US3] Row shows the title; activity as muted label when different, in `web/src/app/(signed-in)/day/Timeline.tsx`; e2e with two "Study" entries
+- [x] T012 [US3] Groups: tests then `kind`/`group_id` (schema, routes, scores exclude headings) in `backend/src/modules/days/`; heading rows, indentation, group total, drag moves the group, in the web timeline
+- [x] T013 [US3] Objective mark on rows; entry sheet lists the objectives an entry counts for with their parent chain; manual link picker of active objectives
+- [x] T014 [US3] Export formatVersion 3 (`kind`, `groupId`, `copiedFromEntryId`) and `docs/export-format.md`
 
 ## Phase 4: Input (US4)
 
-- [ ] T015 [P] [US4] `web/src/lib/day/duration.ts` with tests (both languages); used by every minutes field
-- [ ] T016 [US4] Swipe-left Delete with Undo; `POST /v1/entries/{id}/restore` with tests and isolation check
+- [x] T015 [P] [US4] `web/src/lib/day/duration.ts` with tests (both languages); used by every minutes field
+- [x] T016 [US4] Swipe-left Delete with Undo; `POST /v1/entries/{id}/restore` with tests and isolation check
 
 ## Phase 5: Activities (US5)
 

@@ -35,6 +35,12 @@ export function AddEntry({ activities, closeRequired, disabled, onAdd }: Props) 
   async function add(activity?: Activity) {
     const name = activity?.name ?? title.trim();
     if (!name) return;
+    // "JIB:" starts a group, like the owner's plain-text lists (004 D1).
+    if (!activity && name.endsWith(":") && name.length > 1) {
+      setTitle("");
+      await onAdd({ id: crypto.randomUUID(), title: name.slice(0, -1).trim(), kind: "heading" });
+      return;
+    }
     const exact = activity ?? activities.find((a) => !a.archivedAt && fold(a.name) === fold(name));
     // Clear at once so typing the next entry is never wiped by this save (004 finding 11).
     setTitle("");
@@ -78,6 +84,7 @@ export function AddEntry({ activities, closeRequired, disabled, onAdd }: Props) 
           {t("common.add")}
         </button>
       </div>
+      <p className="muted small">{t("day.addHint")}</p>
       <label className="toggle">
         <input type="checkbox" checked={logDone} onChange={(e) => setLogDone(e.target.checked)} disabled={disabled} />
         {t("day.logDone")}

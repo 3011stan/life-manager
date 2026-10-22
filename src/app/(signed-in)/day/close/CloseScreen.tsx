@@ -11,6 +11,7 @@ import type { Activity } from "@/lib/day/types";
 import { formatDate, useI18n } from "@/lib/i18n";
 import type { MessageKey } from "@/lib/i18n/en";
 import { useConnectivity } from "@/lib/offline/use-connectivity";
+import { DurationInput } from "@/components/DurationInput";
 
 type Decision = "confirmed" | "dismissed";
 type CheckInKey = "physicalEnergy" | "mentalEnergy" | "emotionalEnergy" | "satisfaction";
@@ -143,14 +144,7 @@ export function CloseScreen() {
                 return (
                   <li key={c.entry.id} className="carry-row" data-testid="carry-row">
                     <input aria-label={t("entry.title")} value={d.title} maxLength={200} onChange={(e) => set({ title: e.target.value })} />
-                    <input
-                      aria-label={t("entry.planned")}
-                      type="number"
-                      min={1}
-                      max={1440}
-                      value={d.minutes}
-                      onChange={(e) => set({ minutes: Number(e.target.value) })}
-                    />
+                    <DurationInput label={t("entry.planned")} value={d.minutes} onChange={(m) => set({ minutes: Math.max(1, m) })} />
                     <button type="button" className={d.decision === "confirmed" ? "primary-button" : "ghost-button"} aria-pressed={d.decision === "confirmed"} onClick={() => set({ decision: "confirmed" })}>
                       {t("close.confirm")}
                     </button>

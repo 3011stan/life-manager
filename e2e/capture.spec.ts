@@ -32,7 +32,7 @@ test("capture loose lines and add only the accepted suggestions (US8)", async ({
   await expect(academia.getByLabel("Start")).toHaveValue("19:00");
   await expect(academia.getByLabel("Planned minutes")).toHaveValue("");
   const projeto = suggestions.filter({ hasText: "umas 2h" });
-  await expect(projeto.getByLabel("Planned minutes")).toHaveValue("120");
+  await expect(projeto.getByLabel("Planned minutes")).toHaveValue("2h");
   await expect(projeto.getByLabel("Start")).toHaveValue("");
 
   await projeto.getByLabel("Title").fill("Projeto X, parte 1");

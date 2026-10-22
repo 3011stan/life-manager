@@ -50,6 +50,12 @@ test("a weekly objective counts done entries of its activity and carries at the 
   await page.getByRole("button", { name: new RegExp(`^${activity}`) }).click();
   await page.getByRole("button", { name: `Mark ${activity} done` }).click();
   await expect(page.getByText(/This week: Practice 3× 33%/)).toBeVisible();
+  // 004 FR-010: the row is marked and the sheet shows what it counts for.
+  const done = page.getByTestId("entry-row").filter({ hasText: activity });
+  await expect(done.getByLabel("Counts for an objective")).toBeVisible();
+  await done.locator(".entry-row__main").click();
+  await expect(page.getByTestId("objective-chain")).toContainText("Practice 3× (Week)");
+  await page.getByRole("button", { name: "Cancel" }).click();
 
   await page.goto(`/cycles?h=week&date=${week}`);
   await expect(page.getByTestId("objective-row").filter({ hasText: "Practice 3×" })).toContainText("1 / 3");

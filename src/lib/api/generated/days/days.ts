@@ -32,6 +32,7 @@ import type {
   CreateEntryBody,
   GetDay200,
   GetDayClose200,
+  RestoreEntry200,
   UpdateDay200,
   UpdateDayBody,
   UpdateEntry200,
@@ -526,6 +527,85 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
         TContext
       > => {
       return useMutation(getDeleteEntryMutationOptions(options), queryClient);
+    }
+    export type restoreEntryResponse200 = {
+  data: RestoreEntry200
+  status: 200
+}
+
+export type restoreEntryResponseSuccess = (restoreEntryResponse200) & {
+  headers: Headers;
+};
+;
+
+export type restoreEntryResponse = (restoreEntryResponseSuccess)
+
+export const getRestoreEntryUrl = (id: string,) => {
+
+
+
+
+  return `/v1/entries/${id}/restore`
+}
+
+export const restoreEntry = async (id: string, options?: Parameters<typeof apiFetch>[1]): Promise<restoreEntryResponse> => {
+
+  return apiFetch<restoreEntryResponse>(getRestoreEntryUrl(id),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getRestoreEntryMutationKey = () => ['restoreEntry'] as const;
+
+export const getRestoreEntryMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof restoreEntry>>, TError,RestoreEntryMutationVariables, TContext>, request?: SecondParameter<typeof apiFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof restoreEntry>>, TError,RestoreEntryMutationVariables, TContext> => {
+
+const mutationKey = getRestoreEntryMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof restoreEntry>>, RestoreEntryMutationVariables> = (props) => {
+          const {id} = props ?? {};
+
+          return  restoreEntry(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type RestoreEntryMutationResult = NonNullable<Awaited<ReturnType<typeof restoreEntry>>>
+
+    export type RestoreEntryMutationError = unknown
+    export type RestoreEntryMutationVariables = {id: string}
+
+    export const useRestoreEntry = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof restoreEntry>>, TError,RestoreEntryMutationVariables, TContext>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof restoreEntry>>,
+        TError,
+        RestoreEntryMutationVariables,
+        TContext
+      > => {
+      return useMutation(getRestoreEntryMutationOptions(options), queryClient);
     }
     export type copyEntriesResponse201 = {
   data: CopyEntries201Item[]

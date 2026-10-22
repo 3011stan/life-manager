@@ -2043,7 +2043,8 @@
                     "totals",
                     "scores",
                     "closeRequired",
-                    "weekEssentials"
+                    "weekEssentials",
+                    "objectives"
                   ],
                   "properties": {
                     "date": {
@@ -2205,6 +2206,8 @@
                           "contributesTo",
                           "carriedFromEntryId",
                           "copiedFromEntryId",
+                          "kind",
+                          "groupId",
                           "version"
                         ],
                         "properties": {
@@ -2387,6 +2390,32 @@
                               }
                             ]
                           },
+                          "kind": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "item"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "heading"
+                                ]
+                              }
+                            ]
+                          },
+                          "groupId": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
                           "version": {
                             "type": "integer"
                           }
@@ -2493,6 +2522,39 @@
                           },
                           "progress": {
                             "type": "number"
+                          }
+                        }
+                      }
+                    },
+                    "objectives": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "title",
+                          "horizon",
+                          "parentId"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "horizon": {
+                            "type": "string"
+                          },
+                          "parentId": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
                           }
                         }
                       }
@@ -2646,7 +2708,8 @@
                     "totals",
                     "scores",
                     "closeRequired",
-                    "weekEssentials"
+                    "weekEssentials",
+                    "objectives"
                   ],
                   "properties": {
                     "date": {
@@ -2808,6 +2871,8 @@
                           "contributesTo",
                           "carriedFromEntryId",
                           "copiedFromEntryId",
+                          "kind",
+                          "groupId",
                           "version"
                         ],
                         "properties": {
@@ -2990,6 +3055,32 @@
                               }
                             ]
                           },
+                          "kind": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "item"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "heading"
+                                ]
+                              }
+                            ]
+                          },
+                          "groupId": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
                           "version": {
                             "type": "integer"
                           }
@@ -3099,6 +3190,39 @@
                           }
                         }
                       }
+                    },
+                    "objectives": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "title",
+                          "horizon",
+                          "parentId"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "horizon": {
+                            "type": "string"
+                          },
+                          "parentId": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          }
+                        }
+                      }
                     }
                   }
                 }
@@ -3133,6 +3257,22 @@
                     "type": "string",
                     "minLength": 1,
                     "maxLength": 200
+                  },
+                  "kind": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "enum": [
+                          "item"
+                        ]
+                      },
+                      {
+                        "type": "string",
+                        "enum": [
+                          "heading"
+                        ]
+                      }
+                    ]
                   },
                   "activityId": {
                     "anyOf": [
@@ -3287,6 +3427,17 @@
                       "format": "uuid"
                     },
                     "maxItems": 20
+                  },
+                  "groupId": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
                   }
                 },
                 "additionalProperties": false
@@ -3341,6 +3492,8 @@
                     "contributesTo",
                     "carriedFromEntryId",
                     "copiedFromEntryId",
+                    "kind",
+                    "groupId",
                     "version",
                     "cycleReopened"
                   ],
@@ -3515,6 +3668,32 @@
                       ]
                     },
                     "copiedFromEntryId": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "kind": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "item"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "heading"
+                          ]
+                        }
+                      ]
+                    },
+                    "groupId": {
                       "anyOf": [
                         {
                           "type": "string"
@@ -3705,6 +3884,17 @@
                     },
                     "maxItems": 20
                   },
+                  "groupId": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
                   "title": {
                     "type": "string",
                     "minLength": 1,
@@ -3768,6 +3958,8 @@
                     "contributesTo",
                     "carriedFromEntryId",
                     "copiedFromEntryId",
+                    "kind",
+                    "groupId",
                     "version",
                     "cycleReopened"
                   ],
@@ -3951,6 +4143,32 @@
                         }
                       ]
                     },
+                    "kind": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "item"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "heading"
+                          ]
+                        }
+                      ]
+                    },
+                    "groupId": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
                     "version": {
                       "type": "integer"
                     },
@@ -3992,6 +4210,284 @@
         "responses": {
           "204": {
             "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/v1/entries/{id}/restore": {
+      "post": {
+        "operationId": "restoreEntry",
+        "tags": [
+          "days"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "in": "header",
+            "name": "idempotency-key",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "date",
+                    "title",
+                    "activityId",
+                    "orderKey",
+                    "startTime",
+                    "plannedMinutes",
+                    "actualMinutes",
+                    "status",
+                    "isUnplanned",
+                    "isTimeBlock",
+                    "timeValue",
+                    "deepWork",
+                    "segments",
+                    "notes",
+                    "objectiveIds",
+                    "contributesTo",
+                    "carriedFromEntryId",
+                    "copiedFromEntryId",
+                    "kind",
+                    "groupId",
+                    "version",
+                    "cycleReopened"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "date": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "activityId": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "orderKey": {
+                      "type": "string"
+                    },
+                    "startTime": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "plannedMinutes": {
+                      "type": "integer"
+                    },
+                    "actualMinutes": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "status": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "planned"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "completed"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "skipped"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "cancelled"
+                          ]
+                        }
+                      ]
+                    },
+                    "isUnplanned": {
+                      "type": "boolean"
+                    },
+                    "isTimeBlock": {
+                      "type": "boolean"
+                    },
+                    "timeValue": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "useful"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "support"
+                          ]
+                        }
+                      ]
+                    },
+                    "deepWork": {
+                      "type": "boolean"
+                    },
+                    "segments": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "title",
+                          "minutes",
+                          "timeValue"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "title": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 120
+                          },
+                          "minutes": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 1440
+                          },
+                          "timeValue": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "useful"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "support"
+                                ]
+                              }
+                            ]
+                          }
+                        },
+                        "additionalProperties": false
+                      },
+                      "maxItems": 20
+                    },
+                    "notes": {
+                      "type": "string"
+                    },
+                    "objectiveIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "contributesTo": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "carriedFromEntryId": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "copiedFromEntryId": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "kind": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "item"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "enum": [
+                            "heading"
+                          ]
+                        }
+                      ]
+                    },
+                    "groupId": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "version": {
+                      "type": "integer"
+                    },
+                    "cycleReopened": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -4081,6 +4577,8 @@
                       "contributesTo",
                       "carriedFromEntryId",
                       "copiedFromEntryId",
+                      "kind",
+                      "groupId",
                       "version"
                     ],
                     "properties": {
@@ -4263,6 +4761,32 @@
                           }
                         ]
                       },
+                      "kind": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "enum": [
+                              "item"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "heading"
+                            ]
+                          }
+                        ]
+                      },
+                      "groupId": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
                       "version": {
                         "type": "integer"
                       }
@@ -4346,6 +4870,8 @@
                           "contributesTo",
                           "carriedFromEntryId",
                           "copiedFromEntryId",
+                          "kind",
+                          "groupId",
                           "version"
                         ],
                         "properties": {
@@ -4528,6 +5054,32 @@
                               }
                             ]
                           },
+                          "kind": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "item"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "heading"
+                                ]
+                              }
+                            ]
+                          },
+                          "groupId": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
                           "version": {
                             "type": "integer"
                           }
@@ -4680,6 +5232,8 @@
                               "contributesTo",
                               "carriedFromEntryId",
                               "copiedFromEntryId",
+                              "kind",
+                              "groupId",
                               "version"
                             ],
                             "properties": {
@@ -4853,6 +5407,32 @@
                                 ]
                               },
                               "copiedFromEntryId": {
+                                "anyOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ]
+                              },
+                              "kind": {
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "item"
+                                    ]
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "heading"
+                                    ]
+                                  }
+                                ]
+                              },
+                              "groupId": {
                                 "anyOf": [
                                   {
                                     "type": "string"
@@ -5078,7 +5658,8 @@
                     "totals",
                     "scores",
                     "closeRequired",
-                    "weekEssentials"
+                    "weekEssentials",
+                    "objectives"
                   ],
                   "properties": {
                     "date": {
@@ -5240,6 +5821,8 @@
                           "contributesTo",
                           "carriedFromEntryId",
                           "copiedFromEntryId",
+                          "kind",
+                          "groupId",
                           "version"
                         ],
                         "properties": {
@@ -5422,6 +6005,32 @@
                               }
                             ]
                           },
+                          "kind": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "item"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "heading"
+                                ]
+                              }
+                            ]
+                          },
+                          "groupId": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
                           "version": {
                             "type": "integer"
                           }
@@ -5528,6 +6137,39 @@
                           },
                           "progress": {
                             "type": "number"
+                          }
+                        }
+                      }
+                    },
+                    "objectives": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "title",
+                          "horizon",
+                          "parentId"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "horizon": {
+                            "type": "string"
+                          },
+                          "parentId": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
                           }
                         }
                       }

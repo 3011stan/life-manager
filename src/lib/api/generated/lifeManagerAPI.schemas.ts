@@ -551,6 +551,9 @@ export type GetDay200EntriesItemSegmentsItem = {
   timeValue: typeof GetDay200EntriesItemSegmentsItemTimeValue[keyof typeof GetDay200EntriesItemSegmentsItemTimeValue];
 };
 
+export const GetDay200EntriesItemKind = {  item: 'item',
+  heading: 'heading',
+} as const
 export type GetDay200EntriesItem = {
   id: string;
   date: string;
@@ -572,6 +575,8 @@ export type GetDay200EntriesItem = {
   contributesTo: string[];
   carriedFromEntryId: string | null;
   copiedFromEntryId: string | null;
+  kind: typeof GetDay200EntriesItemKind[keyof typeof GetDay200EntriesItemKind];
+  groupId: string | null;
   version: number;
 };
 
@@ -600,6 +605,13 @@ export type GetDay200WeekEssentialsItem = {
   progress: number;
 };
 
+export type GetDay200ObjectivesItem = {
+  id: string;
+  title: string;
+  horizon: string;
+  parentId: string | null;
+};
+
 export type GetDay200 = {
   date: string;
   today: string;
@@ -610,6 +622,7 @@ export type GetDay200 = {
   scores: GetDay200Scores;
   closeRequired: GetDay200CloseRequired;
   weekEssentials: GetDay200WeekEssentialsItem[];
+  objectives: GetDay200ObjectivesItem[];
 };
 
 export type UpdateDayBodyCheckIn = {
@@ -674,6 +687,9 @@ export type UpdateDay200EntriesItemSegmentsItem = {
   timeValue: typeof UpdateDay200EntriesItemSegmentsItemTimeValue[keyof typeof UpdateDay200EntriesItemSegmentsItemTimeValue];
 };
 
+export const UpdateDay200EntriesItemKind = {  item: 'item',
+  heading: 'heading',
+} as const
 export type UpdateDay200EntriesItem = {
   id: string;
   date: string;
@@ -695,6 +711,8 @@ export type UpdateDay200EntriesItem = {
   contributesTo: string[];
   carriedFromEntryId: string | null;
   copiedFromEntryId: string | null;
+  kind: typeof UpdateDay200EntriesItemKind[keyof typeof UpdateDay200EntriesItemKind];
+  groupId: string | null;
   version: number;
 };
 
@@ -723,6 +741,13 @@ export type UpdateDay200WeekEssentialsItem = {
   progress: number;
 };
 
+export type UpdateDay200ObjectivesItem = {
+  id: string;
+  title: string;
+  horizon: string;
+  parentId: string | null;
+};
+
 export type UpdateDay200 = {
   date: string;
   today: string;
@@ -733,8 +758,12 @@ export type UpdateDay200 = {
   scores: UpdateDay200Scores;
   closeRequired: UpdateDay200CloseRequired;
   weekEssentials: UpdateDay200WeekEssentialsItem[];
+  objectives: UpdateDay200ObjectivesItem[];
 };
 
+export const CreateEntryBodyKind = {  item: 'item',
+  heading: 'heading',
+} as const
 export const CreateEntryBodyStatus = {  planned: 'planned',
   completed: 'completed',
   skipped: 'skipped',
@@ -768,6 +797,7 @@ export type CreateEntryBody = {
      * @maxLength 200
      */
   title: string;
+  kind?: typeof CreateEntryBodyKind[keyof typeof CreateEntryBodyKind];
   activityId?: string | null;
   /** @pattern ^[0-9A-Za-z]{1,64}$ */
   orderKey?: string;
@@ -789,6 +819,7 @@ export type CreateEntryBody = {
   notes?: string;
   /** @maxItems 20 */
   objectiveIds?: string[];
+  groupId?: string | null;
 };
 
 export const CreateEntry201Status = {  planned: 'planned',
@@ -817,6 +848,9 @@ export type CreateEntry201SegmentsItem = {
   timeValue: typeof CreateEntry201SegmentsItemTimeValue[keyof typeof CreateEntry201SegmentsItemTimeValue];
 };
 
+export const CreateEntry201Kind = {  item: 'item',
+  heading: 'heading',
+} as const
 export type CreateEntry201 = {
   id: string;
   date: string;
@@ -838,6 +872,8 @@ export type CreateEntry201 = {
   contributesTo: string[];
   carriedFromEntryId: string | null;
   copiedFromEntryId: string | null;
+  kind: typeof CreateEntry201Kind[keyof typeof CreateEntry201Kind];
+  groupId: string | null;
   version: number;
   cycleReopened: boolean;
 };
@@ -890,6 +926,7 @@ export type UpdateEntryBody = {
   notes?: string;
   /** @maxItems 20 */
   objectiveIds?: string[];
+  groupId?: string | null;
   /**
      * @minLength 1
      * @maxLength 200
@@ -925,6 +962,9 @@ export type UpdateEntry200SegmentsItem = {
   timeValue: typeof UpdateEntry200SegmentsItemTimeValue[keyof typeof UpdateEntry200SegmentsItemTimeValue];
 };
 
+export const UpdateEntry200Kind = {  item: 'item',
+  heading: 'heading',
+} as const
 export type UpdateEntry200 = {
   id: string;
   date: string;
@@ -946,6 +986,64 @@ export type UpdateEntry200 = {
   contributesTo: string[];
   carriedFromEntryId: string | null;
   copiedFromEntryId: string | null;
+  kind: typeof UpdateEntry200Kind[keyof typeof UpdateEntry200Kind];
+  groupId: string | null;
+  version: number;
+  cycleReopened: boolean;
+};
+
+export const RestoreEntry200Status = {  planned: 'planned',
+  completed: 'completed',
+  skipped: 'skipped',
+  cancelled: 'cancelled',
+} as const
+export const RestoreEntry200TimeValue = {  useful: 'useful',
+  support: 'support',
+} as const
+export const RestoreEntry200SegmentsItemTimeValue = {  useful: 'useful',
+  support: 'support',
+} as const
+export type RestoreEntry200SegmentsItem = {
+  id: string;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  title: string;
+  /**
+     * @minimum 1
+     * @maximum 1440
+     */
+  minutes: number;
+  timeValue: typeof RestoreEntry200SegmentsItemTimeValue[keyof typeof RestoreEntry200SegmentsItemTimeValue];
+};
+
+export const RestoreEntry200Kind = {  item: 'item',
+  heading: 'heading',
+} as const
+export type RestoreEntry200 = {
+  id: string;
+  date: string;
+  title: string;
+  activityId: string | null;
+  orderKey: string;
+  startTime: string | null;
+  plannedMinutes: number;
+  actualMinutes: number | null;
+  status: typeof RestoreEntry200Status[keyof typeof RestoreEntry200Status];
+  isUnplanned: boolean;
+  isTimeBlock: boolean;
+  timeValue: typeof RestoreEntry200TimeValue[keyof typeof RestoreEntry200TimeValue];
+  deepWork: boolean;
+  /** @maxItems 20 */
+  segments: RestoreEntry200SegmentsItem[];
+  notes: string;
+  objectiveIds: string[];
+  contributesTo: string[];
+  carriedFromEntryId: string | null;
+  copiedFromEntryId: string | null;
+  kind: typeof RestoreEntry200Kind[keyof typeof RestoreEntry200Kind];
+  groupId: string | null;
   version: number;
   cycleReopened: boolean;
 };
@@ -986,6 +1084,9 @@ export type CopyEntries201ItemSegmentsItem = {
   timeValue: typeof CopyEntries201ItemSegmentsItemTimeValue[keyof typeof CopyEntries201ItemSegmentsItemTimeValue];
 };
 
+export const CopyEntries201ItemKind = {  item: 'item',
+  heading: 'heading',
+} as const
 export type CopyEntries201Item = {
   id: string;
   date: string;
@@ -1007,6 +1108,8 @@ export type CopyEntries201Item = {
   contributesTo: string[];
   carriedFromEntryId: string | null;
   copiedFromEntryId: string | null;
+  kind: typeof CopyEntries201ItemKind[keyof typeof CopyEntries201ItemKind];
+  groupId: string | null;
   version: number;
 };
 
@@ -1036,6 +1139,9 @@ export type GetDayClose200UnresolvedItemSegmentsItem = {
   timeValue: typeof GetDayClose200UnresolvedItemSegmentsItemTimeValue[keyof typeof GetDayClose200UnresolvedItemSegmentsItemTimeValue];
 };
 
+export const GetDayClose200UnresolvedItemKind = {  item: 'item',
+  heading: 'heading',
+} as const
 export type GetDayClose200UnresolvedItem = {
   id: string;
   date: string;
@@ -1057,6 +1163,8 @@ export type GetDayClose200UnresolvedItem = {
   contributesTo: string[];
   carriedFromEntryId: string | null;
   copiedFromEntryId: string | null;
+  kind: typeof GetDayClose200UnresolvedItemKind[keyof typeof GetDayClose200UnresolvedItemKind];
+  groupId: string | null;
   version: number;
 };
 
@@ -1117,6 +1225,9 @@ export type GetDayClose200CarryCandidatesItemEntrySegmentsItem = {
   timeValue: typeof GetDayClose200CarryCandidatesItemEntrySegmentsItemTimeValue[keyof typeof GetDayClose200CarryCandidatesItemEntrySegmentsItemTimeValue];
 };
 
+export const GetDayClose200CarryCandidatesItemEntryKind = {  item: 'item',
+  heading: 'heading',
+} as const
 export type GetDayClose200CarryCandidatesItemEntry = {
   id: string;
   date: string;
@@ -1138,6 +1249,8 @@ export type GetDayClose200CarryCandidatesItemEntry = {
   contributesTo: string[];
   carriedFromEntryId: string | null;
   copiedFromEntryId: string | null;
+  kind: typeof GetDayClose200CarryCandidatesItemEntryKind[keyof typeof GetDayClose200CarryCandidatesItemEntryKind];
+  groupId: string | null;
   version: number;
 };
 
@@ -1237,6 +1350,9 @@ export type CloseDay200EntriesItemSegmentsItem = {
   timeValue: typeof CloseDay200EntriesItemSegmentsItemTimeValue[keyof typeof CloseDay200EntriesItemSegmentsItemTimeValue];
 };
 
+export const CloseDay200EntriesItemKind = {  item: 'item',
+  heading: 'heading',
+} as const
 export type CloseDay200EntriesItem = {
   id: string;
   date: string;
@@ -1258,6 +1374,8 @@ export type CloseDay200EntriesItem = {
   contributesTo: string[];
   carriedFromEntryId: string | null;
   copiedFromEntryId: string | null;
+  kind: typeof CloseDay200EntriesItemKind[keyof typeof CloseDay200EntriesItemKind];
+  groupId: string | null;
   version: number;
 };
 
@@ -1286,6 +1404,13 @@ export type CloseDay200WeekEssentialsItem = {
   progress: number;
 };
 
+export type CloseDay200ObjectivesItem = {
+  id: string;
+  title: string;
+  horizon: string;
+  parentId: string | null;
+};
+
 export type CloseDay200 = {
   date: string;
   today: string;
@@ -1296,6 +1421,7 @@ export type CloseDay200 = {
   scores: CloseDay200Scores;
   closeRequired: CloseDay200CloseRequired;
   weekEssentials: CloseDay200WeekEssentialsItem[];
+  objectives: CloseDay200ObjectivesItem[];
 };
 
 export type GetCycle200CycleCloseSnapshot = { [key: string]: unknown } | null;
