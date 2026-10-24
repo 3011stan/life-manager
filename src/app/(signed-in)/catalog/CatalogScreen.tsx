@@ -15,6 +15,7 @@ import {
   updatePillar,
   useGetCatalog,
 } from "@/lib/api/generated/catalog/catalog";
+import { ChevronLeft } from "@/components/icons";
 import { ApiError } from "@/lib/api/mutator";
 import type { Activity } from "@/lib/day/types";
 import { formatMinutes } from "@/lib/day/dates";
@@ -180,7 +181,7 @@ export function CatalogScreen() {
   return (
     <section className="panel">
       <button type="button" className="link-button" onClick={() => setOrganize(false)}>
-        ‹ {t("catalog.title")}
+        <ChevronLeft size={16} /> {t("catalog.title")}
       </button>
       <h1>{t("catalog.organize")}</h1>
       {error ? (

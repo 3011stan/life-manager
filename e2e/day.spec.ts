@@ -64,7 +64,7 @@ test("plan and run a day, seen identically on a second device (US1)", async ({ p
   await phone.close();
 });
 
-test("an entry with segments shows its real cost collapsed and its parts expanded (US2)", async ({ page }) => {
+test("an entry with segments shows its real cost and its parts (US2, 005 D4)", async ({ page }) => {
   const date = uniqueDate();
   await signIn(page, date);
   await add(page, "Gym");
@@ -84,7 +84,6 @@ test("an entry with segments shows its real cost collapsed and its parts expande
 
   await expect(row(page, "Gym")).toContainText("1h50");
   await expect(row(page, "Gym").getByLabel("1h useful, 50m support")).toBeVisible();
-  await row(page, "Gym").getByRole("button", { name: "Show segments" }).click();
   await expect(row(page, "Gym").locator(".segment")).toHaveText([/Get ready/, /Train/, /Return/]);
 });
 

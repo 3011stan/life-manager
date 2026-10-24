@@ -7,11 +7,11 @@ Each phase ends with the local e2e run green, backend CI green, and a deploy to 
 
 ## Phase 1: Visual foundation (US5)
 
-- [ ] T001 [US5] Tokens (light and dark, type, spacing, radii, motion) in `web/src/app/tokens.css`, fonts through `next/font`, from the artboard "C + partes do B"
-- [ ] T002 [P] [US5] Inline SVG icon set in `web/src/components/icons.tsx`; replace every glyph icon (⋮⋮ ◎ ▸ ▾ ✓ × ‹ ›)
-- [ ] T003 [US5] Restyle `Check`, timeline rows, group heading, `PartsBar`, `Sheet`, fields, buttons, nav; check animation with reduced-motion fallback
-- [ ] T004 [US5] Apply to every screen (day, day close, goals, cycle close, activities, templates, settings, account, sign-in)
-- [ ] T005 [US5] e2e: axe on every screen (light and dark, desktop and mobile) with `@axe-core/playwright`; existing specs pass with the new markup
+- [x] T001 [US5] Tokens (light and dark, type, spacing, radii, motion) in `web/src/app/tokens.css`, fonts through `next/font`, from the artboard "C + partes do B"
+- [x] T002 [P] [US5] Inline SVG icon set in `web/src/components/icons.tsx`; replace every glyph icon (⋮⋮ ◎ ▸ ▾ ✓ × ‹ ›)
+- [x] T003 [US5] Restyle `Check`, timeline rows, group heading, `PartsBar`, `Sheet`, fields, buttons, nav; check animation with reduced-motion fallback
+- [x] T004 [US5] Apply to every screen (day, day close, goals, cycle close, activities, templates, settings, account, sign-in)
+- [x] T005 [US5] e2e: axe on every screen (light and dark, desktop and mobile) with `@axe-core/playwright`; existing specs pass with the new markup
 
 ## Phase 2: Catalog model (US1)
 

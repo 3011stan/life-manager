@@ -4,6 +4,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import { ChevronLeft } from "@/components/icons";
 import { closeCycle, getGetCycleQueryKey, useGetCycleClose } from "@/lib/api/generated/objectives/objectives";
 import { isDate } from "@/lib/day/dates";
 import { progressText } from "@/lib/day/objectives";
@@ -54,7 +55,7 @@ export function CycleCloseScreen() {
   return (
     <section className="panel close">
       <Link href={`/cycles?h=${horizon}&date=${data.startDate}`} className="link-button">
-        ‹ {t(`horizon.${horizon}`)}
+        <ChevronLeft size={16} /> {t(`horizon.${horizon}`)}
       </Link>
       <h1>{t("cycleClose.title", { name: cycleName(data, locale, t) })}</h1>
 

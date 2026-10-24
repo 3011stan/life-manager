@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, type ReactNode } from "react";
 import { ConnectivityBanner } from "@/components/ConnectivityBanner";
+import { List, Sliders, Sun, Target, User } from "@/components/icons";
 import { signOut } from "@/lib/api/auth";
 import { useGetMe } from "@/lib/api/generated/account/account";
 import { useGetWorkspaceSettings } from "@/lib/api/generated/settings/settings";
@@ -12,12 +13,12 @@ import { useClearLocalData } from "@/lib/api/query-client";
 import { browserLocale, I18nProvider, useT, type Locale } from "@/lib/i18n";
 import type { MessageKey } from "@/lib/i18n/en";
 
-const NAV: { href: string; label: MessageKey }[] = [
-  { href: "/day", label: "nav.day" },
-  { href: "/cycles", label: "nav.cycles" },
-  { href: "/catalog", label: "nav.catalog" },
-  { href: "/settings", label: "nav.settings" },
-  { href: "/account", label: "nav.account" },
+const NAV: { href: string; label: MessageKey; Icon: typeof Sun }[] = [
+  { href: "/day", label: "nav.day", Icon: Sun },
+  { href: "/cycles", label: "nav.cycles", Icon: Target },
+  { href: "/catalog", label: "nav.catalog", Icon: List },
+  { href: "/settings", label: "nav.settings", Icon: Sliders },
+  { href: "/account", label: "nav.account", Icon: User },
 ];
 
 // Signed-in area: a 401 wipes local data and sends the user to sign-in and back.
@@ -71,6 +72,7 @@ function SignedInShell({ children }: { children: ReactNode }) {
         <nav className="top-bar__nav main-nav" aria-label={t("nav.main")}>
           {NAV.map((item) => (
             <Link key={item.href} href={item.href} aria-current={pathname.startsWith(item.href) ? "page" : undefined}>
+              <item.Icon size={20} />
               {t(item.label)}
             </Link>
           ))}

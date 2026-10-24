@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useRef, useState } from "react";
+import { ChevronLeft, ChevronRight } from "@/components/icons";
 import { useGetCatalog } from "@/lib/api/generated/catalog/catalog";
 import { useGetDay } from "@/lib/api/generated/days/days";
 import { useGetWorkspaceSettings } from "@/lib/api/generated/settings/settings";
@@ -65,7 +66,7 @@ export function DayScreen() {
     <section className="day">
       <header className="day-header">
         <button type="button" className="icon-button" aria-label={t("day.previous")} onClick={() => go(addDays(date, -1))}>
-          ‹
+          <ChevronLeft />
         </button>
         <div className="day-header__title">
           <h1>{heading}</h1>
@@ -76,20 +77,23 @@ export function DayScreen() {
           ) : null}
         </div>
         <button type="button" className="icon-button" aria-label={t("day.next")} onClick={() => go(addDays(date, 1))}>
-          ›
+          <ChevronRight />
         </button>
       </header>
       {differentZone ? <p className="muted small">{t("day.timeZoneNote", { zone: timeZone })}</p> : null}
 
       {data ? (
         <>
-          <p className={`capacity ${data.totals.remaining < 0 ? "capacity--over" : ""}`} data-testid="capacity">
-            {t("day.capacity", { planned: formatMinutes(data.totals.planned), capacity: formatMinutes(data.totals.capacity) })}
-            {" · "}
-            {data.totals.remaining < 0
-              ? t("day.over", { n: formatMinutes(-data.totals.remaining) })
-              : t("day.left", { n: formatMinutes(data.totals.remaining) })}
-          </p>
+          <div className="day-summary">
+            <Ring planned={data.totals.planned} capacity={data.totals.capacity} />
+            <p className={`capacity ${data.totals.remaining < 0 ? "capacity--over" : ""}`} data-testid="capacity">
+              {t("day.capacity", { planned: formatMinutes(data.totals.planned), capacity: formatMinutes(data.totals.capacity) })}
+              {" · "}
+              {data.totals.remaining < 0
+                ? t("day.over", { n: formatMinutes(-data.totals.remaining) })
+                : t("day.left", { n: formatMinutes(data.totals.remaining) })}
+            </p>
+          </div>
           {data.weekEssentials.length > 0 ? (
             <Link href={`/cycles?h=week&date=${date}`} className="week-line">
               {t("day.weekEssentials")}: {data.weekEssentials.map((o) => `${o.title} ${String(Math.round(Math.min(o.progress, 1) * 100))}%`).join(" · ")}
@@ -187,5 +191,16 @@ export function DayScreen() {
         <p>{day.isError ? t("common.connectOnce") : t("common.loading")}</p>
       )}
     </section>
+  );
+}
+
+// 005 D4: how much of the day's capacity is planned, as a ring.
+function Ring({ planned, capacity }: { planned: number; capacity: number }) {
+  const share = capacity > 0 ? planned / capacity : 0;
+  const pct = Math.round(Math.min(share, 1) * 100);
+  return (
+    <span className={`ring ${share > 1 ? "ring--over" : ""}`} style={{ "--value": `${String(pct)}%` } as React.CSSProperties} aria-hidden="true">
+      <span>{Math.round(share * 100)}%</span>
+    </span>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { Close } from "@/components/icons";
 import { closeOnBackdrop } from "@/components/dialog";
 import { DurationInput } from "@/components/DurationInput";
 import { createActivity } from "@/lib/api/generated/catalog/catalog";
@@ -208,7 +209,7 @@ export function EntrySheet({ entry, entries, objectives, catalog, disabled, onCl
                         )
                       }
                     >
-                      ×
+                      <Close size={14} />
                     </button>
                   </div>
                 ))}

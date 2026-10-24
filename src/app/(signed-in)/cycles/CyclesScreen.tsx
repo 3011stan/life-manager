@@ -4,6 +4,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import { ChevronLeft, ChevronRight } from "@/components/icons";
 import { getGetCycleQueryKey, useGetCycle } from "@/lib/api/generated/objectives/objectives";
 import { applyTemplates, getGetTemplateProposalsQueryKey, useGetTemplateProposals } from "@/lib/api/generated/templates/templates";
 import { addDays, isDate } from "@/lib/day/dates";
@@ -58,7 +59,7 @@ export function CyclesScreen() {
         <>
           <header className="day-header">
             <button type="button" className="icon-button" aria-label={t("cycles.previous")} onClick={() => go(horizon, addDays(view.startDate, -1))}>
-              ‹
+              <ChevronLeft />
             </button>
             <div className="day-header__title">
               <h1>{cycleName(view, locale, t)}</h1>
@@ -69,7 +70,7 @@ export function CyclesScreen() {
               ) : null}
             </div>
             <button type="button" className="icon-button" aria-label={t("cycles.next")} onClick={() => go(horizon, addDays(view.endDate, 1))}>
-              ›
+              <ChevronRight />
             </button>
           </header>
           {view.cycle.closedAt ? <p className="notice notice--ok">{t("cycles.closed")}</p> : null}

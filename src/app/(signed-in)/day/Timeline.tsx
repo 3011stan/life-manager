@@ -13,6 +13,7 @@ import {
 import { SortableContext, sortableKeyboardCoordinates, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { memo, useRef, useState, type PointerEvent } from "react";
+import { Check, Close, Dash, Grip, Target } from "@/components/icons";
 import { formatMinutes } from "@/lib/day/dates";
 import { childrenOf, groupMinutes, siblingsOf, topLevel } from "@/lib/day/groups";
 import { keyForMove } from "@/lib/day/order";
@@ -102,7 +103,7 @@ function Heading({
     <li ref={setNodeRef} style={{ transform: CSS.Transform.toString(transform), transition }} className={`group-block ${isDragging ? "entry-row--dragging" : ""}`} data-testid="group">
       <div className="group-heading">
         <button type="button" className="drag-handle" aria-label={t("day.dragHandle", { title: entry.title })} disabled={disabled} {...attributes} {...listeners}>
-          ⋮⋮
+          <Grip />
         </button>
         <button type="button" className="entry-row__main group-heading__main" onClick={() => onOpen(entry.id)}>
           <span className="entry-row__title">{entry.title}</span>
@@ -132,7 +133,6 @@ const Row = memo(function Row({
   onDelete: (entry: Entry) => void;
 }) {
   const t = useT();
-  const [expanded, setExpanded] = useState(false);
   const [offset, setOffset] = useState(0);
   const start = useRef<{ x: number; y: number } | null>(null);
   const swiped = useRef(false);
@@ -173,17 +173,17 @@ const Row = memo(function Row({
     >
       <div className="entry-row__swipe" style={{ transform: offset ? `translateX(${String(offset)}px)` : undefined }} onPointerDown={down} onPointerMove={move} onPointerUp={up} onPointerCancel={up}>
         <button type="button" className="drag-handle" aria-label={t("day.dragHandle", { title: entry.title })} disabled={disabled} {...attributes} {...listeners}>
-          ⋮⋮
+          <Grip />
         </button>
         <button
           type="button"
-          className={`status-button ${done ? "status-button--done" : ""}`}
+          className={`status-button ${done ? "status-button--done" : entry.status !== "planned" ? "status-button--off" : ""}`}
           aria-label={done || entry.status !== "planned" ? t("day.markPlanned", { title: entry.title }) : t("day.markDone", { title: entry.title })}
           aria-pressed={done}
           disabled={disabled}
           onClick={() => onToggle(entry)}
         >
-          {done ? "✓" : entry.status === "skipped" ? "–" : entry.status === "cancelled" ? "×" : ""}
+          {done ? <Check size={14} /> : entry.status === "skipped" ? <Dash size={14} /> : entry.status === "cancelled" ? <Close size={12} /> : null}
         </button>
         <button
           type="button"
@@ -201,7 +201,7 @@ const Row = memo(function Row({
           <span className="entry-row__time">{entry.startTime ?? formatMinutes(minutes)}</span>
           {entry.contributesTo.length > 0 ? (
             <span className="mark mark--objective" aria-label={t("objective.mark")} title={t("objective.mark")}>
-              ◎
+              <Target size={14} />
             </span>
           ) : null}
           {noActivity ? <span className="mark mark--warn">{t("day.noActivity")}</span> : null}
@@ -212,29 +212,14 @@ const Row = memo(function Row({
       </div>
       {entry.segments.length > 0 ? (
         <div className="entry-row__parts">
-          <button
-            type="button"
-            className="icon-button segments-toggle"
-            aria-expanded={expanded}
-            aria-label={expanded ? t("day.collapse") : t("day.expand")}
-            onClick={() => setExpanded((v) => !v)}
-          >
-            {expanded ? "▾" : "▸"}
-          </button>
-          <div className="time-split" aria-label={`${t("day.useful", { n: formatMinutes(useful) })}, ${t("day.support", { n: formatMinutes(support) })}`}>
-            <span className="time-split__useful" style={{ flexGrow: useful }} />
-            <span className="time-split__support" style={{ flexGrow: support }} />
-          </div>
-          {expanded ? (
-            <ol className="segments">
-              {entry.segments.map((s) => (
-                <li key={s.id} className={`segment segment--${s.timeValue}`}>
-                  <span>{s.title}</span>
-                  <span>{formatMinutes(s.minutes)}</span>
-                </li>
-              ))}
-            </ol>
-          ) : null}
+          <ol className="segments" aria-label={`${t("day.useful", { n: formatMinutes(useful) })}, ${t("day.support", { n: formatMinutes(support) })}`}>
+            {entry.segments.map((s) => (
+              <li key={s.id} className={`segment segment--${s.timeValue}`}>
+                <span>{s.title}</span>
+                <span>{formatMinutes(s.minutes)}</span>
+              </li>
+            ))}
+          </ol>
         </div>
       ) : null}
     </li>

@@ -4,6 +4,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import { ChevronLeft } from "@/components/icons";
 import { useGetCatalog } from "@/lib/api/generated/catalog/catalog";
 import { closeDay, getGetDayCloseQueryKey, getGetDayQueryKey, updateEntry, useGetDayClose } from "@/lib/api/generated/days/days";
 import { addDays, formatMinutes, isDate } from "@/lib/day/dates";
@@ -84,7 +85,7 @@ export function CloseScreen() {
   return (
     <section className="panel close">
       <Link href={`/day?date=${date}`} className="link-button">
-        ‹ {t("close.back")}
+        <ChevronLeft size={16} /> {t("close.back")}
       </Link>
       <h1>{t("close.title", { date: label })}</h1>
 

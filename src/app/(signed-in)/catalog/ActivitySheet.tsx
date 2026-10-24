@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { Close } from "@/components/icons";
 import type { Activity, Catalog, Segment } from "@/lib/day/types";
 import { useT } from "@/lib/i18n";
 import { closeOnBackdrop } from "@/components/dialog";
@@ -104,7 +105,7 @@ export function ActivitySheet({ activity, areaId, areas, onClose, onSave, onArch
                 <option value="support">{t("timeValue.support")}</option>
               </select>
               <button type="button" className="icon-button" aria-label={t("entry.removeSegment")} onClick={() => set("defaultSegments", form.defaultSegments.filter((x) => x.id !== s.id))}>
-                ×
+                <Close size={14} />
               </button>
             </div>
           ))}
