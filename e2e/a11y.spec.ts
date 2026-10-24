@@ -35,7 +35,14 @@ for (const colorScheme of ["light", "dark"] as const) {
     await expect(page.getByTestId("entry-row")).toHaveCount(1);
 
     await audit(page, `/day?date=${date}`, () => expect(page.getByTestId("entry-row")).toHaveCount(1));
+    // The short entry sheet, open with "More" (005 D2).
+    await page.getByTestId("entry-row").locator(".entry-row__main").click();
+    await page.getByRole("button", { name: "More" }).click();
+    const sheet = await new AxeBuilder({ page }).include("dialog").withTags(["wcag2a", "wcag2aa", "wcag21aa"]).analyze();
+    expect(sheet.violations.map((v) => `sheet: ${v.id}`)).toEqual([]);
+    await page.keyboard.press("Escape");
     await audit(page, `/day/close?date=${date}`, () => expect(page.getByRole("heading", { level: 1 })).toBeVisible());
+    await audit(page, "/cycles", () => expect(page.getByRole("heading", { level: 1 })).toBeVisible());
     await audit(page, "/cycles?h=week&date=current", () => expect(page.getByRole("heading", { level: 1 })).toBeVisible());
     await audit(page, "/catalog", () => expect(page.getByRole("heading", { level: 1 })).toBeVisible());
     await audit(page, "/templates", () => expect(page.getByRole("heading", { level: 1 })).toBeVisible());

@@ -23,8 +23,9 @@ test("the interface switches between English and Portuguese (FR-044, SC-010)", a
   await page.getByRole("link", { name: "Dia" }).click();
   await expect(page.getByLabel("Nova entrada")).toBeVisible();
   await expect(page.locator("html")).toHaveAttribute("lang", "pt-BR");
-  await page.getByRole("link", { name: "Ciclos" }).click();
-  await expect(page.getByRole("button", { name: "Adicionar objetivo" })).toBeVisible();
+  await page.getByRole("link", { name: "Metas" }).click();
+  await expect(page.getByRole("heading", { name: "Metas" })).toBeVisible();
+  await expect(page.getByRole("textbox", { name: "Nova meta" })).toBeVisible();
 
   await page.getByRole("link", { name: "Ajustes" }).click();
   await page.getByLabel("Idioma").selectOption("en");

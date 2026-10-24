@@ -26,14 +26,17 @@ export function groupMinutes(entries: Entry[], headingId: string): number {
 
 type DayObjective = Day["objectives"][number];
 
-// An objective and its parents, up to the longest horizon (004 FR-010).
+// An objective and everything above it, nearest first (004 FR-010). A goal
+// may count for several goals above (005 D5); each appears once.
 export function chainOf(objectives: DayObjective[], id: string): DayObjective[] {
   const chain: DayObjective[] = [];
-  let current = objectives.find((o) => o.id === id);
-  while (current && !chain.includes(current)) {
+  const queue = [id];
+  while (queue.length > 0) {
+    const next = queue.shift();
+    const current = objectives.find((o) => o.id === next);
+    if (!current || chain.includes(current)) continue;
     chain.push(current);
-    const parentId = current.parentId;
-    current = objectives.find((o) => o.id === parentId);
+    queue.push(...current.parentIds);
   }
   return chain;
 }

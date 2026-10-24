@@ -23,6 +23,7 @@ import { useT } from "@/lib/i18n";
 interface Props {
   entries: Entry[];
   activities: Map<string, Activity>;
+  colorOf?: (activityId: string | null) => string | undefined;
   disabled: boolean;
   onOpen: (id: string) => void;
   onMove: (id: string, orderKey: string) => void;
@@ -40,7 +41,7 @@ export function activityLabel(entry: Entry, activities: Map<string, Activity>): 
 
 // Research R10: pointer, touch, and keyboard reordering with a 44 px handle.
 // Entries move among their siblings: the top level, or their group (004 D1).
-export function Timeline({ entries, activities, disabled, onOpen, onMove, onToggle, onDelete }: Props) {
+export function Timeline({ entries, activities, colorOf, disabled, onOpen, onMove, onToggle, onDelete }: Props) {
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
     useSensor(TouchSensor, { activationConstraint: { delay: 150, tolerance: 6 } }),
@@ -56,7 +57,7 @@ export function Timeline({ entries, activities, disabled, onOpen, onMove, onTogg
     onMove(moved.id, keyForMove(siblings, moved.id, siblings.findIndex((e) => e.id === target.id)));
   }
 
-  const rowProps = { activities, disabled, onOpen, onToggle, onDelete };
+  const rowProps = { activities, colorOf, disabled, onOpen, onToggle, onDelete };
   const top = topLevel(entries);
 
   return (
@@ -120,6 +121,7 @@ const SWIPE_REVEAL = 80;
 const Row = memo(function Row({
   entry,
   activities,
+  colorOf,
   disabled,
   onOpen,
   onToggle,
@@ -127,12 +129,14 @@ const Row = memo(function Row({
 }: {
   entry: Entry;
   activities: Map<string, Activity>;
+  colorOf?: (activityId: string | null) => string | undefined;
   disabled: boolean;
   onOpen: (id: string) => void;
   onToggle: (entry: Entry) => void;
   onDelete: (entry: Entry) => void;
 }) {
   const t = useT();
+  const color = colorOf?.(entry.activityId);
   const [offset, setOffset] = useState(0);
   const start = useRef<{ x: number; y: number } | null>(null);
   const swiped = useRef(false);
@@ -195,6 +199,7 @@ const Row = memo(function Row({
           }}
         >
           <span className="entry-row__title">
+            {color ? <span className="dot dot--row" style={{ background: color }} aria-hidden="true" /> : null}
             {entry.title}
             {label ? <span className="entry-row__activity"> · {label}</span> : null}
           </span>

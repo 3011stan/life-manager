@@ -16,19 +16,26 @@ export interface ActivityBody {
   defaultIsTimeBlock: boolean;
   defaultTimeValue: "useful" | "support";
   defaultSegments: Segment[];
+  type: ActivityType | null;
 }
+
+type ActivityType = "habit" | "project" | "experience" | "maintenance";
+const TYPES: ActivityType[] = ["habit", "project", "experience", "maintenance"];
 
 interface Props {
   activity: Activity | undefined;
   areaId: string;
   areas: Catalog["areas"];
+  pillars?: Catalog["pillars"];
   onClose: () => void;
   onSave: (body: ActivityBody) => Promise<void>;
   onArchive?: (() => Promise<void>) | undefined;
   onDelete?: (() => Promise<void>) | undefined;
 }
 
-export function ActivitySheet({ activity, areaId, areas, onClose, onSave, onArchive, onDelete }: Props) {
+// 005 D3: an activity says how its time counts: parts that count or support,
+// or a routine that takes time and doesn't count. Entries follow it.
+export function ActivitySheet({ activity, areaId, areas, pillars, onClose, onSave, onArchive, onDelete }: Props) {
   const t = useT();
   const dialog = useRef<HTMLDialogElement>(null);
   const [form, setForm] = useState<ActivityBody>({
@@ -39,6 +46,7 @@ export function ActivitySheet({ activity, areaId, areas, onClose, onSave, onArch
     defaultIsTimeBlock: activity?.defaultIsTimeBlock ?? false,
     defaultTimeValue: activity?.defaultTimeValue ?? "useful",
     defaultSegments: activity?.defaultSegments ?? [],
+    type: activity?.type ?? null,
   });
 
   useEffect(() => {
@@ -54,7 +62,11 @@ export function ActivitySheet({ activity, areaId, areas, onClose, onSave, onArch
         className="stack"
         onSubmit={(e) => {
           e.preventDefault();
-          void onSave({ ...form, defaultMinutes: form.defaultSegments.length > 0 ? segmentTotal : form.defaultMinutes });
+          void onSave({
+            ...form,
+            defaultTimeValue: form.defaultIsTimeBlock ? "support" : "useful",
+            defaultMinutes: form.defaultSegments.length > 0 ? segmentTotal : form.defaultMinutes,
+          });
         }}
       >
         <label className="field">
@@ -66,7 +78,7 @@ export function ActivitySheet({ activity, areaId, areas, onClose, onSave, onArch
           <select value={form.areaId} onChange={(e) => set("areaId", e.target.value)}>
             {areas.map((a) => (
               <option key={a.id} value={a.id}>
-                {a.name}
+                {[pillars?.find((p) => p.id === a.pillarId)?.name, a.name].filter(Boolean).join(" · ")}
               </option>
             ))}
           </select>
@@ -101,8 +113,8 @@ export function ActivitySheet({ activity, areaId, areas, onClose, onSave, onArch
                   set("defaultSegments", form.defaultSegments.map((x) => (x.id === s.id ? { ...x, timeValue: e.target.value as Segment["timeValue"] } : x)))
                 }
               >
-                <option value="useful">{t("timeValue.useful")}</option>
-                <option value="support">{t("timeValue.support")}</option>
+                <option value="useful">{t("part.counts")}</option>
+                <option value="support">{t("part.support")}</option>
               </select>
               <button type="button" className="icon-button" aria-label={t("entry.removeSegment")} onClick={() => set("defaultSegments", form.defaultSegments.filter((x) => x.id !== s.id))}>
                 <Close size={14} />
@@ -119,18 +131,25 @@ export function ActivitySheet({ activity, areaId, areas, onClose, onSave, onArch
         </fieldset>
         <label className="toggle">
           <input type="checkbox" checked={form.defaultIsTimeBlock} onChange={(e) => set("defaultIsTimeBlock", e.target.checked)} />
-          {t("entry.timeBlock")}
-        </label>
-        <label className="field">
-          {t("entry.timeValue")}
-          <select value={form.defaultTimeValue} onChange={(e) => set("defaultTimeValue", e.target.value as ActivityBody["defaultTimeValue"])}>
-            <option value="useful">{t("timeValue.useful")}</option>
-            <option value="support">{t("timeValue.support")}</option>
-          </select>
+          <span>
+            {t("activity.routine")}
+            <span className="muted small"> · {t("activity.routineHint")}</span>
+          </span>
         </label>
         <label className="toggle">
           <input type="checkbox" checked={form.defaultDeepWork} onChange={(e) => set("defaultDeepWork", e.target.checked)} />
           {t("entry.deepWork")}
+        </label>
+        <label className="field">
+          {t("activity.type")}
+          <select value={form.type ?? ""} onChange={(e) => set("type", (e.target.value || null) as ActivityType | null)}>
+            <option value="">{t("activity.typeNone")}</option>
+            {TYPES.map((type) => (
+              <option key={type} value={type}>
+                {t(`activity.type.${type}`)}
+              </option>
+            ))}
+          </select>
         </label>
         <div className="button-row">
           {onArchive ? (

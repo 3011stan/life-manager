@@ -26,12 +26,16 @@ import type {
 import type {
   AddMeasurement201,
   AddMeasurementBody,
+  ApplyRhythms200Item,
+  ApplyRhythmsBody,
   CloseCycle200,
   CloseCycleBody,
   CreateObjective201,
   CreateObjectiveBody,
   GetCycle200,
   GetCycleClose200,
+  GetGoalsTree200,
+  GetGoalsTreeParams,
   UpdateCycle200,
   UpdateCycleBody,
   UpdateObjective200,
@@ -72,7 +76,7 @@ export type getCycleResponseSuccess = (getCycleResponse200) & {
 
 export type getCycleResponse = (getCycleResponseSuccess)
 
-export const getGetCycleUrl = (horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y20',
+export const getGetCycleUrl = (horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y15' | 'y20',
     date: string | 'current',) => {
 
 
@@ -81,7 +85,7 @@ export const getGetCycleUrl = (horizon: 'week' | 'month' | 'year' | 'y5' | 'y10'
   return `/v1/cycles/${horizon}/${date}`
 }
 
-export const getCycle = async (horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y20',
+export const getCycle = async (horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y15' | 'y20',
     date: string | 'current', options?: Parameters<typeof apiFetch>[1]): Promise<getCycleResponse> => {
 
   return apiFetch<getCycleResponse>(getGetCycleUrl(horizon,date),
@@ -97,7 +101,7 @@ export const getCycle = async (horizon: 'week' | 'month' | 'year' | 'y5' | 'y10'
 
 
 
-export const getGetCycleQueryKey = (horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y20',
+export const getGetCycleQueryKey = (horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y15' | 'y20',
     date: string | 'current',) => {
     return [
     `/v1/cycles/${horizon}/${date}`
@@ -105,7 +109,7 @@ export const getGetCycleQueryKey = (horizon: 'week' | 'month' | 'year' | 'y5' | 
     }
 
 
-export const getGetCycleQueryOptions = <TData = Awaited<ReturnType<typeof getCycle>>, TError = unknown>(horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y20',
+export const getGetCycleQueryOptions = <TData = Awaited<ReturnType<typeof getCycle>>, TError = unknown>(horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y15' | 'y20',
     date: string | 'current', options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCycle>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
 ) => {
 
@@ -129,7 +133,7 @@ export type GetCycleQueryError = unknown
 
 
 export function useGetCycle<TData = Awaited<ReturnType<typeof getCycle>>, TError = unknown>(
- horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y20',
+ horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y15' | 'y20',
     date: string | 'current', options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCycle>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getCycle>>,
@@ -140,7 +144,7 @@ export function useGetCycle<TData = Awaited<ReturnType<typeof getCycle>>, TError
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetCycle<TData = Awaited<ReturnType<typeof getCycle>>, TError = unknown>(
- horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y20',
+ horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y15' | 'y20',
     date: string | 'current', options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCycle>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getCycle>>,
@@ -151,13 +155,13 @@ export function useGetCycle<TData = Awaited<ReturnType<typeof getCycle>>, TError
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetCycle<TData = Awaited<ReturnType<typeof getCycle>>, TError = unknown>(
- horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y20',
+ horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y15' | 'y20',
     date: string | 'current', options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCycle>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetCycle<TData = Awaited<ReturnType<typeof getCycle>>, TError = unknown>(
- horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y20',
+ horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y15' | 'y20',
     date: string | 'current', options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCycle>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
  , queryClient?: QueryClient
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
@@ -186,7 +190,7 @@ export type updateCycleResponseSuccess = (updateCycleResponse200) & {
 
 export type updateCycleResponse = (updateCycleResponseSuccess)
 
-export const getUpdateCycleUrl = (horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y20',
+export const getUpdateCycleUrl = (horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y15' | 'y20',
     date: string | 'current',) => {
 
 
@@ -195,7 +199,7 @@ export const getUpdateCycleUrl = (horizon: 'week' | 'month' | 'year' | 'y5' | 'y
   return `/v1/cycles/${horizon}/${date}`
 }
 
-export const updateCycle = async (horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y20',
+export const updateCycle = async (horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y15' | 'y20',
     date: string | 'current',
     updateCycleBody: UpdateCycleBody, options?: Parameters<typeof apiFetch>[1]): Promise<updateCycleResponse> => {
 
@@ -258,7 +262,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
     export type UpdateCycleMutationResult = NonNullable<Awaited<ReturnType<typeof updateCycle>>>
     export type UpdateCycleMutationBody = UpdateCycleBody
     export type UpdateCycleMutationError = unknown
-    export type UpdateCycleMutationVariables = {horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y20';date: string | 'current';data: UpdateCycleBody}
+    export type UpdateCycleMutationVariables = {horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y15' | 'y20';date: string | 'current';data: UpdateCycleBody}
 
     export const useUpdateCycle = <TError = unknown,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateCycle>>, TError,UpdateCycleMutationVariables, TContext>, request?: SecondParameter<typeof apiFetch>}
@@ -282,7 +286,7 @@ export type createObjectiveResponseSuccess = (createObjectiveResponse201) & {
 
 export type createObjectiveResponse = (createObjectiveResponseSuccess)
 
-export const getCreateObjectiveUrl = (horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y20',
+export const getCreateObjectiveUrl = (horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y15' | 'y20',
     date: string | 'current',) => {
 
 
@@ -291,7 +295,7 @@ export const getCreateObjectiveUrl = (horizon: 'week' | 'month' | 'year' | 'y5' 
   return `/v1/cycles/${horizon}/${date}/objectives`
 }
 
-export const createObjective = async (horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y20',
+export const createObjective = async (horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y15' | 'y20',
     date: string | 'current',
     createObjectiveBody: CreateObjectiveBody, options?: Parameters<typeof apiFetch>[1]): Promise<createObjectiveResponse> => {
 
@@ -354,7 +358,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
     export type CreateObjectiveMutationResult = NonNullable<Awaited<ReturnType<typeof createObjective>>>
     export type CreateObjectiveMutationBody = CreateObjectiveBody
     export type CreateObjectiveMutationError = unknown
-    export type CreateObjectiveMutationVariables = {horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y20';date: string | 'current';data: CreateObjectiveBody}
+    export type CreateObjectiveMutationVariables = {horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y15' | 'y20';date: string | 'current';data: CreateObjectiveBody}
 
     export const useCreateObjective = <TError = unknown,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createObjective>>, TError,CreateObjectiveMutationVariables, TContext>, request?: SecondParameter<typeof apiFetch>}
@@ -724,7 +728,7 @@ export type getCycleCloseResponseSuccess = (getCycleCloseResponse200) & {
 
 export type getCycleCloseResponse = (getCycleCloseResponseSuccess)
 
-export const getGetCycleCloseUrl = (horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y20',
+export const getGetCycleCloseUrl = (horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y15' | 'y20',
     date: string | 'current',) => {
 
 
@@ -733,7 +737,7 @@ export const getGetCycleCloseUrl = (horizon: 'week' | 'month' | 'year' | 'y5' | 
   return `/v1/cycles/${horizon}/${date}/close`
 }
 
-export const getCycleClose = async (horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y20',
+export const getCycleClose = async (horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y15' | 'y20',
     date: string | 'current', options?: Parameters<typeof apiFetch>[1]): Promise<getCycleCloseResponse> => {
 
   return apiFetch<getCycleCloseResponse>(getGetCycleCloseUrl(horizon,date),
@@ -749,7 +753,7 @@ export const getCycleClose = async (horizon: 'week' | 'month' | 'year' | 'y5' | 
 
 
 
-export const getGetCycleCloseQueryKey = (horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y20',
+export const getGetCycleCloseQueryKey = (horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y15' | 'y20',
     date: string | 'current',) => {
     return [
     `/v1/cycles/${horizon}/${date}/close`
@@ -757,7 +761,7 @@ export const getGetCycleCloseQueryKey = (horizon: 'week' | 'month' | 'year' | 'y
     }
 
 
-export const getGetCycleCloseQueryOptions = <TData = Awaited<ReturnType<typeof getCycleClose>>, TError = unknown>(horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y20',
+export const getGetCycleCloseQueryOptions = <TData = Awaited<ReturnType<typeof getCycleClose>>, TError = unknown>(horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y15' | 'y20',
     date: string | 'current', options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCycleClose>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
 ) => {
 
@@ -781,7 +785,7 @@ export type GetCycleCloseQueryError = unknown
 
 
 export function useGetCycleClose<TData = Awaited<ReturnType<typeof getCycleClose>>, TError = unknown>(
- horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y20',
+ horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y15' | 'y20',
     date: string | 'current', options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCycleClose>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getCycleClose>>,
@@ -792,7 +796,7 @@ export function useGetCycleClose<TData = Awaited<ReturnType<typeof getCycleClose
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetCycleClose<TData = Awaited<ReturnType<typeof getCycleClose>>, TError = unknown>(
- horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y20',
+ horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y15' | 'y20',
     date: string | 'current', options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCycleClose>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getCycleClose>>,
@@ -803,13 +807,13 @@ export function useGetCycleClose<TData = Awaited<ReturnType<typeof getCycleClose
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetCycleClose<TData = Awaited<ReturnType<typeof getCycleClose>>, TError = unknown>(
- horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y20',
+ horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y15' | 'y20',
     date: string | 'current', options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCycleClose>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
 export function useGetCycleClose<TData = Awaited<ReturnType<typeof getCycleClose>>, TError = unknown>(
- horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y20',
+ horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y15' | 'y20',
     date: string | 'current', options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCycleClose>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
  , queryClient?: QueryClient
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
@@ -838,7 +842,7 @@ export type closeCycleResponseSuccess = (closeCycleResponse200) & {
 
 export type closeCycleResponse = (closeCycleResponseSuccess)
 
-export const getCloseCycleUrl = (horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y20',
+export const getCloseCycleUrl = (horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y15' | 'y20',
     date: string | 'current',) => {
 
 
@@ -847,7 +851,7 @@ export const getCloseCycleUrl = (horizon: 'week' | 'month' | 'year' | 'y5' | 'y1
   return `/v1/cycles/${horizon}/${date}/close`
 }
 
-export const closeCycle = async (horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y20',
+export const closeCycle = async (horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y15' | 'y20',
     date: string | 'current',
     closeCycleBody: CloseCycleBody, options?: Parameters<typeof apiFetch>[1]): Promise<closeCycleResponse> => {
 
@@ -910,7 +914,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
     export type CloseCycleMutationResult = NonNullable<Awaited<ReturnType<typeof closeCycle>>>
     export type CloseCycleMutationBody = CloseCycleBody
     export type CloseCycleMutationError = unknown
-    export type CloseCycleMutationVariables = {horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y20';date: string | 'current';data: CloseCycleBody}
+    export type CloseCycleMutationVariables = {horizon: 'week' | 'month' | 'year' | 'y5' | 'y10' | 'y15' | 'y20';date: string | 'current';data: CloseCycleBody}
 
     export const useCloseCycle = <TError = unknown,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof closeCycle>>, TError,CloseCycleMutationVariables, TContext>, request?: SecondParameter<typeof apiFetch>}
@@ -921,4 +925,213 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
         TContext
       > => {
       return useMutation(getCloseCycleMutationOptions(options), queryClient);
+    }
+    export type getGoalsTreeResponse200 = {
+  data: GetGoalsTree200
+  status: 200
+}
+
+export type getGoalsTreeResponseSuccess = (getGoalsTreeResponse200) & {
+  headers: Headers;
+};
+;
+
+export type getGoalsTreeResponse = (getGoalsTreeResponseSuccess)
+
+export const getGetGoalsTreeUrl = (params?: GetGoalsTreeParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/v1/goals/tree?${stringifiedParams}` : `/v1/goals/tree`
+}
+
+export const getGoalsTree = async (params?: GetGoalsTreeParams, options?: Parameters<typeof apiFetch>[1]): Promise<getGoalsTreeResponse> => {
+
+  return apiFetch<getGoalsTreeResponse>(getGetGoalsTreeUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetGoalsTreeQueryKey = (params?: GetGoalsTreeParams,) => {
+    return [
+    `/v1/goals/tree`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetGoalsTreeQueryOptions = <TData = Awaited<ReturnType<typeof getGoalsTree>>, TError = unknown>(params?: GetGoalsTreeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getGoalsTree>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetGoalsTreeQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getGoalsTree>>> = ({ signal }) => getGoalsTree(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getGoalsTree>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetGoalsTreeQueryResult = NonNullable<Awaited<ReturnType<typeof getGoalsTree>>>
+export type GetGoalsTreeQueryError = unknown
+
+
+export function useGetGoalsTree<TData = Awaited<ReturnType<typeof getGoalsTree>>, TError = unknown>(
+ params: undefined |  GetGoalsTreeParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getGoalsTree>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getGoalsTree>>,
+          TError,
+          Awaited<ReturnType<typeof getGoalsTree>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetGoalsTree<TData = Awaited<ReturnType<typeof getGoalsTree>>, TError = unknown>(
+ params?: GetGoalsTreeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getGoalsTree>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getGoalsTree>>,
+          TError,
+          Awaited<ReturnType<typeof getGoalsTree>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetGoalsTree<TData = Awaited<ReturnType<typeof getGoalsTree>>, TError = unknown>(
+ params?: GetGoalsTreeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getGoalsTree>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useGetGoalsTree<TData = Awaited<ReturnType<typeof getGoalsTree>>, TError = unknown>(
+ params?: GetGoalsTreeParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getGoalsTree>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetGoalsTreeQueryOptions(params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export type applyRhythmsResponse200 = {
+  data: ApplyRhythms200Item[]
+  status: 200
+}
+
+export type applyRhythmsResponseSuccess = (applyRhythmsResponse200) & {
+  headers: Headers;
+};
+;
+
+export type applyRhythmsResponse = (applyRhythmsResponseSuccess)
+
+export const getApplyRhythmsUrl = (horizon: 'week' | 'month',
+    date: string | 'current',) => {
+
+
+
+
+  return `/v1/cycles/${horizon}/${date}/apply-rhythms`
+}
+
+export const applyRhythms = async (horizon: 'week' | 'month',
+    date: string | 'current',
+    applyRhythmsBody: ApplyRhythmsBody, options?: Parameters<typeof apiFetch>[1]): Promise<applyRhythmsResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return apiFetch<applyRhythmsResponse>(getApplyRhythmsUrl(horizon,date),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(applyRhythmsBody)
+  }
+);}
+
+
+
+
+
+export const getApplyRhythmsMutationKey = () => ['applyRhythms'] as const;
+
+export const getApplyRhythmsMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof applyRhythms>>, TError,ApplyRhythmsMutationVariables, TContext>, request?: SecondParameter<typeof apiFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof applyRhythms>>, TError,ApplyRhythmsMutationVariables, TContext> => {
+
+const mutationKey = getApplyRhythmsMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof applyRhythms>>, ApplyRhythmsMutationVariables> = (props) => {
+          const {horizon,date,data} = props ?? {};
+
+          return  applyRhythms(horizon,date,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ApplyRhythmsMutationResult = NonNullable<Awaited<ReturnType<typeof applyRhythms>>>
+    export type ApplyRhythmsMutationBody = ApplyRhythmsBody
+    export type ApplyRhythmsMutationError = unknown
+    export type ApplyRhythmsMutationVariables = {horizon: 'week' | 'month';date: string | 'current';data: ApplyRhythmsBody}
+
+    export const useApplyRhythms = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof applyRhythms>>, TError,ApplyRhythmsMutationVariables, TContext>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof applyRhythms>>,
+        TError,
+        ApplyRhythmsMutationVariables,
+        TContext
+      > => {
+      return useMutation(getApplyRhythmsMutationOptions(options), queryClient);
     }

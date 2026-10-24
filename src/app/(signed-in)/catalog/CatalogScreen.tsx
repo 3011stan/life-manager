@@ -105,6 +105,7 @@ export function CatalogScreen() {
       activity={editing === "new" ? undefined : editing}
       areaId={editing === "new" ? (newActivityArea ?? data.areas.find((a) => !a.archivedAt)?.id ?? "") : editing.areaId}
       areas={data.areas.filter((a) => !a.archivedAt)}
+      pillars={data.pillars}
       onClose={() => setEditing(undefined)}
       onArchive={
         editing === "new"

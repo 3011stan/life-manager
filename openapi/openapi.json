@@ -685,6 +685,7 @@
                           "defaultIsTimeBlock",
                           "defaultTimeValue",
                           "defaultSegments",
+                          "type",
                           "archivedAt",
                           "version"
                         ],
@@ -774,6 +775,41 @@
                               "additionalProperties": false
                             },
                             "maxItems": 20
+                          },
+                          "type": {
+                            "anyOf": [
+                              {
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "habit"
+                                    ]
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "project"
+                                    ]
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "experience"
+                                    ]
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "maintenance"
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
                           },
                           "archivedAt": {
                             "anyOf": [
@@ -1570,6 +1606,41 @@
                       "additionalProperties": false
                     },
                     "maxItems": 20
+                  },
+                  "type": {
+                    "anyOf": [
+                      {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "enum": [
+                              "habit"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "project"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "experience"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "maintenance"
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
                   }
                 },
                 "additionalProperties": false
@@ -1605,6 +1676,7 @@
                     "defaultIsTimeBlock",
                     "defaultTimeValue",
                     "defaultSegments",
+                    "type",
                     "archivedAt",
                     "version"
                   ],
@@ -1694,6 +1766,41 @@
                         "additionalProperties": false
                       },
                       "maxItems": 20
+                    },
+                    "type": {
+                      "anyOf": [
+                        {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "enum": [
+                                "habit"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "project"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "experience"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "maintenance"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
                     },
                     "archivedAt": {
                       "anyOf": [
@@ -1820,6 +1927,41 @@
                     },
                     "maxItems": 20
                   },
+                  "type": {
+                    "anyOf": [
+                      {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "enum": [
+                              "habit"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "project"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "experience"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "maintenance"
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
                   "archived": {
                     "type": "boolean"
                   }
@@ -1867,6 +2009,7 @@
                     "defaultIsTimeBlock",
                     "defaultTimeValue",
                     "defaultSegments",
+                    "type",
                     "archivedAt",
                     "version"
                   ],
@@ -1956,6 +2099,41 @@
                         "additionalProperties": false
                       },
                       "maxItems": 20
+                    },
+                    "type": {
+                      "anyOf": [
+                        {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "enum": [
+                                "habit"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "project"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "experience"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "maintenance"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
                     },
                     "archivedAt": {
                       "anyOf": [
@@ -2534,7 +2712,7 @@
                           "id",
                           "title",
                           "horizon",
-                          "parentId"
+                          "parentIds"
                         ],
                         "properties": {
                           "id": {
@@ -2546,15 +2724,11 @@
                           "horizon": {
                             "type": "string"
                           },
-                          "parentId": {
-                            "anyOf": [
-                              {
-                                "type": "string"
-                              },
-                              {
-                                "type": "null"
-                              }
-                            ]
+                          "parentIds": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
                           }
                         }
                       }
@@ -3199,7 +3373,7 @@
                           "id",
                           "title",
                           "horizon",
-                          "parentId"
+                          "parentIds"
                         ],
                         "properties": {
                           "id": {
@@ -3211,15 +3385,11 @@
                           "horizon": {
                             "type": "string"
                           },
-                          "parentId": {
-                            "anyOf": [
-                              {
-                                "type": "string"
-                              },
-                              {
-                                "type": "null"
-                              }
-                            ]
+                          "parentIds": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
                           }
                         }
                       }
@@ -6149,7 +6319,7 @@
                           "id",
                           "title",
                           "horizon",
-                          "parentId"
+                          "parentIds"
                         ],
                         "properties": {
                           "id": {
@@ -6161,15 +6331,11 @@
                           "horizon": {
                             "type": "string"
                           },
-                          "parentId": {
-                            "anyOf": [
-                              {
-                                "type": "string"
-                              },
-                              {
-                                "type": "null"
-                              }
-                            ]
+                          "parentIds": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
                           }
                         }
                       }
@@ -6220,6 +6386,12 @@
                   "type": "string",
                   "enum": [
                     "y10"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "y15"
                   ]
                 },
                 {
@@ -6357,7 +6529,10 @@
                           "targetLevel",
                           "milestoneEntryId",
                           "doneAt",
-                          "parentObjectiveId",
+                          "parentIds",
+                          "rhythmPeriod",
+                          "rhythmCount",
+                          "rhythmMinutes",
                           "activityIds",
                           "childIds",
                           "carriedFromObjectiveId",
@@ -6566,10 +6741,49 @@
                               }
                             ]
                           },
-                          "parentObjectiveId": {
+                          "parentIds": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "rhythmPeriod": {
                             "anyOf": [
                               {
-                                "type": "string"
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "week"
+                                    ]
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "month"
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "rhythmCount": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "rhythmMinutes": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
                               },
                               {
                                 "type": "null"
@@ -6747,6 +6961,12 @@
                 {
                   "type": "string",
                   "enum": [
+                    "y15"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
                     "y20"
                   ]
                 }
@@ -6888,7 +7108,10 @@
                           "targetLevel",
                           "milestoneEntryId",
                           "doneAt",
-                          "parentObjectiveId",
+                          "parentIds",
+                          "rhythmPeriod",
+                          "rhythmCount",
+                          "rhythmMinutes",
                           "activityIds",
                           "childIds",
                           "carriedFromObjectiveId",
@@ -7097,10 +7320,49 @@
                               }
                             ]
                           },
-                          "parentObjectiveId": {
+                          "parentIds": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "rhythmPeriod": {
                             "anyOf": [
                               {
-                                "type": "string"
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "week"
+                                    ]
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "month"
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "rhythmCount": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "rhythmMinutes": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
                               },
                               {
                                 "type": "null"
@@ -7404,11 +7666,55 @@
                       }
                     ]
                   },
-                  "parentObjectiveId": {
+                  "parentIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "maxItems": 20
+                  },
+                  "rhythmPeriod": {
                     "anyOf": [
                       {
-                        "type": "string",
-                        "format": "uuid"
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "enum": [
+                              "week"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "month"
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "rhythmCount": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 1000
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "rhythmMinutes": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 100000
                       },
                       {
                         "type": "null"
@@ -7461,6 +7767,12 @@
                   "type": "string",
                   "enum": [
                     "y10"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "y15"
                   ]
                 },
                 {
@@ -7531,7 +7843,10 @@
                     "targetLevel",
                     "milestoneEntryId",
                     "doneAt",
-                    "parentObjectiveId",
+                    "parentIds",
+                    "rhythmPeriod",
+                    "rhythmCount",
+                    "rhythmMinutes",
                     "activityIds",
                     "childIds",
                     "carriedFromObjectiveId",
@@ -7740,10 +8055,49 @@
                         }
                       ]
                     },
-                    "parentObjectiveId": {
+                    "parentIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "rhythmPeriod": {
                       "anyOf": [
                         {
-                          "type": "string"
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "enum": [
+                                "week"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "month"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "rhythmCount": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "rhythmMinutes": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
                         },
                         {
                           "type": "null"
@@ -7973,11 +8327,55 @@
                       }
                     ]
                   },
-                  "parentObjectiveId": {
+                  "parentIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "maxItems": 20
+                  },
+                  "rhythmPeriod": {
                     "anyOf": [
                       {
-                        "type": "string",
-                        "format": "uuid"
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "enum": [
+                              "week"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "month"
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "rhythmCount": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 1000
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "rhythmMinutes": {
+                    "anyOf": [
+                      {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 100000
                       },
                       {
                         "type": "null"
@@ -8071,7 +8469,10 @@
                     "targetLevel",
                     "milestoneEntryId",
                     "doneAt",
-                    "parentObjectiveId",
+                    "parentIds",
+                    "rhythmPeriod",
+                    "rhythmCount",
+                    "rhythmMinutes",
                     "activityIds",
                     "childIds",
                     "carriedFromObjectiveId",
@@ -8280,10 +8681,49 @@
                         }
                       ]
                     },
-                    "parentObjectiveId": {
+                    "parentIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "rhythmPeriod": {
                       "anyOf": [
                         {
-                          "type": "string"
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "enum": [
+                                "week"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "month"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "rhythmCount": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "rhythmMinutes": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
                         },
                         {
                           "type": "null"
@@ -8497,7 +8937,10 @@
                     "targetLevel",
                     "milestoneEntryId",
                     "doneAt",
-                    "parentObjectiveId",
+                    "parentIds",
+                    "rhythmPeriod",
+                    "rhythmCount",
+                    "rhythmMinutes",
                     "activityIds",
                     "childIds",
                     "carriedFromObjectiveId",
@@ -8706,10 +9149,49 @@
                         }
                       ]
                     },
-                    "parentObjectiveId": {
+                    "parentIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "rhythmPeriod": {
                       "anyOf": [
                         {
-                          "type": "string"
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "enum": [
+                                "week"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "enum": [
+                                "month"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "rhythmCount": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "rhythmMinutes": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
                         },
                         {
                           "type": "null"
@@ -8877,6 +9359,12 @@
                 {
                   "type": "string",
                   "enum": [
+                    "y15"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
                     "y20"
                   ]
                 }
@@ -9011,7 +9499,10 @@
                           "targetLevel",
                           "milestoneEntryId",
                           "doneAt",
-                          "parentObjectiveId",
+                          "parentIds",
+                          "rhythmPeriod",
+                          "rhythmCount",
+                          "rhythmMinutes",
                           "activityIds",
                           "childIds",
                           "carriedFromObjectiveId",
@@ -9220,10 +9711,49 @@
                               }
                             ]
                           },
-                          "parentObjectiveId": {
+                          "parentIds": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "rhythmPeriod": {
                             "anyOf": [
                               {
-                                "type": "string"
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "week"
+                                    ]
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "month"
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "rhythmCount": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "rhythmMinutes": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
                               },
                               {
                                 "type": "null"
@@ -9356,7 +9886,10 @@
                           "targetLevel",
                           "milestoneEntryId",
                           "doneAt",
-                          "parentObjectiveId",
+                          "parentIds",
+                          "rhythmPeriod",
+                          "rhythmCount",
+                          "rhythmMinutes",
                           "activityIds",
                           "childIds",
                           "carriedFromObjectiveId",
@@ -9565,10 +10098,49 @@
                               }
                             ]
                           },
-                          "parentObjectiveId": {
+                          "parentIds": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "rhythmPeriod": {
                             "anyOf": [
                               {
-                                "type": "string"
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "week"
+                                    ]
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "month"
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "rhythmCount": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "rhythmMinutes": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
                               },
                               {
                                 "type": "null"
@@ -9679,7 +10251,10 @@
                           "targetLevel",
                           "milestoneEntryId",
                           "doneAt",
-                          "parentObjectiveId",
+                          "parentIds",
+                          "rhythmPeriod",
+                          "rhythmCount",
+                          "rhythmMinutes",
                           "activityIds",
                           "childIds",
                           "carriedFromObjectiveId",
@@ -9888,10 +10463,49 @@
                               }
                             ]
                           },
-                          "parentObjectiveId": {
+                          "parentIds": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "rhythmPeriod": {
                             "anyOf": [
                               {
-                                "type": "string"
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "week"
+                                    ]
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "month"
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "rhythmCount": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "rhythmMinutes": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
                               },
                               {
                                 "type": "null"
@@ -10110,6 +10724,12 @@
                 {
                   "type": "string",
                   "enum": [
+                    "y15"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
                     "y20"
                   ]
                 }
@@ -10251,7 +10871,10 @@
                           "targetLevel",
                           "milestoneEntryId",
                           "doneAt",
-                          "parentObjectiveId",
+                          "parentIds",
+                          "rhythmPeriod",
+                          "rhythmCount",
+                          "rhythmMinutes",
                           "activityIds",
                           "childIds",
                           "carriedFromObjectiveId",
@@ -10460,10 +11083,49 @@
                               }
                             ]
                           },
-                          "parentObjectiveId": {
+                          "parentIds": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "rhythmPeriod": {
                             "anyOf": [
                               {
-                                "type": "string"
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "week"
+                                    ]
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "month"
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "rhythmCount": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "rhythmMinutes": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
                               },
                               {
                                 "type": "null"
@@ -10571,6 +11233,915 @@
                           "type": "null"
                         }
                       ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/goals/tree": {
+      "get": {
+        "operationId": "getGoalsTree",
+        "tags": [
+          "objectives"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "current"
+                  ]
+                }
+              ]
+            },
+            "in": "query",
+            "name": "date",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "date",
+                    "today",
+                    "cycles",
+                    "objectives"
+                  ],
+                  "properties": {
+                    "date": {
+                      "type": "string"
+                    },
+                    "today": {
+                      "type": "string"
+                    },
+                    "cycles": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "horizon",
+                          "startDate",
+                          "endDate",
+                          "id",
+                          "closedAt"
+                        ],
+                        "properties": {
+                          "horizon": {
+                            "type": "string"
+                          },
+                          "startDate": {
+                            "type": "string"
+                          },
+                          "endDate": {
+                            "type": "string"
+                          },
+                          "id": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "closedAt": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "objectives": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "cycleId",
+                          "horizon",
+                          "startDate",
+                          "endDate",
+                          "title",
+                          "tier",
+                          "status",
+                          "targetType",
+                          "targetCount",
+                          "targetMinutes",
+                          "unit",
+                          "startValue",
+                          "targetValue",
+                          "isCumulative",
+                          "levelScale",
+                          "targetLevel",
+                          "milestoneEntryId",
+                          "doneAt",
+                          "parentIds",
+                          "rhythmPeriod",
+                          "rhythmCount",
+                          "rhythmMinutes",
+                          "activityIds",
+                          "childIds",
+                          "carriedFromObjectiveId",
+                          "checkpoint",
+                          "orderKey",
+                          "progress",
+                          "current",
+                          "pace",
+                          "version"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "cycleId": {
+                            "type": "string"
+                          },
+                          "horizon": {
+                            "type": "string"
+                          },
+                          "startDate": {
+                            "type": "string"
+                          },
+                          "endDate": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "tier": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "essential"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "secondary"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "parked"
+                                ]
+                              }
+                            ]
+                          },
+                          "status": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "active"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "done"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "carried"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "dropped"
+                                ]
+                              }
+                            ]
+                          },
+                          "targetType": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "count"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "duration"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "value"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "level"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "milestone"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "composite"
+                                ]
+                              }
+                            ]
+                          },
+                          "targetCount": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "targetMinutes": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "unit": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "startValue": {
+                            "anyOf": [
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "targetValue": {
+                            "anyOf": [
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "isCumulative": {
+                            "type": "boolean"
+                          },
+                          "levelScale": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "targetLevel": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "milestoneEntryId": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "doneAt": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "parentIds": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "rhythmPeriod": {
+                            "anyOf": [
+                              {
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "week"
+                                    ]
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "month"
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "rhythmCount": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "rhythmMinutes": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "activityIds": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "childIds": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "carriedFromObjectiveId": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "checkpoint": {
+                            "anyOf": [
+                              {
+                                "type": "object",
+                                "required": [
+                                  "year",
+                                  "relevant",
+                                  "onTrack",
+                                  "note"
+                                ],
+                                "properties": {
+                                  "year": {
+                                    "type": "integer"
+                                  },
+                                  "relevant": {
+                                    "type": "boolean"
+                                  },
+                                  "onTrack": {
+                                    "type": "boolean"
+                                  },
+                                  "note": {
+                                    "type": "string"
+                                  }
+                                }
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "orderKey": {
+                            "type": "string"
+                          },
+                          "progress": {
+                            "type": "number"
+                          },
+                          "current": {
+                            "anyOf": [
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "pace": {
+                            "type": "number"
+                          },
+                          "version": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/cycles/{horizon}/{date}/apply-rhythms": {
+      "post": {
+        "operationId": "applyRhythms",
+        "tags": [
+          "objectives"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {},
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "week"
+                  ]
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "month"
+                  ]
+                }
+              ]
+            },
+            "in": "path",
+            "name": "horizon",
+            "required": true
+          },
+          {
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                },
+                {
+                  "type": "string",
+                  "enum": [
+                    "current"
+                  ]
+                }
+              ]
+            },
+            "in": "path",
+            "name": "date",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "in": "header",
+            "name": "idempotency-key",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "cycleId",
+                      "horizon",
+                      "startDate",
+                      "endDate",
+                      "title",
+                      "tier",
+                      "status",
+                      "targetType",
+                      "targetCount",
+                      "targetMinutes",
+                      "unit",
+                      "startValue",
+                      "targetValue",
+                      "isCumulative",
+                      "levelScale",
+                      "targetLevel",
+                      "milestoneEntryId",
+                      "doneAt",
+                      "parentIds",
+                      "rhythmPeriod",
+                      "rhythmCount",
+                      "rhythmMinutes",
+                      "activityIds",
+                      "childIds",
+                      "carriedFromObjectiveId",
+                      "checkpoint",
+                      "orderKey",
+                      "progress",
+                      "current",
+                      "pace",
+                      "version"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "cycleId": {
+                        "type": "string"
+                      },
+                      "horizon": {
+                        "type": "string"
+                      },
+                      "startDate": {
+                        "type": "string"
+                      },
+                      "endDate": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "tier": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "enum": [
+                              "essential"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "secondary"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "parked"
+                            ]
+                          }
+                        ]
+                      },
+                      "status": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "enum": [
+                              "active"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "done"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "carried"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "dropped"
+                            ]
+                          }
+                        ]
+                      },
+                      "targetType": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "enum": [
+                              "count"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "duration"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "value"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "level"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "milestone"
+                            ]
+                          },
+                          {
+                            "type": "string",
+                            "enum": [
+                              "composite"
+                            ]
+                          }
+                        ]
+                      },
+                      "targetCount": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "targetMinutes": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "unit": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "startValue": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "targetValue": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "isCumulative": {
+                        "type": "boolean"
+                      },
+                      "levelScale": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "targetLevel": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "milestoneEntryId": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "doneAt": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "parentIds": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "rhythmPeriod": {
+                        "anyOf": [
+                          {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "week"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "month"
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "rhythmCount": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "rhythmMinutes": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "activityIds": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "childIds": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "carriedFromObjectiveId": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "checkpoint": {
+                        "anyOf": [
+                          {
+                            "type": "object",
+                            "required": [
+                              "year",
+                              "relevant",
+                              "onTrack",
+                              "note"
+                            ],
+                            "properties": {
+                              "year": {
+                                "type": "integer"
+                              },
+                              "relevant": {
+                                "type": "boolean"
+                              },
+                              "onTrack": {
+                                "type": "boolean"
+                              },
+                              "note": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "orderKey": {
+                        "type": "string"
+                      },
+                      "progress": {
+                        "type": "number"
+                      },
+                      "current": {
+                        "anyOf": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "pace": {
+                        "type": "number"
+                      },
+                      "version": {
+                        "type": "integer"
+                      }
                     }
                   }
                 }
@@ -11440,7 +13011,10 @@
                       "targetLevel",
                       "milestoneEntryId",
                       "doneAt",
-                      "parentObjectiveId",
+                      "parentIds",
+                      "rhythmPeriod",
+                      "rhythmCount",
+                      "rhythmMinutes",
                       "activityIds",
                       "childIds",
                       "carriedFromObjectiveId",
@@ -11649,10 +13223,49 @@
                           }
                         ]
                       },
-                      "parentObjectiveId": {
+                      "parentIds": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "rhythmPeriod": {
                         "anyOf": [
                           {
-                            "type": "string"
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "week"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "enum": [
+                                  "month"
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "rhythmCount": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "rhythmMinutes": {
+                        "anyOf": [
+                          {
+                            "type": "integer"
                           },
                           {
                             "type": "null"

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "@/components/icons";
 import { useGetCatalog } from "@/lib/api/generated/catalog/catalog";
 import { useGetDay } from "@/lib/api/generated/days/days";
@@ -12,6 +12,7 @@ import { addDays, deviceTimeZone, formatMinutes, isDate, todayIn } from "@/lib/d
 import type { Activity, Entry } from "@/lib/day/types";
 import { formatDate, useI18n } from "@/lib/i18n";
 import { useConnectivity } from "@/lib/offline/use-connectivity";
+import { pillarColor } from "@/components/ActivityPicker";
 import { AddEntry } from "./AddEntry";
 import { CapturePanel } from "./CapturePanel";
 import { CopyDialog } from "./CopyDialog";
@@ -33,18 +34,20 @@ export function DayScreen() {
   const { readOnly } = useConnectivity();
   const [editing, setEditing] = useState<string>();
   const [error, setError] = useState<string>();
-  const [undo, setUndo] = useState<{ id: string; title: string }>();
+  // The pending delete rides along, so Undo restores only after it landed.
+  const [undo, setUndo] = useState<{ id: string; title: string; deleted: Promise<unknown> }>();
   const undoTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   function remove(entry: Entry) {
     setEditing(undefined);
-    setUndo({ id: entry.id, title: entry.title });
+    const deleted = mutations.remove.mutateAsync(entry.id).catch(report);
+    setUndo({ id: entry.id, title: entry.title, deleted });
     clearTimeout(undoTimer.current);
     undoTimer.current = setTimeout(() => setUndo(undefined), 5000);
-    mutations.remove.mutateAsync(entry.id).catch(report);
   }
 
   const activities = useMemo(() => new Map<string, Activity>((catalog.data?.data.activities ?? []).map((a) => [a.id, a])), [catalog.data]);
+  const colorOf = useCallback((id: string | null) => (id ? pillarColor(catalog.data?.data, activities.get(id)?.areaId) : undefined), [catalog.data, activities]);
 
   function go(target: string) {
     router.push(`/day?date=${target}`);
@@ -118,6 +121,7 @@ export function DayScreen() {
           <Timeline
             entries={data.entries}
             activities={activities}
+            colorOf={colorOf}
             disabled={readOnly}
             onOpen={setEditing}
             onMove={(id, orderKey) => mutations.update.mutateAsync({ id, patch: { orderKey } }).catch(report)}
@@ -143,7 +147,7 @@ export function DayScreen() {
                 type="button"
                 className="link-button"
                 onClick={() => {
-                  mutations.restore.mutateAsync(undo.id).catch(report);
+                  void undo.deleted.then(() => mutations.restore.mutateAsync(undo.id)).catch(report);
                   setUndo(undefined);
                 }}
               >

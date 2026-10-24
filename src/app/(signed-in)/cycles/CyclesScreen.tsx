@@ -3,9 +3,9 @@
 import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "@/components/icons";
-import { getGetCycleQueryKey, useGetCycle } from "@/lib/api/generated/objectives/objectives";
+import { applyRhythms, getGetCycleQueryKey, useGetCycle } from "@/lib/api/generated/objectives/objectives";
 import { applyTemplates, getGetTemplateProposalsQueryKey, useGetTemplateProposals } from "@/lib/api/generated/templates/templates";
 import { addDays, isDate } from "@/lib/day/dates";
 import { percent, progressText } from "@/lib/day/objectives";
@@ -45,6 +45,17 @@ export function CyclesScreen() {
   const view = cycle.data?.data;
   const go = (h: CycleHorizon, d: string) => router.push(`/cycles?h=${h}&date=${d}`);
   const refresh = () => queryClient.invalidateQueries({ queryKey: getGetCycleQueryKey(horizon, date) });
+
+  // 005 D7: opening a week or a month creates its rhythm goals once.
+  const applied = useRef<string>(undefined);
+  useEffect(() => {
+    if (!view || readOnly || (horizon !== "week" && horizon !== "month")) return;
+    const key = `${horizon}:${view.startDate}`;
+    if (applied.current === key) return;
+    applied.current = key;
+    // Refresh either way: another device may have created them meanwhile.
+    void applyRhythms(horizon, view.startDate, {}).then(refresh, () => undefined);
+  });
 
   return (
     <section className="day">
@@ -130,7 +141,8 @@ export function CyclesScreen() {
           {editing ? (
             <ObjectiveSheet
               key={editing === "new" ? "new" : editing.id}
-              view={view}
+              horizon={horizon}
+              startDate={view.startDate}
               objective={editing === "new" ? undefined : editing}
               disabled={readOnly}
               onClose={() => setEditing(undefined)}

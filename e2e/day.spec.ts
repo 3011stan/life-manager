@@ -40,19 +40,22 @@ test("plan and run a day, seen identically on a second device (US1)", async ({ p
   await row(page, "Write report").getByRole("button", { name: "Mark Write report done" }).click();
   await expect(row(page, "Write report").getByRole("button", { name: "Mark Write report planned" })).toHaveAttribute("aria-pressed", "true");
   await row(page, "Write report").locator(".entry-row__main").click();
-  await page.getByLabel("Actual minutes").fill("20");
+  await page.getByLabel("Actual duration").fill("20");
   await page.getByRole("button", { name: "Save" }).click();
   await expect(row(page, "Write report")).toContainText("20m");
 
   await row(page, "Read").locator(".entry-row__main").click();
+  await page.getByRole("button", { name: "More" }).click();
   await page.getByLabel("Status").selectOption("skipped");
   await page.getByRole("button", { name: "Save" }).click();
+  await expect(page.getByLabel("Title", { exact: true })).toHaveCount(0);
 
-  // Move "Read" to the top through the touch-friendly control.
-  await row(page, "Read").locator(".entry-row__main").click();
-  await page.getByRole("button", { name: "Move up" }).click();
-  await row(page, "Read").locator(".entry-row__main").click();
-  await page.getByRole("button", { name: "Move up" }).click();
+  // Move "Read" to the top with the keyboard (005 D2 removed Move up/down).
+  await page.getByRole("button", { name: "Move Read" }).focus();
+  for (const key of ["Space", "ArrowUp", "ArrowUp", "Space"]) {
+    await page.keyboard.press(key);
+    await page.waitForTimeout(250);
+  }
   await expect(page.getByTestId("entry-row").first()).toContainText("Read");
 
   const phone = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
@@ -64,11 +67,14 @@ test("plan and run a day, seen identically on a second device (US1)", async ({ p
   await phone.close();
 });
 
-test("an entry with segments shows its real cost and its parts (US2, 005 D4)", async ({ page }) => {
+// 005 D2: parts belong to the activity; an entry made from it shows them.
+test("an entry from an activity with parts shows its real cost and its parts (US2, 005 D2)", async ({ page }) => {
   const date = uniqueDate();
   await signIn(page, date);
-  await add(page, "Gym");
-  await row(page, "Gym").locator(".entry-row__main").click();
+  const name = `Gym ${String(Date.now())}`;
+  await page.goto("/catalog");
+  await page.getByRole("button", { name: "Add activity" }).click();
+  await page.getByLabel("Activity name").fill(name);
   for (const [title, minutes, value] of [
     ["Get ready", "20", "support"],
     ["Train", "60", "useful"],
@@ -81,10 +87,51 @@ test("an entry with segments shows its real cost and its parts (US2, 005 D4)", a
     await last.getByLabel("Time value").selectOption(value);
   }
   await page.getByRole("button", { name: "Save" }).click();
+  await expect(page.getByLabel("Activity name")).toHaveCount(0);
 
-  await expect(row(page, "Gym")).toContainText("1h50");
-  await expect(row(page, "Gym").getByLabel("1h useful, 50m support")).toBeVisible();
-  await expect(row(page, "Gym").locator(".segment")).toHaveText([/Get ready/, /Train/, /Return/]);
+  await page.goto(`/day?date=${date}`);
+  await page.getByLabel("New entry").fill(name);
+  await page.getByRole("button", { name: new RegExp(`^${name}`) }).click();
+  await expect(row(page, name)).toContainText("1h50");
+  await expect(row(page, name).getByLabel("1h useful, 50m support")).toBeVisible();
+  await expect(row(page, name).locator(".segment")).toHaveText([/Get ready/, /Train/, /Return/]);
+});
+
+// 005 US2: the short sheet times an entry without "More"; a new duration lands
+// on the part that counts.
+test("a new duration from the short sheet resizes the main part (US2, 005 FR-006)", async ({ page }) => {
+  const date = uniqueDate();
+  await signIn(page, date);
+  const name = `Swim ${String(Date.now())}`;
+  await page.goto("/catalog");
+  await page.getByRole("button", { name: "Add activity" }).click();
+  await page.getByLabel("Activity name").fill(name);
+  for (const [title, minutes, value] of [
+    ["Go", "20", "support"],
+    ["Swim", "60", "useful"],
+    ["Back", "20", "support"],
+  ] as const) {
+    await page.getByRole("button", { name: "Add segment" }).click();
+    const last = page.locator(".segment-edit").last();
+    await last.getByLabel("Segment", { exact: true }).fill(title);
+    await last.getByLabel("Minutes").fill(minutes);
+    await last.getByLabel("Time value").selectOption(value);
+  }
+  await page.getByRole("button", { name: "Save" }).click();
+  await expect(page.getByLabel("Activity name")).toHaveCount(0);
+
+  await page.goto(`/day?date=${date}`);
+  await page.getByLabel("New entry").fill(name);
+  await page.getByRole("button", { name: new RegExp(`^${name}`) }).click();
+  await row(page, name).locator(".entry-row__main").click();
+  await expect(page.getByRole("button", { name: "More" })).toHaveAttribute("aria-expanded", "false");
+  await expect(page.getByLabel("Group")).toHaveCount(0);
+  await page.getByLabel("Start").fill("07:30");
+  await page.getByLabel("Duration", { exact: true }).fill("1h30");
+  await page.getByRole("button", { name: "Save" }).click();
+  await expect(page.getByLabel("Title", { exact: true })).toHaveCount(0);
+  await expect(row(page, name)).toContainText("07:30");
+  await expect(row(page, name).locator(".segment")).toHaveText([/Go\s*20m/, /Swim\s*50m/, /Back\s*20m/]);
 });
 
 test("the day fits a phone: no horizontal scroll and 44 px controls (SC-009)", async ({ page }) => {

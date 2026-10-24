@@ -35,7 +35,7 @@ export function TemplatesScreen() {
     const activity = String(form.get("activity") ?? "");
     setError(false);
     try {
-      await createObjectiveTemplate({
+      const created = await createObjectiveTemplate({
         id: crypto.randomUUID(),
         title: String(form.get("title")),
         tier: String(form.get("tier")) as (typeof TIERS)[number],
@@ -44,6 +44,11 @@ export function TemplatesScreen() {
         activityIds: activity ? [activity] : [],
       });
       element.reset();
+      // A list fetch still in flight from the page load must not hide it.
+      await queryClient.cancelQueries({ queryKey: getListObjectiveTemplatesQueryKey() });
+      queryClient.setQueryData<typeof list.data>(getListObjectiveTemplatesQueryKey(), (old) =>
+        old && !old.data.some((x) => x.id === created.data.id) ? { ...old, data: [...old.data, created.data] } : old,
+      );
     } catch {
       setError(true);
     }

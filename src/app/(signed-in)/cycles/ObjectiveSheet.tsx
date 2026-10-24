@@ -8,7 +8,7 @@ import { addMeasurement, createObjective, deleteObjective, getCycle, getGetCycle
 import { ApiError } from "@/lib/api/mutator";
 import { addDays, todayIn, deviceTimeZone } from "@/lib/day/dates";
 import { progressText } from "@/lib/day/objectives";
-import { HORIZONS, type CycleView, type Objective } from "@/lib/day/types";
+import { HORIZONS, type CycleHorizon, type Objective } from "@/lib/day/types";
 import { useT } from "@/lib/i18n";
 import { closeOnBackdrop } from "@/components/dialog";
 
@@ -18,21 +18,31 @@ const MORE: TargetType[] = ["value", "level", "milestone", "composite"];
 const TIERS = ["essential", "secondary", "parked"] as const;
 
 interface Props {
-  view: CycleView;
+  horizon: CycleHorizon;
+  startDate: string;
   objective: Objective | undefined;
+  // 005 D6: "+ Meta" under a goal starts the new one linked, with its activities.
+  preset?: { parentIds?: string[]; activityIds?: string[]; title?: string };
   disabled: boolean;
   onClose: () => void;
   onChanged: () => Promise<void>;
 }
 
+type Rhythm = "week" | "month" | "";
+
+// 005 D7: the rhythm that reaches the target, rounded up.
+export function suggestRhythm(horizon: CycleHorizon, period: "week" | "month", target: number): number {
+  const parts = horizon === "year" ? (period === "week" ? 52 : 12) : 4;
+  return Math.max(1, Math.ceil(target / parts));
+}
+
 // FR-004a: count and duration first; the other four behind "More types".
-export function ObjectiveSheet({ view, objective, disabled, onClose, onChanged }: Props) {
+export function ObjectiveSheet({ horizon, startDate, objective, preset, disabled, onClose, onChanged }: Props) {
   const t = useT();
   const dialog = useRef<HTMLDialogElement>(null);
   const catalog = useGetCatalog();
-  const horizon = view.horizon as (typeof HORIZONS)[number];
   const [form, setForm] = useState({
-    title: objective?.title ?? "",
+    title: objective?.title ?? preset?.title ?? "",
     tier: objective?.tier ?? ("essential" as const),
     targetType: objective?.targetType ?? ("count" as TargetType),
     targetCount: objective?.targetCount ?? 3,
@@ -43,8 +53,11 @@ export function ObjectiveSheet({ view, objective, disabled, onClose, onChanged }
     isCumulative: objective?.isCumulative ?? false,
     levels: (objective?.levelScale ?? []).join(", "),
     targetLevel: objective?.targetLevel ?? "",
-    activityIds: objective?.activityIds ?? [],
-    parentObjectiveId: objective?.parentObjectiveId ?? "",
+    activityIds: objective?.activityIds ?? preset?.activityIds ?? [],
+    parentIds: objective?.parentIds ?? preset?.parentIds ?? [],
+    rhythmPeriod: (objective?.rhythmPeriod ?? "") as Rhythm,
+    rhythmCount: objective?.rhythmCount ?? 1,
+    rhythmHours: (objective?.rhythmMinutes ?? 60) / 60,
   });
   const [showMore, setShowMore] = useState(MORE.includes(form.targetType));
   const [measure, setMeasure] = useState("");
@@ -56,13 +69,16 @@ export function ObjectiveSheet({ view, objective, disabled, onClose, onChanged }
 
   // Parents come from the higher cycles that contain this one; a week counts
   // in the month holding most of its days (research R2).
-  const anchor = horizon === "week" ? addDays(view.startDate, 3) : view.startDate;
+  const anchor = horizon === "week" ? addDays(startDate, 3) : startDate;
   const higher = HORIZONS.slice(HORIZONS.indexOf(horizon) + 1);
   const parents = useQueries({
     queries: higher.map((h) => ({ queryKey: getGetCycleQueryKey(h, anchor), queryFn: () => getCycle(h, anchor) })),
   })
     .flatMap((q) => q.data?.data.objectives ?? [])
     .filter((o) => o.status === "active");
+
+  const rhythmAllowed = (horizon === "year" || horizon === "month") && (form.targetType === "count" || form.targetType === "duration");
+  const periods: ("week" | "month")[] = horizon === "year" ? ["week", "month"] : ["week"];
 
   const set = <K extends keyof typeof form>(key: K, value: (typeof form)[K]) => setForm((f) => ({ ...f, [key]: value }));
   const scale = form.levels
@@ -84,7 +100,10 @@ export function ObjectiveSheet({ view, objective, disabled, onClose, onChanged }
       levelScale: form.targetType === "level" ? scale : [],
       targetLevel: form.targetType === "level" ? form.targetLevel || null : null,
       activityIds: form.activityIds,
-      parentObjectiveId: form.parentObjectiveId || null,
+      parentIds: form.parentIds,
+      rhythmPeriod: rhythmAllowed && form.rhythmPeriod ? form.rhythmPeriod : null,
+      rhythmCount: rhythmAllowed && form.rhythmPeriod && form.targetType === "count" ? form.rhythmCount : null,
+      rhythmMinutes: rhythmAllowed && form.rhythmPeriod && form.targetType === "duration" ? Math.round(form.rhythmHours * 60) : null,
     };
   }
 
@@ -105,7 +124,7 @@ export function ObjectiveSheet({ view, objective, disabled, onClose, onChanged }
   const save = () =>
     run(() => {
       if (objective) return updateObjective(objective.id, fields());
-      return createObjective(horizon, view.startDate, { id: crypto.randomUUID(), targetType: form.targetType, ...fields() });
+      return createObjective(horizon, startDate, { id: crypto.randomUUID(), targetType: form.targetType, ...fields() });
     });
 
   const record = () =>
@@ -263,18 +282,63 @@ export function ObjectiveSheet({ view, objective, disabled, onClose, onChanged }
             </fieldset>
           ) : null}
 
-          {higher.length > 0 ? (
-            <label className="field">
-              {t("objective.parent")}
-              <select value={form.parentObjectiveId} onChange={(e) => set("parentObjectiveId", e.target.value)}>
-                <option value="">{t("objective.noParent")}</option>
+          {rhythmAllowed ? (
+            <div className="field-row">
+              <label className="field">
+                {t("objective.rhythm")}
+                <select
+                  value={form.rhythmPeriod}
+                  onChange={(e) => {
+                    const period = e.target.value as Rhythm;
+                    setForm((f) => ({
+                      ...f,
+                      rhythmPeriod: period,
+                      rhythmCount: period ? suggestRhythm(horizon, period, f.targetCount) : f.rhythmCount,
+                      rhythmHours: period ? suggestRhythm(horizon, period, f.targetHours * 4) / 4 : f.rhythmHours,
+                    }));
+                  }}
+                >
+                  <option value="">{t("objective.rhythmNone")}</option>
+                  {periods.map((p) => (
+                    <option key={p} value={p}>
+                      {t(`objective.rhythmPer.${p}`)}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              {form.rhythmPeriod && form.targetType === "count" ? (
+                <label className="field">
+                  {t("objective.targetCount")}
+                  <input type="number" min={1} value={form.rhythmCount} onChange={(e) => set("rhythmCount", Number(e.target.value))} />
+                </label>
+              ) : null}
+              {form.rhythmPeriod && form.targetType === "duration" ? (
+                <label className="field">
+                  {t("objective.targetHours")}
+                  <input type="number" min={0.25} step={0.25} value={form.rhythmHours} onChange={(e) => set("rhythmHours", Number(e.target.value))} />
+                </label>
+              ) : null}
+            </div>
+          ) : null}
+
+          {higher.length > 0 && parents.length > 0 ? (
+            <fieldset className="stack plain-fieldset">
+              <legend className="field">{t("objective.parent")}</legend>
+              <ul className="check-list check-list--scroll">
                 {parents.map((p) => (
-                  <option key={p.id} value={p.id}>
-                    {t(`horizon.${p.horizon as (typeof HORIZONS)[number]}`)} · {p.title}
-                  </option>
+                  <li key={p.id}>
+                    <label className="toggle">
+                      <input
+                        type="checkbox"
+                        checked={form.parentIds.includes(p.id)}
+                        onChange={(e) => set("parentIds", e.target.checked ? [...form.parentIds, p.id] : form.parentIds.filter((x) => x !== p.id))}
+                      />
+                      {p.title} <span className="muted small">{t(`horizon.${p.horizon as CycleHorizon}`)}</span>
+                    </label>
+                  </li>
                 ))}
-              </select>
-            </label>
+              </ul>
+            </fieldset>
           ) : null}
 
           {error ? (

@@ -228,6 +228,7 @@ export type GetCatalog200ActivitiesItem = {
   defaultTimeValue: typeof GetCatalog200ActivitiesItemDefaultTimeValue[keyof typeof GetCatalog200ActivitiesItemDefaultTimeValue];
   /** @maxItems 20 */
   defaultSegments: GetCatalog200ActivitiesItemDefaultSegmentsItem[];
+  type: 'habit' | 'project' | 'experience' | 'maintenance' | null;
   archivedAt: string | null;
   version: number;
 };
@@ -388,6 +389,7 @@ export type CreateActivityBody = {
   defaultTimeValue?: typeof CreateActivityBodyDefaultTimeValue[keyof typeof CreateActivityBodyDefaultTimeValue];
   /** @maxItems 20 */
   defaultSegments?: CreateActivityBodyDefaultSegmentsItem[];
+  type?: 'habit' | 'project' | 'experience' | 'maintenance' | null;
 };
 
 export const CreateActivity201DefaultTimeValue = {  useful: 'useful',
@@ -422,6 +424,7 @@ export type CreateActivity201 = {
   defaultTimeValue: typeof CreateActivity201DefaultTimeValue[keyof typeof CreateActivity201DefaultTimeValue];
   /** @maxItems 20 */
   defaultSegments: CreateActivity201DefaultSegmentsItem[];
+  type: 'habit' | 'project' | 'experience' | 'maintenance' | null;
   archivedAt: string | null;
   version: number;
 };
@@ -466,6 +469,7 @@ export type UpdateActivityBody = {
   defaultTimeValue?: typeof UpdateActivityBodyDefaultTimeValue[keyof typeof UpdateActivityBodyDefaultTimeValue];
   /** @maxItems 20 */
   defaultSegments?: UpdateActivityBodyDefaultSegmentsItem[];
+  type?: 'habit' | 'project' | 'experience' | 'maintenance' | null;
   archived?: boolean;
 };
 
@@ -501,6 +505,7 @@ export type UpdateActivity200 = {
   defaultTimeValue: typeof UpdateActivity200DefaultTimeValue[keyof typeof UpdateActivity200DefaultTimeValue];
   /** @maxItems 20 */
   defaultSegments: UpdateActivity200DefaultSegmentsItem[];
+  type: 'habit' | 'project' | 'experience' | 'maintenance' | null;
   archivedAt: string | null;
   version: number;
 };
@@ -609,7 +614,7 @@ export type GetDay200ObjectivesItem = {
   id: string;
   title: string;
   horizon: string;
-  parentId: string | null;
+  parentIds: string[];
 };
 
 export type GetDay200 = {
@@ -745,7 +750,7 @@ export type UpdateDay200ObjectivesItem = {
   id: string;
   title: string;
   horizon: string;
-  parentId: string | null;
+  parentIds: string[];
 };
 
 export type UpdateDay200 = {
@@ -1408,7 +1413,7 @@ export type CloseDay200ObjectivesItem = {
   id: string;
   title: string;
   horizon: string;
-  parentId: string | null;
+  parentIds: string[];
 };
 
 export type CloseDay200 = {
@@ -1477,7 +1482,10 @@ export type GetCycle200ObjectivesItem = {
   targetLevel: string | null;
   milestoneEntryId: string | null;
   doneAt: string | null;
-  parentObjectiveId: string | null;
+  parentIds: string[];
+  rhythmPeriod: 'week' | 'month' | null;
+  rhythmCount: number | null;
+  rhythmMinutes: number | null;
   activityIds: string[];
   childIds: string[];
   carriedFromObjectiveId: string | null;
@@ -1562,7 +1570,10 @@ export type UpdateCycle200ObjectivesItem = {
   targetLevel: string | null;
   milestoneEntryId: string | null;
   doneAt: string | null;
-  parentObjectiveId: string | null;
+  parentIds: string[];
+  rhythmPeriod: 'week' | 'month' | null;
+  rhythmCount: number | null;
+  rhythmMinutes: number | null;
   activityIds: string[];
   childIds: string[];
   carriedFromObjectiveId: string | null;
@@ -1625,7 +1636,11 @@ export type CreateObjectiveBody = {
   levelScale?: string[];
   targetLevel?: string | null;
   milestoneEntryId?: string | null;
-  parentObjectiveId?: string | null;
+  /** @maxItems 20 */
+  parentIds?: string[];
+  rhythmPeriod?: 'week' | 'month' | null;
+  rhythmCount?: number | null;
+  rhythmMinutes?: number | null;
   /** @maxItems 50 */
   activityIds?: string[];
 };
@@ -1673,7 +1688,10 @@ export type CreateObjective201 = {
   targetLevel: string | null;
   milestoneEntryId: string | null;
   doneAt: string | null;
-  parentObjectiveId: string | null;
+  parentIds: string[];
+  rhythmPeriod: 'week' | 'month' | null;
+  rhythmCount: number | null;
+  rhythmMinutes: number | null;
   activityIds: string[];
   childIds: string[];
   carriedFromObjectiveId: string | null;
@@ -1716,7 +1734,11 @@ export type UpdateObjectiveBody = {
   levelScale?: string[];
   targetLevel?: string | null;
   milestoneEntryId?: string | null;
-  parentObjectiveId?: string | null;
+  /** @maxItems 20 */
+  parentIds?: string[];
+  rhythmPeriod?: 'week' | 'month' | null;
+  rhythmCount?: number | null;
+  rhythmMinutes?: number | null;
   /** @maxItems 50 */
   activityIds?: string[];
   status?: typeof UpdateObjectiveBodyStatus[keyof typeof UpdateObjectiveBodyStatus];
@@ -1766,7 +1788,10 @@ export type UpdateObjective200 = {
   targetLevel: string | null;
   milestoneEntryId: string | null;
   doneAt: string | null;
-  parentObjectiveId: string | null;
+  parentIds: string[];
+  rhythmPeriod: 'week' | 'month' | null;
+  rhythmCount: number | null;
+  rhythmMinutes: number | null;
   activityIds: string[];
   childIds: string[];
   carriedFromObjectiveId: string | null;
@@ -1836,7 +1861,10 @@ export type AddMeasurement201 = {
   targetLevel: string | null;
   milestoneEntryId: string | null;
   doneAt: string | null;
-  parentObjectiveId: string | null;
+  parentIds: string[];
+  rhythmPeriod: 'week' | 'month' | null;
+  rhythmCount: number | null;
+  rhythmMinutes: number | null;
   activityIds: string[];
   childIds: string[];
   carriedFromObjectiveId: string | null;
@@ -1901,7 +1929,10 @@ export type GetCycleClose200ObjectivesItem = {
   targetLevel: string | null;
   milestoneEntryId: string | null;
   doneAt: string | null;
-  parentObjectiveId: string | null;
+  parentIds: string[];
+  rhythmPeriod: 'week' | 'month' | null;
+  rhythmCount: number | null;
+  rhythmMinutes: number | null;
   activityIds: string[];
   childIds: string[];
   carriedFromObjectiveId: string | null;
@@ -1961,7 +1992,10 @@ export type GetCycleClose200UnfinishedItem = {
   targetLevel: string | null;
   milestoneEntryId: string | null;
   doneAt: string | null;
-  parentObjectiveId: string | null;
+  parentIds: string[];
+  rhythmPeriod: 'week' | 'month' | null;
+  rhythmCount: number | null;
+  rhythmMinutes: number | null;
   activityIds: string[];
   childIds: string[];
   carriedFromObjectiveId: string | null;
@@ -2016,7 +2050,10 @@ export type GetCycleClose200CheckpointsItem = {
   targetLevel: string | null;
   milestoneEntryId: string | null;
   doneAt: string | null;
-  parentObjectiveId: string | null;
+  parentIds: string[];
+  rhythmPeriod: 'week' | 'month' | null;
+  rhythmCount: number | null;
+  rhythmMinutes: number | null;
   activityIds: string[];
   childIds: string[];
   carriedFromObjectiveId: string | null;
@@ -2118,7 +2155,10 @@ export type CloseCycle200ObjectivesItem = {
   targetLevel: string | null;
   milestoneEntryId: string | null;
   doneAt: string | null;
-  parentObjectiveId: string | null;
+  parentIds: string[];
+  rhythmPeriod: 'week' | 'month' | null;
+  rhythmCount: number | null;
+  rhythmMinutes: number | null;
   activityIds: string[];
   childIds: string[];
   carriedFromObjectiveId: string | null;
@@ -2143,6 +2183,143 @@ export type CloseCycle200 = {
   cycle: CloseCycle200Cycle;
   objectives: CloseCycle200ObjectivesItem[];
   closeRequired: CloseCycle200CloseRequired;
+};
+
+export type GetGoalsTreeParams = {
+date?: string | 'current';
+};
+
+export type GetGoalsTree200CyclesItem = {
+  horizon: string;
+  startDate: string;
+  endDate: string;
+  id: string | null;
+  closedAt: string | null;
+};
+
+export const GetGoalsTree200ObjectivesItemTier = {  essential: 'essential',
+  secondary: 'secondary',
+  parked: 'parked',
+} as const
+export const GetGoalsTree200ObjectivesItemStatus = {  active: 'active',
+  done: 'done',
+  carried: 'carried',
+  dropped: 'dropped',
+} as const
+export const GetGoalsTree200ObjectivesItemTargetType = {  count: 'count',
+  duration: 'duration',
+  value: 'value',
+  level: 'level',
+  milestone: 'milestone',
+  composite: 'composite',
+} as const
+export type GetGoalsTree200ObjectivesItemCheckpoint = {
+  year: number;
+  relevant: boolean;
+  onTrack: boolean;
+  note: string;
+} | null;
+
+export type GetGoalsTree200ObjectivesItem = {
+  id: string;
+  cycleId: string;
+  horizon: string;
+  startDate: string;
+  endDate: string;
+  title: string;
+  tier: typeof GetGoalsTree200ObjectivesItemTier[keyof typeof GetGoalsTree200ObjectivesItemTier];
+  status: typeof GetGoalsTree200ObjectivesItemStatus[keyof typeof GetGoalsTree200ObjectivesItemStatus];
+  targetType: typeof GetGoalsTree200ObjectivesItemTargetType[keyof typeof GetGoalsTree200ObjectivesItemTargetType];
+  targetCount: number | null;
+  targetMinutes: number | null;
+  unit: string | null;
+  startValue: number | null;
+  targetValue: number | null;
+  isCumulative: boolean;
+  levelScale: string[];
+  targetLevel: string | null;
+  milestoneEntryId: string | null;
+  doneAt: string | null;
+  parentIds: string[];
+  rhythmPeriod: 'week' | 'month' | null;
+  rhythmCount: number | null;
+  rhythmMinutes: number | null;
+  activityIds: string[];
+  childIds: string[];
+  carriedFromObjectiveId: string | null;
+  checkpoint: GetGoalsTree200ObjectivesItemCheckpoint;
+  orderKey: string;
+  progress: number;
+  current: number | string | null;
+  pace: number;
+  version: number;
+};
+
+export type GetGoalsTree200 = {
+  date: string;
+  today: string;
+  cycles: GetGoalsTree200CyclesItem[];
+  objectives: GetGoalsTree200ObjectivesItem[];
+};
+
+export type ApplyRhythmsBody = { [key: string]: unknown };
+
+export const ApplyRhythms200ItemTier = {  essential: 'essential',
+  secondary: 'secondary',
+  parked: 'parked',
+} as const
+export const ApplyRhythms200ItemStatus = {  active: 'active',
+  done: 'done',
+  carried: 'carried',
+  dropped: 'dropped',
+} as const
+export const ApplyRhythms200ItemTargetType = {  count: 'count',
+  duration: 'duration',
+  value: 'value',
+  level: 'level',
+  milestone: 'milestone',
+  composite: 'composite',
+} as const
+export type ApplyRhythms200ItemCheckpoint = {
+  year: number;
+  relevant: boolean;
+  onTrack: boolean;
+  note: string;
+} | null;
+
+export type ApplyRhythms200Item = {
+  id: string;
+  cycleId: string;
+  horizon: string;
+  startDate: string;
+  endDate: string;
+  title: string;
+  tier: typeof ApplyRhythms200ItemTier[keyof typeof ApplyRhythms200ItemTier];
+  status: typeof ApplyRhythms200ItemStatus[keyof typeof ApplyRhythms200ItemStatus];
+  targetType: typeof ApplyRhythms200ItemTargetType[keyof typeof ApplyRhythms200ItemTargetType];
+  targetCount: number | null;
+  targetMinutes: number | null;
+  unit: string | null;
+  startValue: number | null;
+  targetValue: number | null;
+  isCumulative: boolean;
+  levelScale: string[];
+  targetLevel: string | null;
+  milestoneEntryId: string | null;
+  doneAt: string | null;
+  parentIds: string[];
+  rhythmPeriod: 'week' | 'month' | null;
+  rhythmCount: number | null;
+  rhythmMinutes: number | null;
+  activityIds: string[];
+  childIds: string[];
+  carriedFromObjectiveId: string | null;
+  checkpoint: ApplyRhythms200ItemCheckpoint;
+  orderKey: string;
+  progress: number;
+  current: number | string | null;
+  pace: number;
+  version: number;
 };
 
 export const ListObjectiveTemplates200ItemTier = {  essential: 'essential',
@@ -2329,7 +2506,10 @@ export type ApplyTemplates201Item = {
   targetLevel: string | null;
   milestoneEntryId: string | null;
   doneAt: string | null;
-  parentObjectiveId: string | null;
+  parentIds: string[];
+  rhythmPeriod: 'week' | 'month' | null;
+  rhythmCount: number | null;
+  rhythmMinutes: number | null;
   activityIds: string[];
   childIds: string[];
   carriedFromObjectiveId: string | null;

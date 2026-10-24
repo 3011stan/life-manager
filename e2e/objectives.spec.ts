@@ -54,8 +54,9 @@ test("a weekly objective counts done entries of its activity and carries at the 
   const done = page.getByTestId("entry-row").filter({ hasText: activity });
   await expect(done.getByLabel("Counts for an objective")).toBeVisible();
   await done.locator(".entry-row__main").click();
-  await expect(page.getByTestId("objective-chain")).toContainText("Practice 3× (Week)");
-  await page.getByRole("button", { name: "Cancel" }).click();
+  await expect(page.getByTestId("objective-chain")).toContainText("Practice 3×");
+  await expect(page.getByTestId("objective-chain")).toContainText("Week");
+  await page.keyboard.press("Escape");
 
   await page.goto(`/cycles?h=week&date=${week}`);
   await expect(page.getByTestId("objective-row").filter({ hasText: "Practice 3×" })).toContainText("1 / 3");
@@ -95,6 +96,8 @@ test("weekly templates are proposed and become objectives only when accepted (FR
   const week = uniqueSunday();
   const title = `Template ${String(Date.now())}`;
   await signIn(page, "/templates");
+  // The form renders once the session loads; filling earlier loses the text.
+  await expect(page.getByRole("heading", { name: "Weekly templates" })).toBeVisible();
   await page.getByLabel("Objective", { exact: true }).fill(title);
   await page.getByRole("button", { name: "Add template" }).click();
   await expect(page.getByText(title)).toBeVisible();
@@ -109,6 +112,31 @@ test("weekly templates are proposed and become objectives only when accepted (FR
 
   // Archive it so later runs are not flooded with proposals.
   await page.goto("/templates");
+  await page.locator(".catalog-item").filter({ hasText: title }).getByRole("button", { name: "Archive" }).click();
+  await expect(page.getByText(title)).toHaveCount(0);
+});
+
+// Regression (005, found by e2e under load): a template added while the page's
+// first list load was still in flight did not show until the next refresh.
+test("a template added during a slow first load shows at once", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name === "mobile", "same code path on both");
+  const title = `Slow list ${String(Date.now())}`;
+  await signIn(page, "/day");
+  let first = true;
+  await page.route("**/v1/objective-templates", async (route) => {
+    if (route.request().method() === "GET" && first) {
+      first = false;
+      await new Promise((r) => setTimeout(r, 1500));
+    }
+    await route.continue();
+  });
+  await page.goto("/templates");
+  await expect(page.getByRole("heading", { name: "Weekly templates" })).toBeVisible();
+  await page.getByLabel("Objective", { exact: true }).fill(title);
+  await page.getByRole("button", { name: "Add template" }).click();
+  await expect(page.getByText(title)).toBeVisible();
+  await page.waitForTimeout(1600);
+  await expect(page.getByText(title)).toBeVisible();
   await page.locator(".catalog-item").filter({ hasText: title }).getByRole("button", { name: "Archive" }).click();
   await expect(page.getByText(title)).toHaveCount(0);
 });

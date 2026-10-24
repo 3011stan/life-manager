@@ -29,14 +29,16 @@ describe("groups", () => {
     expect(groupMinutes(day, "jib")).toBe(45);
   });
 
-  it("walks an objective's parents and stops on loops", () => {
+  it("walks an objective's parents, each once, and stops on loops", () => {
     const objectives = [
-      { id: "w", title: "English 4×", horizon: "week", parentId: "m" },
-      { id: "m", title: "20 h", horizon: "month", parentId: "y" },
-      { id: "y", title: "B2", horizon: "year", parentId: null },
-      { id: "loop", title: "Loop", horizon: "week", parentId: "loop" },
+      { id: "w", title: "English 4×", horizon: "week", parentIds: ["m"] },
+      { id: "m", title: "20 h", horizon: "month", parentIds: ["y", "y2"] },
+      { id: "y", title: "B2", horizon: "year", parentIds: ["l"] },
+      { id: "y2", title: "Classes", horizon: "year", parentIds: ["l"] },
+      { id: "l", title: "Fluent", horizon: "y5", parentIds: [] },
+      { id: "loop", title: "Loop", horizon: "week", parentIds: ["loop"] },
     ];
-    expect(chainOf(objectives, "w").map((o) => o.id)).toEqual(["w", "m", "y"]);
+    expect(chainOf(objectives, "w").map((o) => o.id)).toEqual(["w", "m", "y", "y2", "l"]);
     expect(chainOf(objectives, "loop").map((o) => o.id)).toEqual(["loop"]);
     expect(chainOf(objectives, "missing")).toEqual([]);
   });

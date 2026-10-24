@@ -1052,3 +1052,379 @@ h2 {
   color: inherit;
   text-align: left;
 }
+
+/* 005 D2: the short entry sheet */
+
+.sheet-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.sheet-title__field {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+}
+
+.dialog .sheet-title__field input {
+  width: 100%;
+  padding: var(--space-1) 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  font-size: var(--text-xl);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.card--padded {
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+}
+
+.card--padded p {
+  margin: 0;
+}
+
+.card__pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.card__field {
+  display: grid;
+  align-content: start;
+  gap: 2px;
+  padding: var(--space-3) var(--space-4);
+  color: var(--muted);
+  font-size: var(--text-sm);
+}
+
+.card__field + .card__field {
+  border-left: 1px solid var(--line);
+}
+
+.dialog .card__field input {
+  min-height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  font-size: var(--text-lg);
+  font-weight: 500;
+}
+
+.card__parts {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4) var(--space-3) var(--space-5);
+}
+
+.card__parts p {
+  margin: 0;
+}
+
+.more-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 44px;
+  padding: 0 var(--space-1);
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+}
+
+.more-toggle[aria-expanded="true"] svg {
+  transform: rotate(180deg);
+}
+
+.sheet__footer {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.sheet__save {
+  flex: 1;
+  min-height: 52px;
+}
+
+.icon-button--danger {
+  width: 52px;
+  height: 52px;
+  color: var(--danger);
+}
+
+.dot {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--control);
+}
+
+.picker {
+  display: grid;
+}
+
+.picker__trigger,
+.picker__option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: 56px;
+  padding: var(--space-2) var(--space-4);
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+}
+
+.picker__option {
+  min-height: 48px;
+  border-radius: var(--radius-field);
+}
+
+.picker__option[aria-pressed="true"],
+.picker__option:hover {
+  background: var(--background);
+}
+
+.picker__option--create {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.picker__value {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+}
+
+.picker__name {
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+.picker__option .picker__name {
+  flex: 1;
+}
+
+.picker__path {
+  color: var(--muted);
+  font-size: var(--text-xs);
+}
+
+.picker__panel {
+  display: grid;
+  gap: var(--space-2);
+  padding: 0 var(--space-3) var(--space-3);
+}
+
+.picker__list,
+.chips {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--control);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  color: inherit;
+  font-size: var(--text-sm);
+}
+
+.dot--row {
+  width: 8px;
+  height: 8px;
+  margin: 0 8px 2px 0;
+  vertical-align: middle;
+}
+
+/* 005 D6: goals as one tree */
+
+.goal-cards {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.goal-card {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-2) var(--space-3) var(--space-4);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+}
+
+.goal-card__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.goal-card__title {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+}
+
+.eyebrow {
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.goal-card__name {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.ring--small {
+  width: 36px;
+  height: 36px;
+}
+
+.ring--small::before {
+  width: 28px;
+  height: 28px;
+  background: var(--surface);
+}
+
+.goal-tree {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0 0 0 var(--space-1);
+  padding: 0 0 0 var(--space-4);
+  border-left: 2px solid var(--soft);
+  list-style: none;
+}
+
+.goal-tree--root {
+  margin-right: var(--space-2);
+}
+
+.goal-node {
+  display: grid;
+  gap: 6px;
+}
+
+.goal-node .goal-tree {
+  margin-top: var(--space-1);
+  gap: var(--space-2);
+}
+
+.goal-node__main {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-height: 32px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+}
+
+.goal-node__title {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+.goal-node__title svg {
+  color: var(--muted);
+}
+
+.goal-node__value {
+  flex-shrink: 0;
+  color: var(--muted);
+  font-size: var(--text-sm);
+}
+
+.bar {
+  display: block;
+  height: 4px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: var(--soft);
+}
+
+.bar > span {
+  display: block;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--accent);
+}
+
+.add-under {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+}
+
+.bare-select {
+  min-height: 40px;
+  padding: 0 var(--space-2);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: var(--background);
+  color: var(--foreground);
+}
+
+.period-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: var(--space-2);
+}
+
+.period-links .muted {
+  flex-basis: 100%;
+}
+
+.period-links .chip {
+  text-decoration: none;
+}
+
+.goals .add-entry__row {
+  grid-template-columns: minmax(0, 1fr) auto auto;
+}

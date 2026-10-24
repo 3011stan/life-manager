@@ -42,7 +42,9 @@ test("rows show the typed title and the activity only when it differs", async ({
   await add(page, "Study Spanish");
   for (const title of ["Study for AWS", "Study Spanish"]) {
     await openSheet(page, title);
-    await page.getByRole("combobox", { name: /^Activity/ }).selectOption({ label: "Study" });
+    await page.getByRole("button", { name: /^Activity:/ }).click();
+    await page.getByLabel("Find an activity").fill("Study");
+    await page.getByRole("dialog").getByRole("button", { name: /^Study/ }).first().click();
     await save(page);
   }
   await expect(row(page, "Study for AWS")).toContainText("Study for AWS · Study");
@@ -57,6 +59,7 @@ test("a heading ending in “:” groups the entries put under it (D1)", async (
   for (const title of ["standup", "code review"]) {
     await add(page, title);
     await openSheet(page, title);
+    await page.getByRole("button", { name: "More" }).click();
     await page.getByRole("combobox", { name: /^Group/ }).selectOption({ label: "JIB" });
     await save(page);
   }
@@ -70,12 +73,12 @@ test("durations accept hours and minutes (FR-011)", async ({ page }) => {
   await signIn(page, uniqueDate());
   await add(page, "Deep work");
   await openSheet(page, "Deep work");
-  await page.getByLabel("Planned minutes").fill("1h30");
+  await page.getByLabel("Duration", { exact: true }).fill("1h30");
   await save(page);
   await expect(row(page, "Deep work")).toContainText("1h30");
   await openSheet(page, "Deep work");
-  await page.getByLabel("Planned minutes").fill("hello");
-  await page.getByLabel("Planned minutes").blur();
+  await page.getByLabel("Duration", { exact: true }).fill("hello");
+  await page.getByLabel("Duration", { exact: true }).blur();
   await expect(page.getByText("Use minutes or hours")).toBeVisible();
 });
 
@@ -104,4 +107,25 @@ test("delete from the row, then undo (D4)", async ({ page }, testInfo) => {
   await expect(row(page, "Remove me")).toBeVisible();
   await page.reload();
   await expect(row(page, "Remove me")).toBeVisible();
+});
+
+// Regression (005, found by e2e under load): Undo sent before the delete landed
+// was overtaken by it, and the entry stayed deleted.
+test("undo right after a slow delete keeps the entry", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name === "mobile", "the order of requests is the same on both");
+  await signIn(page, uniqueDate());
+  await add(page, "Slow delete");
+  await page.route("**/v1/entries/*", async (route) => {
+    if (route.request().method() === "DELETE") await new Promise((r) => setTimeout(r, 800));
+    await route.continue();
+  });
+  const target = row(page, "Slow delete");
+  await target.hover();
+  await target.getByRole("button", { name: "Delete Slow delete" }).click();
+  await page.getByRole("button", { name: "Undo" }).click();
+  await expect(row(page, "Slow delete")).toBeVisible();
+  await page.waitForTimeout(1200);
+  // The reload first paints the cached day; wait for the server's answer.
+  await Promise.all([page.waitForResponse((r) => r.url().includes("/v1/days/") && r.request().method() === "GET"), page.reload()]);
+  await expect(row(page, "Slow delete")).toBeVisible();
 });
