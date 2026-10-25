@@ -11,6 +11,9 @@
   --control: #d5ccbe;
   --surface: #ffffff;
   --surface-strong: #ffffff;
+  /* 005: hover and keyboard focus on rows and controls. */
+  --surface-hover: #f8f4ed;
+  --hover-tint: rgb(34 32 28 / 6%);
   --accent: #7a3e1d;
   --accent-soft: #f3e6dc;
   --on-accent: #ffffff;
@@ -53,6 +56,8 @@
     --control: #57514a;
     --surface: #24221f;
     --surface-strong: #2b2925;
+    --surface-hover: #2e2b27;
+    --hover-tint: rgb(242 238 231 / 8%);
     --accent: #e3a47c;
     --accent-soft: #3b2a20;
     --on-accent: #1a1917;

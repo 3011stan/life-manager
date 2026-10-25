@@ -170,7 +170,10 @@ h2 {
   padding: 0 var(--space-5);
   border-radius: var(--radius-pill);
   font-weight: 700;
-  transition: transform var(--motion) ease-out;
+  transition:
+    transform var(--motion) ease-out,
+    background-color var(--motion) ease-out,
+    border-color var(--motion) ease-out;
 }
 
 .primary-button {
@@ -567,7 +570,9 @@ h2 {
   align-items: center;
   padding: var(--space-1) var(--space-2) var(--space-1) 0;
   background: inherit;
-  transition: transform var(--motion) ease-out;
+  transition:
+    transform var(--motion) ease-out,
+    background-color var(--motion) ease-out;
   touch-action: pan-y;
 }
 
@@ -643,8 +648,10 @@ h2 {
   touch-action: none;
 }
 
-.drag-handle:hover {
-  color: var(--muted);
+@media (hover: hover) {
+  .drag-handle:hover {
+    color: var(--muted);
+  }
 }
 
 /* The check: a ring that fills with the accent. 44 px target, 28 px mark. */
@@ -1189,8 +1196,7 @@ h2 {
   border-radius: var(--radius-field);
 }
 
-.picker__option[aria-pressed="true"],
-.picker__option:hover {
+.picker__option[aria-pressed="true"] {
   background: var(--background);
 }
 
@@ -1427,4 +1433,118 @@ h2 {
 
 .goals .add-entry__row {
   grid-template-columns: minmax(0, 1fr) auto auto;
+}
+
+/* 005: quiet feedback on what can be pressed. Rows on a card take a warm
+   tint; bare controls a faint wash. Keyboard focus looks the same as hover,
+   on top of the outline; phones get no sticky hover. */
+
+.entry-row,
+.activity-row,
+.objective-row,
+.goal-card,
+.chip,
+.icon-button,
+.link-button,
+.more-toggle,
+.add-under,
+.picker__trigger,
+.picker__option,
+.top-bar__nav a,
+.goal-card__name,
+.goal-node__title,
+.field input,
+.field select,
+.field textarea,
+.dialog input:not([type="checkbox"]),
+.dialog select,
+.dialog textarea {
+  transition:
+    background-color var(--motion) ease-out,
+    border-color var(--motion) ease-out,
+    color var(--motion) ease-out;
+}
+
+.activity-row:focus-visible,
+.entry-row:has(.entry-row__main:focus-visible),
+.objective-row:has(.entry-row__main:focus-visible),
+.goal-card:has(.goal-card__title:focus-visible),
+.chip:focus-visible {
+  background: var(--surface-hover);
+}
+
+.icon-button:focus-visible,
+.link-button:focus-visible,
+.more-toggle:focus-visible,
+.add-under:focus-visible,
+.picker__trigger:focus-visible,
+.picker__option:focus-visible,
+.ghost-button:focus-visible,
+.top-bar__nav a:not([aria-current="page"]):focus-visible {
+  background: var(--hover-tint);
+}
+
+.goal-card__title:focus-visible .goal-card__name,
+.goal-node__main:focus-visible .goal-node__title {
+  color: var(--accent);
+}
+
+@media (hover: hover) {
+  .activity-row:hover,
+  .entry-row:hover,
+  .objective-row:hover,
+  .goal-card:hover,
+  .chip:hover {
+    background: var(--surface-hover);
+  }
+
+  .chip:hover {
+    border-color: var(--muted);
+  }
+
+  .icon-button:hover:not(:disabled),
+  .link-button:hover:not(:disabled),
+  .more-toggle:hover,
+  .add-under:hover:not(:disabled),
+  .picker__trigger:hover:not(:disabled),
+  .ghost-button:hover:not(:disabled),
+  .top-bar__nav a:not([aria-current="page"]):hover {
+    background: var(--hover-tint);
+  }
+
+  .picker__option:hover {
+    background: var(--hover-tint);
+  }
+
+  .more-toggle:hover,
+  .add-under:hover:not(:disabled),
+  .top-bar__nav a:hover {
+    color: var(--foreground);
+  }
+
+  .primary-button:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--ink) 86%, var(--background));
+  }
+
+  .danger-button:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--danger-soft) 88%, var(--danger));
+  }
+
+  .goal-card__title:hover .goal-card__name,
+  .goal-node__main:hover .goal-node__title {
+    color: var(--accent);
+  }
+
+  .status-button:hover:not(:disabled):not(.status-button--done)::before {
+    border-color: var(--accent);
+  }
+
+  .field input:hover:not(:disabled):not(:focus),
+  .field select:hover:not(:disabled):not(:focus),
+  .field textarea:hover:not(:disabled):not(:focus),
+  .dialog input:not([type="checkbox"]):hover:not(:disabled):not(:focus),
+  .dialog select:hover:not(:disabled):not(:focus),
+  .dialog textarea:hover:not(:disabled):not(:focus) {
+    border-color: var(--control);
+  }
 }
