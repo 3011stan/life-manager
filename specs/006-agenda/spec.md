@@ -4,7 +4,7 @@
 
 **Created**: 2026-10-26
 
-**Status**: Draft — D1–D5 approved (2026-10-26: D4 A, D5 A); D6–D7 awaiting approval
+**Status**: Draft — D1–D7 approved (2026-10-26: D4 A, D5 A, D6 A, D7 automatic); D8 awaiting approval
 
 **Input**: The owner's third round (2026-10-25). The first pages of the paper
 notebook hold the months ahead, with events known long before (a ceremony, a
@@ -23,6 +23,8 @@ already a goal of the week.
 | 5 | Some events are only to remember (a friend's wedding) and are not something to plan for in the week. |
 | 6 | The owner also wants tasks that repeat on days of the week (2026-10-26): "a task 6 times a week, Sunday to Friday". Today a weekly template makes a "6×" goal for the week, but places no task on any day. |
 | 7 | A count goal already counts every completed entry linked to it (`entry_objective`), so one weekly goal can count a repeating task's days. |
+| 8 | In the notebook the owner wrote the next day by hand, looking at the week and the day before to know which tasks it must hold. "Copy from another day" helps, but tasks that are certain every day at a fixed time (a daily meeting Mon–Fri at the same hour) still have to be brought in by hand. A weekly item with a start time covers this if its tasks are already on the day when the owner opens it. |
+| 9 | A week can also get a goal for the same activity from a rhythm (005 D7), not only from a template. |
 
 ## Decisions
 
@@ -37,7 +39,8 @@ approved with the seed adjustments; confirm or change them with D4–D5.
 | D4 | How far ahead the agenda shows | ★ **A** The next 12 months, grouped by month, with the current and next month open and the rest collapsed. **B** Only the next 2 months, like the notebook. |
 | D5 | An event known only by month ("sometime in March") | ★ **A** Not in this round: an event has a date. **B** Allow a month-only event that becomes a goal of that month. |
 | D6 | Repeating on days of the week (finding 6) | ★ **A** Repeat is one of: never, every year, or every week on chosen days (Sun–Fri, or every day). A weekly item places its task on each chosen day of a week when that week starts, and makes one count goal for the week ("Task 6×", target = the days chosen), with each day's task linked to it. In the agenda it shows once, as "Every Sun–Fri". **B** As A, but one goal per day instead of one count goal. |
-| D7 | A weekly repeating item and a template for the same habit (e.g. a "6×" template) | ★ **A** The repeating item replaces the template: when the owner turns a habit into a repeating item, the template is no longer needed and the owner removes it (the app warns when both would make a goal for the same activity in a week). **B** Keep both. |
+| D7 | A weekly repeating item and a template or rhythm for the same activity | **Approved**: nothing is removed by hand. Saving a weekly item whose activity a template covers archives that template in the same save, and the confirmation says so, with Undo. When the week already has a goal for that activity from a rhythm, the item makes no second goal: its tasks count for that goal. |
+| D8 | Bringing certain tasks into the day (finding 8) | ★ **A** (1) The Day screen also applies its week, so a weekly item's tasks are on the day when it opens, at their time. (2) The entry sheet gets "Repeat…" under "More": it turns a task into a weekly item (days and time prefilled from the task), so a daily meeting is set up once from the day itself. **B** Only (1); items are created only in the agenda. |
 
 ## User Stories
 
@@ -76,14 +79,22 @@ event's task, and counting for the goals the event counts for.
 **Acceptance**:
 1. An item "every week on Sun–Fri" puts its task on each of those 6 days when
    the week starts, at its start time if it has one.
-2. The week gets one goal "<title> 6×" that counts those tasks; completing 4 of
-   them shows 4 / 6.
+2. The week gets one goal "<title> 6×" that counts those tasks; each check on
+   a task updates it at once, so completing 4 of them shows 4 / 6 and checking
+   the sixth marks the goal done, with no other action.
 3. Applying again creates no new task or goal; a task or goal the owner deleted
    stays deleted for that week.
 4. Changing the days or the time changes the tasks of weeks not yet started and
    the planned tasks of the current week from today on; completed tasks are
    never touched.
 5. A weekly item can end on a date; no tasks are placed after it.
+6. Saving a weekly item whose activity a template covers archives the template
+   in the same save, says so, and Undo restores it (D7).
+7. When the week already has a rhythm goal for the item's activity, no second
+   goal is made and the tasks count for the rhythm goal (D7).
+8. Opening a day shows the weekly items' tasks of that day (D8).
+9. "Repeat…" on a task creates a weekly item with that task's title, activity,
+   time, and weekday prefilled; the task itself becomes that day's occurrence (D8).
 
 ### US3 — Events that repeat every year (P2)
 
