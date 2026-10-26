@@ -18,7 +18,7 @@ Each phase ends with the local e2e run green, backend CI green, and a deploy to 
 - [x] T006 [US1] Tests: new workspace gets 3 × 9 in pt-BR and en; seed map re-parents used generic activities and removes unused ones (`backend/test/integration/catalog.test.ts`, `seed.test.ts`)
 - [x] T007 [US1] `backend/src/modules/catalog/defaults.ts` on the model; `--replace-generic` map and `--dry-run` in `backend/src/modules/seed/seed.ts`
 - [x] T008 [US1] `activity.type` migration, API, export v4, `docs/export-format.md`; type field and filter in the Activities screen
-- [ ] T009 [US1] (seed rebuilt and dry-run checked locally; the owner runs it) Rebuild the owner's private seed `~/.config/life-manager/seed.json` from the Obsidian catalog (never committed); owner runs dry-run, export, then the seed
+- [x] T009 [US1] (the owner ran it on staging, 2026-10-25; the seed also gained goals of every horizon, links, rhythms, current values, and a catalog move into the file's language) Rebuild the owner's private seed `~/.config/life-manager/seed.json` from the Obsidian catalog (never committed); owner runs dry-run, export, then the seed
 
 ## Phase 3: Short entry sheet (US2)
 
