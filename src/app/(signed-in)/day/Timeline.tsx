@@ -13,7 +13,7 @@ import {
 import { SortableContext, sortableKeyboardCoordinates, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { memo, useRef, useState, type PointerEvent } from "react";
-import { Check, Close, Dash, Grip, Target } from "@/components/icons";
+import { Calendar, Check, Close, Dash, Grip, Target } from "@/components/icons";
 import { formatMinutes } from "@/lib/day/dates";
 import { childrenOf, groupMinutes, siblingsOf, topLevel } from "@/lib/day/groups";
 import { keyForMove } from "@/lib/day/order";
@@ -204,6 +204,11 @@ const Row = memo(function Row({
             {label ? <span className="entry-row__activity"> · {label}</span> : null}
           </span>
           <span className="entry-row__time">{entry.startTime ?? formatMinutes(minutes)}</span>
+          {entry.eventId ? (
+            <span className="mark mark--event" aria-label={t("agenda.eventMark")} title={t("agenda.eventMark")}>
+              <Calendar size={14} />
+            </span>
+          ) : null}
           {entry.contributesTo.length > 0 ? (
             <span className="mark mark--objective" aria-label={t("objective.mark")} title={t("objective.mark")}>
               <Target size={14} />

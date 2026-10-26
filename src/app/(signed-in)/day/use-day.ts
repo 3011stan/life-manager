@@ -13,6 +13,7 @@ import {
   type getDayResponse,
 } from "@/lib/api/generated/days/days";
 import type { CreateEntryBody, UpdateDayBody, UpdateEntryBody } from "@/lib/api/generated/lifeManagerAPI.schemas";
+import { isPlanningKey } from "@/lib/day/agenda";
 import type { Entry } from "@/lib/day/types";
 
 const byOrder = (a: Entry, b: Entry) => (a.orderKey < b.orderKey ? -1 : a.orderKey > b.orderKey ? 1 : 0);
@@ -22,7 +23,8 @@ const byOrder = (a: Entry, b: Entry) => (a.orderKey < b.orderKey ? -1 : a.orderK
 export function useDayMutations(date: string) {
   const queryClient = useQueryClient();
   const key = getGetDayQueryKey(date);
-  const refresh = useCallback(() => queryClient.invalidateQueries({ queryKey: key }), [queryClient, key]);
+  // A checked task can move week goals and the agenda too (006 US4.2).
+  const refresh = useCallback(() => queryClient.invalidateQueries({ predicate: (q) => isPlanningKey(q.queryKey) }), [queryClient]);
 
   const patchCache = (id: string, patch: Partial<Entry>) => {
     queryClient.setQueryData<getDayResponse>(key, (old) =>

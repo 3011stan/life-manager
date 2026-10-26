@@ -170,6 +170,7 @@ export type ExportAccountData200One = {
   days: unknown[];
   cycles: unknown[];
   objectiveTemplates: unknown[];
+  events: unknown[];
 };
 
 export type GetCatalog200PillarsItem = {
@@ -582,6 +583,7 @@ export type GetDay200EntriesItem = {
   copiedFromEntryId: string | null;
   kind: typeof GetDay200EntriesItemKind[keyof typeof GetDay200EntriesItemKind];
   groupId: string | null;
+  eventId: string | null;
   version: number;
 };
 
@@ -718,6 +720,7 @@ export type UpdateDay200EntriesItem = {
   copiedFromEntryId: string | null;
   kind: typeof UpdateDay200EntriesItemKind[keyof typeof UpdateDay200EntriesItemKind];
   groupId: string | null;
+  eventId: string | null;
   version: number;
 };
 
@@ -879,6 +882,7 @@ export type CreateEntry201 = {
   copiedFromEntryId: string | null;
   kind: typeof CreateEntry201Kind[keyof typeof CreateEntry201Kind];
   groupId: string | null;
+  eventId: string | null;
   version: number;
   cycleReopened: boolean;
 };
@@ -993,6 +997,7 @@ export type UpdateEntry200 = {
   copiedFromEntryId: string | null;
   kind: typeof UpdateEntry200Kind[keyof typeof UpdateEntry200Kind];
   groupId: string | null;
+  eventId: string | null;
   version: number;
   cycleReopened: boolean;
 };
@@ -1049,6 +1054,7 @@ export type RestoreEntry200 = {
   copiedFromEntryId: string | null;
   kind: typeof RestoreEntry200Kind[keyof typeof RestoreEntry200Kind];
   groupId: string | null;
+  eventId: string | null;
   version: number;
   cycleReopened: boolean;
 };
@@ -1115,6 +1121,7 @@ export type CopyEntries201Item = {
   copiedFromEntryId: string | null;
   kind: typeof CopyEntries201ItemKind[keyof typeof CopyEntries201ItemKind];
   groupId: string | null;
+  eventId: string | null;
   version: number;
 };
 
@@ -1170,6 +1177,7 @@ export type GetDayClose200UnresolvedItem = {
   copiedFromEntryId: string | null;
   kind: typeof GetDayClose200UnresolvedItemKind[keyof typeof GetDayClose200UnresolvedItemKind];
   groupId: string | null;
+  eventId: string | null;
   version: number;
 };
 
@@ -1256,6 +1264,7 @@ export type GetDayClose200CarryCandidatesItemEntry = {
   copiedFromEntryId: string | null;
   kind: typeof GetDayClose200CarryCandidatesItemEntryKind[keyof typeof GetDayClose200CarryCandidatesItemEntryKind];
   groupId: string | null;
+  eventId: string | null;
   version: number;
 };
 
@@ -1381,6 +1390,7 @@ export type CloseDay200EntriesItem = {
   copiedFromEntryId: string | null;
   kind: typeof CloseDay200EntriesItemKind[keyof typeof CloseDay200EntriesItemKind];
   groupId: string | null;
+  eventId: string | null;
   version: number;
 };
 
@@ -2519,5 +2529,179 @@ export type ApplyTemplates201Item = {
   current: number | string | null;
   pace: number;
   version: number;
+};
+
+export type GetAgendaParams = {
+/**
+ * @pattern ^\d{4}-\d{2}-\d{2}$
+ */
+from?: string;
+/**
+ * @pattern ^\d{4}-\d{2}-\d{2}$
+ */
+to?: string;
+};
+
+export const GetAgenda200EventsItemRepeat = {  none: 'none',
+  yearly: 'yearly',
+  weekly: 'weekly',
+} as const
+export type GetAgenda200EventsItem = {
+  id: string;
+  title: string;
+  onDate: string;
+  startTime: string | null;
+  minutes: number | null;
+  activityId: string | null;
+  repeat: typeof GetAgenda200EventsItemRepeat[keyof typeof GetAgenda200EventsItemRepeat];
+  weekdays: number[];
+  untilDate: string | null;
+  makesWeekGoal: boolean;
+  notes: string;
+  objectiveIds: string[];
+  version: number;
+};
+
+export const GetAgenda200OccurrencesItemRepeat = {  none: 'none',
+  yearly: 'yearly',
+  weekly: 'weekly',
+} as const
+export type GetAgenda200OccurrencesItem = {
+  eventId: string;
+  date: string;
+  title: string;
+  startTime: string | null;
+  repeat: typeof GetAgenda200OccurrencesItemRepeat[keyof typeof GetAgenda200OccurrencesItemRepeat];
+  entryId: string | null;
+  status: string | null;
+};
+
+export type GetAgenda200 = {
+  today: string;
+  from: string;
+  to: string;
+  events: GetAgenda200EventsItem[];
+  occurrences: GetAgenda200OccurrencesItem[];
+};
+
+export const CreateEventBodyRepeat = {  none: 'none',
+  yearly: 'yearly',
+  weekly: 'weekly',
+} as const
+export type CreateEventBody = {
+  id: string;
+  /**
+     * @minLength 1
+     * @maxLength 200
+     */
+  title: string;
+  /** @pattern ^\d{4}-\d{2}-\d{2}$ */
+  onDate: string;
+  startTime?: string | null;
+  minutes?: number | null;
+  activityId?: string | null;
+  repeat?: typeof CreateEventBodyRepeat[keyof typeof CreateEventBodyRepeat];
+  /**
+     * @maxItems 7
+     * @items.minimum 0
+     * @items.maximum 6
+     */
+  weekdays?: number[];
+  untilDate?: string | null;
+  makesWeekGoal?: boolean;
+  /** @maxLength 10000 */
+  notes?: string;
+  /** @maxItems 20 */
+  objectiveIds?: string[];
+  fromEntryId?: string;
+};
+
+export const CreateEvent201Repeat = {  none: 'none',
+  yearly: 'yearly',
+  weekly: 'weekly',
+} as const
+export type CreateEvent201ArchivedTemplatesItem = {
+  id: string;
+  title: string;
+};
+
+export type CreateEvent201 = {
+  id: string;
+  title: string;
+  onDate: string;
+  startTime: string | null;
+  minutes: number | null;
+  activityId: string | null;
+  repeat: typeof CreateEvent201Repeat[keyof typeof CreateEvent201Repeat];
+  weekdays: number[];
+  untilDate: string | null;
+  makesWeekGoal: boolean;
+  notes: string;
+  objectiveIds: string[];
+  version: number;
+  archivedTemplates: CreateEvent201ArchivedTemplatesItem[];
+};
+
+export const UpdateEventBodyRepeat = {  none: 'none',
+  yearly: 'yearly',
+  weekly: 'weekly',
+} as const
+export type UpdateEventBody = {
+  /**
+     * @minLength 1
+     * @maxLength 200
+     */
+  title?: string;
+  /** @pattern ^\d{4}-\d{2}-\d{2}$ */
+  onDate?: string;
+  startTime?: string | null;
+  minutes?: number | null;
+  activityId?: string | null;
+  repeat?: typeof UpdateEventBodyRepeat[keyof typeof UpdateEventBodyRepeat];
+  /**
+     * @maxItems 7
+     * @items.minimum 0
+     * @items.maximum 6
+     */
+  weekdays?: number[];
+  untilDate?: string | null;
+  makesWeekGoal?: boolean;
+  /** @maxLength 10000 */
+  notes?: string;
+  /** @maxItems 20 */
+  objectiveIds?: string[];
+};
+
+export const UpdateEvent200Repeat = {  none: 'none',
+  yearly: 'yearly',
+  weekly: 'weekly',
+} as const
+export type UpdateEvent200ArchivedTemplatesItem = {
+  id: string;
+  title: string;
+};
+
+export type UpdateEvent200 = {
+  id: string;
+  title: string;
+  onDate: string;
+  startTime: string | null;
+  minutes: number | null;
+  activityId: string | null;
+  repeat: typeof UpdateEvent200Repeat[keyof typeof UpdateEvent200Repeat];
+  weekdays: number[];
+  untilDate: string | null;
+  makesWeekGoal: boolean;
+  notes: string;
+  objectiveIds: string[];
+  version: number;
+  archivedTemplates: UpdateEvent200ArchivedTemplatesItem[];
+};
+
+export type ApplyEventsBody = { [key: string]: unknown };
+
+export type ApplyEvents200 = {
+  entryIds: string[];
+  objectiveIds: string[];
 };
 

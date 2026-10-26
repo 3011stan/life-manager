@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { ChevronDown, LinkIcon, Plus } from "@/components/icons";
+import { applyEvents } from "@/lib/api/generated/agenda/agenda";
 import { applyRhythms, getGetGoalsTreeQueryKey, useGetGoalsTree } from "@/lib/api/generated/objectives/objectives";
 import type { GetGoalsTree200 } from "@/lib/api/generated/lifeManagerAPI.schemas";
 import { isDate } from "@/lib/day/dates";
@@ -12,6 +13,7 @@ import { percent, progressText } from "@/lib/day/objectives";
 import { HORIZONS, type CycleHorizon, type Objective } from "@/lib/day/types";
 import { useT } from "@/lib/i18n";
 import { useConnectivity } from "@/lib/offline/use-connectivity";
+import { AgendaSection } from "./AgendaSection";
 import { ObjectiveSheet } from "./ObjectiveSheet";
 
 type Goal = GetGoalsTree200["objectives"][number];
@@ -43,11 +45,15 @@ export function GoalsTree() {
   const data = tree.data?.data;
   const refresh = () => queryClient.invalidateQueries({ queryKey: getGetGoalsTreeQueryKey({ date }) });
 
-  // 005 D7: rhythms create this week's and this month's goals once.
+  // 005 D7: rhythms create this week's and this month's goals once; then the
+  // week's agenda items get their tasks and goals (006 FR-004).
   useEffect(() => {
     if (!data || readOnly || applied.current === data.date) return;
     applied.current = data.date;
-    void Promise.allSettled([applyRhythms("month", data.date, {}), applyRhythms("week", data.date, {})]).then(refresh);
+    void Promise.allSettled([applyRhythms("month", data.date, {}), applyRhythms("week", data.date, {})])
+      .then(() => applyEvents(data.date, {}))
+      .catch(() => undefined)
+      .then(refresh);
   });
 
   if (!data) return <p>{tree.isError ? t("common.connectOnce") : t("common.loading")}</p>;
@@ -178,6 +184,8 @@ export function GoalsTree() {
           <Plus size={16} />
         </button>
       </form>
+
+      <AgendaSection readOnly={readOnly} />
 
       <nav className="period-links" aria-label={t("goals.periods")}>
         <span className="muted small">{t("goals.periods")}</span>

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "@/components/icons";
+import { applyEvents } from "@/lib/api/generated/agenda/agenda";
 import { applyRhythms, getGetCycleQueryKey, useGetCycle } from "@/lib/api/generated/objectives/objectives";
 import { applyTemplates, getGetTemplateProposalsQueryKey, useGetTemplateProposals } from "@/lib/api/generated/templates/templates";
 import { addDays, isDate } from "@/lib/day/dates";
@@ -53,8 +54,11 @@ export function CyclesScreen() {
     const key = `${horizon}:${view.startDate}`;
     if (applied.current === key) return;
     applied.current = key;
-    // Refresh either way: another device may have created them meanwhile.
-    void applyRhythms(horizon, view.startDate, {}).then(refresh, () => undefined);
+    // Refresh either way: another device may have created them meanwhile. A
+    // week then gets its agenda items' tasks and goals (006 FR-004).
+    void applyRhythms(horizon, view.startDate, {})
+      .then(() => (horizon === "week" ? applyEvents(view.startDate, {}) : undefined))
+      .then(refresh, () => undefined);
   });
 
   return (

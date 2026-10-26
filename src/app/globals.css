@@ -1435,6 +1435,106 @@ h2 {
   grid-template-columns: minmax(0, 1fr) auto auto;
 }
 
+/* 006: the agenda under the goals tree */
+
+.agenda {
+  display: grid;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.agenda__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.agenda__head h2 {
+  margin: 0;
+}
+
+.agenda__group {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.agenda__group .eyebrow,
+.agenda__month {
+  margin: 0;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+.agenda__month .more-toggle {
+  text-transform: capitalize;
+}
+
+.agenda__list {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  list-style: none;
+}
+
+.agenda-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: 52px;
+  padding: var(--space-2) var(--space-4);
+  border: 0;
+  background: var(--surface);
+  color: inherit;
+  text-align: left;
+}
+
+.agenda-row__date {
+  display: grid;
+  justify-items: center;
+  min-width: 32px;
+  line-height: 1.1;
+}
+
+.agenda-row__day {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.agenda-row__title {
+  display: inline-flex;
+  flex: 1;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.agenda-row__when {
+  color: var(--muted);
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.mark--event {
+  padding: 0;
+  color: var(--muted);
+}
+
+.chip[aria-pressed="true"] {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--background);
+}
+
+.sheet-heading {
+  margin: 0;
+}
+
 /* 005: quiet feedback on what can be pressed. Rows on a card take a warm
    tint; bare controls a faint wash. Keyboard focus looks the same as hover,
    on top of the outline; phones get no sticky hover. */
@@ -1442,6 +1542,7 @@ h2 {
 .entry-row,
 .activity-row,
 .objective-row,
+.agenda-row,
 .goal-card,
 .chip,
 .icon-button,
@@ -1466,11 +1567,16 @@ h2 {
 }
 
 .activity-row:focus-visible,
+.agenda-row:focus-visible,
 .entry-row:has(.entry-row__main:focus-visible),
 .objective-row:has(.entry-row__main:focus-visible),
 .goal-card:has(.goal-card__title:focus-visible),
 .chip:focus-visible {
   background: var(--surface-hover);
+}
+
+.chip[aria-pressed="true"]:focus-visible {
+  background: color-mix(in srgb, var(--ink) 86%, var(--background));
 }
 
 .icon-button:focus-visible,
@@ -1491,6 +1597,7 @@ h2 {
 
 @media (hover: hover) {
   .activity-row:hover,
+  .agenda-row:hover,
   .entry-row:hover,
   .objective-row:hover,
   .goal-card:hover,
@@ -1500,6 +1607,11 @@ h2 {
 
   .chip:hover {
     border-color: var(--muted);
+  }
+
+  .chip[aria-pressed="true"]:hover {
+    border-color: var(--ink);
+    background: color-mix(in srgb, var(--ink) 86%, var(--background));
   }
 
   .icon-button:hover:not(:disabled),

@@ -22,7 +22,7 @@ SQL
 cd "$BACKEND_DIR"
 npm ci --no-audit --no-fund
 MIGRATION_DATABASE_URL=$OWNER npx tsx scripts/migrate.ts
-for account in e2e e2e-cycles e2e-locale e2e-export-desktop e2e-export-mobile e2e-delete-desktop e2e-delete-mobile; do
+for account in e2e e2e-cycles e2e-agenda e2e-locale e2e-export-desktop e2e-export-mobile e2e-delete-desktop e2e-delete-mobile; do
   MIGRATION_DATABASE_URL=$OWNER npx tsx scripts/allow-email.ts "$account@example.test" e2e >/dev/null
 done
 APP_ENV=local PORT=4000 DATABASE_URL=$APP BETTER_AUTH_SECRET=$AUTH_SECRET BETTER_AUTH_URL=http://localhost:4000 \

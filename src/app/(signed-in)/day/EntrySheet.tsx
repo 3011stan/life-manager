@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { ActivityPicker } from "@/components/ActivityPicker";
 import { closeOnBackdrop } from "@/components/dialog";
 import { DurationInput } from "@/components/DurationInput";
-import { Check, ChevronDown, Trash } from "@/components/icons";
+import { Check, ChevronDown, Repeat, Trash } from "@/components/icons";
 import { createActivity, getGetCatalogQueryKey } from "@/lib/api/generated/catalog/catalog";
 import type { UpdateEntryBody } from "@/lib/api/generated/lifeManagerAPI.schemas";
 import { formatMinutes } from "@/lib/day/dates";
@@ -26,12 +26,14 @@ interface Props {
   onClose: () => void;
   onSave: (patch: UpdateEntryBody) => Promise<void>;
   onDelete: () => Promise<void>;
+  // 006 D8: turn the task into a weekly item.
+  onRepeat?: () => void;
 }
 
 // 005 D2: title, activity, start, duration, and what it counts for. Parts,
 // routine, and deep work come from the activity; the rest sits under "More".
 // A group heading only has a title and notes (004 D1).
-export function EntrySheet({ entry, entries, objectives, catalog, disabled, onClose, onSave, onDelete }: Props) {
+export function EntrySheet({ entry, entries, objectives, catalog, disabled, onClose, onSave, onDelete, onRepeat }: Props) {
   const t = useT();
   const queryClient = useQueryClient();
   const dialog = useRef<HTMLDialogElement>(null);
@@ -207,6 +209,12 @@ export function EntrySheet({ entry, entries, objectives, catalog, disabled, onCl
                   </select>
                 </label>
               )}
+              {!heading && !entry.eventId && onRepeat ? (
+                <button type="button" className="ghost-button" onClick={onRepeat}>
+                  <Repeat size={16} />
+                  {t("entry.repeat")}
+                </button>
+              ) : null}
               <label className="field">
                 {t("entry.notes")}
                 <textarea value={form.notes} maxLength={10_000} rows={3} onChange={(e) => set("notes", e.target.value)} />

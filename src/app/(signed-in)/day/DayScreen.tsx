@@ -2,8 +2,11 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "@/components/icons";
+import { applyEvents } from "@/lib/api/generated/agenda/agenda";
+import { updateObjectiveTemplate } from "@/lib/api/generated/templates/templates";
 import { useGetCatalog } from "@/lib/api/generated/catalog/catalog";
 import { useGetDay } from "@/lib/api/generated/days/days";
 import { useGetWorkspaceSettings } from "@/lib/api/generated/settings/settings";
@@ -11,7 +14,9 @@ import { ApiError, ReadOnlyError } from "@/lib/api/mutator";
 import { addDays, deviceTimeZone, formatMinutes, isDate, todayIn } from "@/lib/day/dates";
 import type { Activity, Entry } from "@/lib/day/types";
 import { formatDate, useI18n } from "@/lib/i18n";
+import { isPlanningKey } from "@/lib/day/agenda";
 import { useConnectivity } from "@/lib/offline/use-connectivity";
+import { EventSheet, type EventPreset } from "../cycles/EventSheet";
 import { pillarColor } from "@/components/ActivityPicker";
 import { AddEntry } from "./AddEntry";
 import { CapturePanel } from "./CapturePanel";
@@ -33,6 +38,9 @@ export function DayScreen() {
   const mutations = useDayMutations(date);
   const { readOnly } = useConnectivity();
   const [editing, setEditing] = useState<string>();
+  const [repeating, setRepeating] = useState<EventPreset>();
+  const [archived, setArchived] = useState<{ id: string; title: string }[]>();
+  const queryClient = useQueryClient();
   const [error, setError] = useState<string>();
   // The pending delete rides along, so Undo restores only after it landed.
   const [undo, setUndo] = useState<{ id: string; title: string; deleted: Promise<unknown> }>();
@@ -61,6 +69,18 @@ export function DayScreen() {
 
   const data = day.data?.data;
   const today = data?.today ?? todayIn(timeZone);
+
+  // 006 D8: the week's repeating tasks are on the day when it opens. Past days
+  // are left alone; a task there would hold the day open.
+  const applied = useRef<string>(undefined);
+  const serverToday = data?.today;
+  useEffect(() => {
+    if (!serverToday || readOnly || date < serverToday || applied.current === date) return;
+    applied.current = date;
+    void applyEvents(date, {})
+      .then((res) => (res.data.entryIds.length > 0 || res.data.objectiveIds.length > 0 ? queryClient.invalidateQueries({ predicate: (q) => isPlanningKey(q.queryKey) }) : undefined))
+      .catch(() => undefined);
+  }, [serverToday, readOnly, date, queryClient]);
   const heading = formatDate(locale, date, { weekday: "long", day: "numeric", month: "long" });
   const differentZone = timeZone !== deviceTimeZone();
   const entry: Entry | undefined = data?.entries.find((e) => e.id === editing);
@@ -156,6 +176,22 @@ export function DayScreen() {
             </p>
           ) : null}
 
+          {archived ? (
+            <p className="toast" role="status">
+              {t("agenda.archived", { titles: archived.map((a) => `“${a.title}”`).join(", ") })}{" "}
+              <button
+                type="button"
+                className="link-button"
+                onClick={() => {
+                  setArchived(undefined);
+                  void Promise.all(archived.map((a) => updateObjectiveTemplate(a.id, { archived: false }))).catch(report);
+                }}
+              >
+                {t("day.undo")}
+              </button>
+            </p>
+          ) : null}
+
           <CapturePanel
             key={`${date}-capture`}
             text={data.cycle.captureText}
@@ -188,6 +224,32 @@ export function DayScreen() {
               onClose={() => setEditing(undefined)}
               onSave={(patch) => mutations.update.mutateAsync({ id: entry.id, patch }).then(() => setEditing(undefined), report)}
               onDelete={async () => remove(entry)}
+              onRepeat={() => {
+                setEditing(undefined);
+                setRepeating({
+                  title: entry.title,
+                  onDate: date,
+                  startTime: entry.startTime,
+                  minutes: entry.plannedMinutes > 0 ? entry.plannedMinutes : null,
+                  activityId: entry.activityId,
+                  repeat: "weekly",
+                  weekdays: [new Date(`${date}T00:00:00Z`).getUTCDay()],
+                  fromEntryId: entry.id,
+                });
+              }}
+            />
+          ) : null}
+          {repeating ? (
+            <EventSheet
+              event={undefined}
+              preset={repeating}
+              today={today}
+              disabled={readOnly}
+              onClose={() => setRepeating(undefined)}
+              onSaved={async (list) => {
+                setArchived(list.length > 0 ? list : undefined);
+                await queryClient.invalidateQueries({ predicate: (q) => isPlanningKey(q.queryKey) });
+              }}
             />
           ) : null}
         </>

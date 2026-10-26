@@ -80,3 +80,11 @@ export const User = icon(
     <path d="M4 20c1.5-4 4.5-6 8-6s6.5 2 8 6" />
   </>,
 );
+// 006: the agenda.
+export const Calendar = icon(
+  <>
+    <rect x="4" y="5.5" width="16" height="14.5" rx="2.5" />
+    <path d="M4 10h16M8.5 3.5v4M15.5 3.5v4" />
+  </>,
+);
+export const Repeat = icon(<path d="M17 3l3 3-3 3M4 11V9a3 3 0 0 1 3-3h13M7 21l-3-3 3-3M20 13v2a3 3 0 0 1-3 3H4" />);

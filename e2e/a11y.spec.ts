@@ -27,7 +27,8 @@ async function audit(page: Page, path: string, ready: () => Promise<void>) {
 
 for (const colorScheme of ["light", "dark"] as const) {
   test(`every screen passes axe in ${colorScheme} mode`, async ({ page }) => {
-    await page.emulateMedia({ colorScheme });
+    // Reduced motion turns transitions off, so colors are read at rest.
+    await page.emulateMedia({ colorScheme, reducedMotion: "reduce" });
     const date = uniqueDate();
     await signIn(page, date);
     await page.getByLabel("New entry").fill("Accessible entry");
@@ -42,7 +43,14 @@ for (const colorScheme of ["light", "dark"] as const) {
     expect(sheet.violations.map((v) => `sheet: ${v.id}`)).toEqual([]);
     await page.keyboard.press("Escape");
     await audit(page, `/day/close?date=${date}`, () => expect(page.getByRole("heading", { level: 1 })).toBeVisible());
-    await audit(page, "/cycles", () => expect(page.getByRole("heading", { level: 1 })).toBeVisible());
+    await audit(page, "/cycles", () => expect(page.getByRole("heading", { name: "Agenda" })).toBeVisible());
+    // 006: the event sheet, with a weekly repeat's day chips showing.
+    await page.getByRole("button", { name: "Add event" }).click();
+    await page.getByRole("dialog").getByLabel("Repeat").selectOption("weekly");
+    await page.getByRole("dialog").getByRole("button", { name: "Mon", exact: true }).click();
+    const eventSheet = await new AxeBuilder({ page }).include("dialog").withTags(["wcag2a", "wcag2aa", "wcag21aa"]).analyze();
+    expect(eventSheet.violations.map((v) => `event sheet: ${v.id} (${v.nodes.map((n) => n.target.join(" ")).join(", ")})`)).toEqual([]);
+    await page.keyboard.press("Escape");
     await audit(page, "/cycles?h=week&date=current", () => expect(page.getByRole("heading", { level: 1 })).toBeVisible());
     await audit(page, "/catalog", () => expect(page.getByRole("heading", { level: 1 })).toBeVisible());
     await audit(page, "/templates", () => expect(page.getByRole("heading", { level: 1 })).toBeVisible());
