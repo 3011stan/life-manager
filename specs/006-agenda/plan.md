@@ -2,7 +2,7 @@
 
 **Branch**: `006-agenda` (both repositories) | **Date**: 2026-10-26 | **Spec**: [spec.md](spec.md)
 
-**Status**: Draft — awaiting approval.
+**Status**: Approved (2026-10-26).
 
 ## Summary
 

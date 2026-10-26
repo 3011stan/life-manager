@@ -4,7 +4,7 @@
 
 **Created**: 2026-10-26
 
-**Status**: Draft — D1–D7 approved (2026-10-26: D4 A, D5 A, D6 A, D7 automatic); D8 awaiting approval
+**Status**: Approved (2026-10-26) — D1–D3, D4 A, D5 A, D6 A, D7 automatic, D8 A
 
 **Input**: The owner's third round (2026-10-25). The first pages of the paper
 notebook hold the months ahead, with events known long before (a ceremony, a
