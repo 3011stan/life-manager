@@ -4,7 +4,7 @@
 
 **Created**: 2026-10-26
 
-**Status**: Draft — awaiting the owner's approval
+**Status**: Draft — D1–D5 approved (2026-10-26: D4 A, D5 A); D6–D7 awaiting approval
 
 **Input**: The owner's third round (2026-10-25). The first pages of the paper
 notebook hold the months ahead, with events known long before (a ceremony, a
@@ -21,6 +21,8 @@ already a goal of the week.
 | 3 | A milestone goal can already point at an entry (`milestone_entry_id`) and is done when that entry is completed. A weekly goal for an event fits this without a new goal type. |
 | 4 | Some events repeat every year on the same date (a feast day, a birthday). The notebook copies them by hand each year. |
 | 5 | Some events are only to remember (a friend's wedding) and are not something to plan for in the week. |
+| 6 | The owner also wants tasks that repeat on days of the week (2026-10-26): "a task 6 times a week, Sunday to Friday". Today a weekly template makes a "6×" goal for the week, but places no task on any day. |
+| 7 | A count goal already counts every completed entry linked to it (`entry_objective`), so one weekly goal can count a repeating task's days. |
 
 ## Decisions
 
@@ -34,6 +36,8 @@ approved with the seed adjustments; confirm or change them with D4–D5.
 | D3 | Which events become a week goal | ★ **A** Every event, with a per-event "Week goal" switch to turn it off (a wedding to remember only). **B** None by default; switch on per event. |
 | D4 | How far ahead the agenda shows | ★ **A** The next 12 months, grouped by month, with the current and next month open and the rest collapsed. **B** Only the next 2 months, like the notebook. |
 | D5 | An event known only by month ("sometime in March") | ★ **A** Not in this round: an event has a date. **B** Allow a month-only event that becomes a goal of that month. |
+| D6 | Repeating on days of the week (finding 6) | ★ **A** Repeat is one of: never, every year, or every week on chosen days (Sun–Fri, or every day). A weekly item places its task on each chosen day of a week when that week starts, and makes one count goal for the week ("Task 6×", target = the days chosen), with each day's task linked to it. In the agenda it shows once, as "Every Sun–Fri". **B** As A, but one goal per day instead of one count goal. |
+| D7 | A weekly repeating item and a template for the same habit (e.g. a "6×" template) | ★ **A** The repeating item replaces the template: when the owner turns a habit into a repeating item, the template is no longer needed and the owner removes it (the app warns when both would make a goal for the same activity in a week). **B** Keep both. |
 
 ## User Stories
 
@@ -67,6 +71,20 @@ event's task, and counting for the goals the event counts for.
 4. An event added during its own week gets its goal at once.
 5. An event with "Week goal" off makes no goal.
 
+### US4 — Tasks that repeat on days of the week (P1)
+
+**Acceptance**:
+1. An item "every week on Sun–Fri" puts its task on each of those 6 days when
+   the week starts, at its start time if it has one.
+2. The week gets one goal "<title> 6×" that counts those tasks; completing 4 of
+   them shows 4 / 6.
+3. Applying again creates no new task or goal; a task or goal the owner deleted
+   stays deleted for that week.
+4. Changing the days or the time changes the tasks of weeks not yet started and
+   the planned tasks of the current week from today on; completed tasks are
+   never touched.
+5. A weekly item can end on a date; no tasks are placed after it.
+
 ### US3 — Events that repeat every year (P2)
 
 **Acceptance**:
@@ -79,16 +97,19 @@ event's task, and counting for the goals the event counts for.
 
 ## Requirements
 
-- **FR-001** An event has a title (required), a date, an optional start time,
-  optional activity, optional goals it counts for, "repeats every year", "week
-  goal" (on by default), and notes.
-- **FR-002** Each occurrence of an event has exactly one task (an entry on that
-  date), created when the occurrence enters the agenda's range.
+- **FR-001** An agenda item has a title (required), a date (the first or only
+  occurrence), an optional start time, optional activity, optional goals it
+  counts for, a repeat (never, every year, or every week on chosen days, with an
+  optional end date), "week goal" (on by default), and notes.
+- **FR-002** Each occurrence has exactly one task (an entry on that date). A
+  one-off or yearly occurrence's task is created when it enters the agenda's
+  range; a weekly item's tasks are created when their week is applied.
 - **FR-003** The agenda lists occurrences from today through 12 months ahead,
   grouped by month, with date, title, and a repeat mark (D4).
 - **FR-004** At the start of a week (applied when the week or the Goals tree
-  opens, like rhythms) each event occurrence in that week with "week goal" on
-  gets one milestone goal pointing at its task.
+  opens, like rhythms) each one-off or yearly occurrence in that week with
+  "week goal" on gets one milestone goal pointing at its task, and each weekly
+  item gets one count goal for the week with its tasks linked (D6).
 - **FR-005** The applied goal's links are the event's goals whose period
   contains the week.
 - **FR-006** Applying is idempotent per occurrence, and a removed goal is not
@@ -114,4 +135,4 @@ event's task, and counting for the goals the event counts for.
 ## Out of Scope
 
 Reminders and notifications, events with no date (D5 B), shared or imported
-calendars, events that repeat on other rules (weekly, monthly).
+calendars, repeats by month or every N weeks.
