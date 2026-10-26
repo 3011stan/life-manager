@@ -31,5 +31,5 @@
 
 ## Phase 4: Release
 
-- [ ] T013 Local e2e green, backend CI green, staging (web first, then backend)
-- [ ] T014 Verification report mapping each story and requirement to its tests
+- [x] T013 Local e2e green, backend CI green, staging (web first, then backend)
+- [x] T014 Verification report mapping each story and requirement to its tests

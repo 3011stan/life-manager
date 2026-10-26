@@ -73,3 +73,10 @@ Every e2e test runs on desktop and mobile.
   requests waited about 17 minutes for a database connection. Three later full
   runs, with a watcher on Postgres lock waits and idle transactions, showed
   none. Worth watching on staging.
+- CI (2026-10-26): web `99d889c` green; backend `183ddee` green (check and e2e
+  against the web branch).
+- Staging (2026-10-26): web `99d889c` fast-forwarded first, Vercel success;
+  backend `183ddee` fast-forwarded, run 40323905342 green (check, e2e,
+  migration 0015 with the owner role, deploy, smoke); `/health` reports
+  `183ddee`.
+- Pending: the owner's run on phone and desktop.
