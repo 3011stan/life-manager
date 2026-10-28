@@ -1231,6 +1231,32 @@ h2 {
   padding: 0 var(--space-3) var(--space-3);
 }
 
+/* 007 E3: the goals a task or goal counts for, then the search. */
+.goal-picker__label {
+  padding: var(--space-3) var(--space-4) 0;
+}
+
+.goal-picker__chosen {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 48px;
+  padding: var(--space-1) var(--space-2) var(--space-1) var(--space-4);
+}
+
+.goal-picker__empty {
+  padding: var(--space-2) var(--space-4);
+}
+
+.skip-mark {
+  margin-right: 6px;
+  padding: 0 6px;
+  border-radius: var(--radius-pill);
+  background: var(--warn-soft);
+  color: var(--warn);
+  font-size: var(--text-xs);
+}
+
 .picker__list,
 .chips {
   display: grid;

@@ -2,7 +2,7 @@
 
 **Branch**: `007-goal-chain` (both repositories) | **Date**: 2026-10-27 | **Spec**: [spec.md](spec.md)
 
-**Status**: Draft — awaiting approval.
+**Status**: Approved (2026-10-28).
 
 ## Summary
 
@@ -33,3 +33,24 @@ moves existing data onto the chain.
 3. Local e2e green, backend CI green, then staging (web first, then backend).
 4. The owner names the missing long-horizon goals, I update the private seed
    file, the owner reads the dry run and runs the script.
+
+## Notes from implementation (2026-10-28)
+
+- FR-008: only a link a goal or task does not have yet is checked against the
+  rule; links it already has may be kept on save, so an old goal can still be
+  renamed. Adding a new link that skips a level is refused.
+- Goals the chain makes leave a closed week or month closed (it does not
+  reopen the period), so filling in old weeks keeps their close.
+- R4: a week goal of the task's activity that counts for nothing yet (from a
+  template, say) is linked into the chain instead of a second one being made.
+- R4: a goal with a rhythm of the period being made (a year goal with a month
+  rhythm) gives its rhythm goal as the goal between, so no second month goal.
+- R9 has two more parts: (c) with the private seed file, its missing goals are
+  made through the seed's own path and existing goals take the parents it
+  names; (e) completed tasks whose activity a longer goal tracks get their
+  week goal, as a new task would, so year goals keep the credit R3 would
+  otherwise drop. Links that skip only month or year are fixed by themselves;
+  longer skips need the seed file and are otherwise reported.
+- The API keeps accepting any goal above a week for an event; the event
+  sheet's picker offers month and year goals (FR-007).
+- Export format 6 adds `cycles[].chainLinks`.

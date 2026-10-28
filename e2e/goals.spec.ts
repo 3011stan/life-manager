@@ -60,8 +60,13 @@ test("a year goal under two 5-year goals credits both; its rhythm makes the week
   await page.getByLabel("Times").fill("104");
   const sheet = page.getByRole("dialog");
   await sheet.getByRole("checkbox", { name: activity }).check();
-  await expect(sheet.getByRole("checkbox", { name: new RegExp(`^${fluent}`) })).toBeChecked();
-  await sheet.getByRole("checkbox", { name: new RegExp(`^${travel}`) }).check();
+  // 007 E3: the goals above come from the 5-year horizon only, by search.
+  const parents = sheet.getByRole("group", { name: "Counts for (5 years)" });
+  await expect(parents.getByTestId("goal-picker-chosen")).toContainText(fluent);
+  await parents.getByRole("button", { name: "Add a goal" }).click();
+  await parents.getByLabel("Find a goal").fill(travel);
+  await parents.locator(".picker__option").filter({ hasText: travel }).click();
+  await expect(parents.getByTestId("goal-picker-chosen")).toContainText(travel);
   // 005 D7: the rhythm suggestion reaches the target (104 a year → 2 a week).
   await page.getByLabel("Rhythm").selectOption("week");
   await expect(page.getByRole("spinbutton", { name: "Times" }).last()).toHaveValue("2");

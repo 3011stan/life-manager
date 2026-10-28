@@ -36,7 +36,7 @@ test("exports JSON with the account's settings (FR-017)", async ({ page }) => {
     account: { email: string };
     workspace: { settings: { timeZone: string } };
   };
-  expect(body.formatVersion).toBe(5);
+  expect(body.formatVersion).toBe(6);
   expect(body.account.email).toBe(ALLOWED);
   expect(body.workspace.settings.timeZone).toBeTruthy();
   await expect(page.getByText("Export downloaded.")).toBeVisible();

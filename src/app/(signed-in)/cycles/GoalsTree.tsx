@@ -8,6 +8,7 @@ import { ChevronDown, LinkIcon, Plus } from "@/components/icons";
 import { applyEvents } from "@/lib/api/generated/agenda/agenda";
 import { applyRhythms, getGetGoalsTreeQueryKey, useGetGoalsTree } from "@/lib/api/generated/objectives/objectives";
 import type { GetGoalsTree200 } from "@/lib/api/generated/lifeManagerAPI.schemas";
+import { skipsLevel } from "@/lib/day/chain";
 import { isDate } from "@/lib/day/dates";
 import { percent, progressText } from "@/lib/day/objectives";
 import { HORIZONS, type CycleHorizon, type Objective } from "@/lib/day/types";
@@ -58,7 +59,8 @@ export function GoalsTree() {
 
   if (!data) return <p>{tree.isError ? t("common.connectOnce") : t("common.loading")}</p>;
 
-  const goals = data.objectives.filter((o) => o.status !== "dropped");
+  const all = data.objectives;
+  const goals = all.filter((o) => o.status !== "dropped");
   const ids = new Set(goals.map((o) => o.id));
   const childrenOf = (id: string) => goals.filter((o) => o.parentIds.includes(id)).sort((a, b) => RANK[b.horizon]! - RANK[a.horizon]! || (a.orderKey < b.orderKey ? -1 : 1));
   const tops = goals
@@ -100,6 +102,8 @@ export function GoalsTree() {
           <span className="goal-node__title">
             {goal.title}
             {goal.parentIds.length > 1 ? <LinkIcon size={13} aria-label={t("goals.shared")} /> : null}
+            {/* 007 R8: a link from before the chain that jumps over a level. */}
+            {all.some((p) => goal.parentIds.includes(p.id) && skipsLevel(goal, p)) ? <span className="skip-mark">{t("goals.skipsLevel")}</span> : null}
           </span>
           <span className="goal-node__value">{progressText(goal as unknown as Objective)}</span>
         </button>

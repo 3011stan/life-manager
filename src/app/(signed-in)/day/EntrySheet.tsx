@@ -5,11 +5,15 @@ import { useEffect, useRef, useState } from "react";
 import { ActivityPicker } from "@/components/ActivityPicker";
 import { closeOnBackdrop } from "@/components/dialog";
 import { DurationInput } from "@/components/DurationInput";
+import { GoalPicker } from "@/components/GoalPicker";
 import { Check, ChevronDown, Repeat, Trash } from "@/components/icons";
 import { createActivity, getGetCatalogQueryKey } from "@/lib/api/generated/catalog/catalog";
 import type { UpdateEntryBody } from "@/lib/api/generated/lifeManagerAPI.schemas";
+import { createObjective } from "@/lib/api/generated/objectives/objectives";
+import { isPlanningKey } from "@/lib/day/agenda";
+import { goalOptions, skipsLevel } from "@/lib/day/chain";
 import { formatMinutes } from "@/lib/day/dates";
-import { chainOf } from "@/lib/day/groups";
+import { chainOf, countedPaths } from "@/lib/day/groups";
 import type { Catalog, Day, Entry } from "@/lib/day/types";
 import { useT } from "@/lib/i18n";
 import type { MessageKey } from "@/lib/i18n/en";
@@ -39,6 +43,8 @@ export function EntrySheet({ entry, entries, objectives, catalog, disabled, onCl
   const dialog = useRef<HTMLDialogElement>(null);
   const [form, setForm] = useState(entry);
   const [more, setMore] = useState(false);
+  // 007 US3.2: a week goal made from the task, with the month goal above it.
+  const [newGoal, setNewGoal] = useState<{ title: string; parentIds: string[] } | null>(null);
 
   useEffect(() => {
     dialog.current?.showModal();
@@ -82,7 +88,36 @@ export function EntrySheet({ entry, entries, objectives, catalog, disabled, onCl
     onClose();
   }
 
-  const counted = entry.contributesTo.map((id) => chainOf(objectives, id)).filter((chain) => chain.length > 0);
+  const counted = countedPaths(objectives, entry.contributesTo);
+  // 007 FR-002: a task is linked by hand only to goals of its week; a link
+  // kept from before shows, marked.
+  const weekGoals = goalOptions(objectives, "week");
+  const pathOf = (id: string) =>
+    chainOf(objectives, id)
+      .slice(1)
+      .map((o) => o.title)
+      .join(" › ");
+  const chosen = form.objectiveIds.flatMap((id) => {
+    const o = objectives.find((x) => x.id === id);
+    return o ? [{ id, title: o.title, horizon: o.horizon, path: pathOf(id), skips: skipsLevel({ horizon: "day" }, o) }] : [];
+  });
+  const monthGoals = goalOptions(objectives, "month");
+
+  async function createWeekGoal() {
+    if (!newGoal?.title.trim()) return;
+    const id = crypto.randomUUID();
+    await createObjective("week", entry.date, {
+      id,
+      title: newGoal.title.trim(),
+      targetType: "count",
+      targetCount: 1,
+      activityIds: form.activityId ? [form.activityId] : [],
+      parentIds: newGoal.parentIds,
+    });
+    await queryClient.invalidateQueries({ predicate: (q) => isPlanningKey(q.queryKey) });
+    set("objectiveIds", [...form.objectiveIds, id]);
+    setNewGoal(null);
+  }
 
   return (
     <dialog onClick={closeOnBackdrop} ref={dialog} className="dialog sheet" aria-labelledby="entry-title" onClose={onClose}>
@@ -219,24 +254,44 @@ export function EntrySheet({ entry, entries, objectives, catalog, disabled, onCl
                 {t("entry.notes")}
                 <textarea value={form.notes} maxLength={10_000} rows={3} onChange={(e) => set("notes", e.target.value)} />
               </label>
-              {!heading && objectives.length > 0 ? (
-                <fieldset className="stack plain-fieldset">
-                  <legend className="field">{t("objective.linkByHand")}</legend>
-                  <ul className="check-list check-list--scroll">
-                    {objectives.map((o) => (
-                      <li key={o.id}>
-                        <label className="toggle">
-                          <input
-                            type="checkbox"
-                            checked={form.objectiveIds.includes(o.id)}
-                            onChange={(e) => set("objectiveIds", e.target.checked ? [...form.objectiveIds, o.id] : form.objectiveIds.filter((x) => x !== o.id))}
-                          />
-                          {o.title} <span className="muted small">{t(`horizon.${o.horizon}` as MessageKey)}</span>
-                        </label>
-                      </li>
-                    ))}
-                  </ul>
-                </fieldset>
+              {heading ? null : (
+                <div className="card">
+                  <GoalPicker
+                    label={t("objective.linkByHand")}
+                    options={weekGoals}
+                    value={form.objectiveIds}
+                    chosen={chosen}
+                    disabled={disabled}
+                    createLabel={t("goalPicker.newWeek")}
+                    onChange={(ids) => set("objectiveIds", ids)}
+                    onCreate={() => setNewGoal({ title: form.title, parentIds: [] })}
+                  />
+                </div>
+              )}
+              {newGoal ? (
+                <div className="card card--padded stack" role="group" aria-label={t("goalPicker.newWeekTitle")}>
+                  <span className="muted small">{t("goalPicker.newWeekTitle")}</span>
+                  <label className="field">
+                    {t("entry.title")}
+                    <input value={newGoal.title} maxLength={200} onChange={(e) => setNewGoal({ ...newGoal, title: e.target.value })} />
+                  </label>
+                  <GoalPicker
+                    label={t("goalPicker.monthAbove")}
+                    options={monthGoals}
+                    value={newGoal.parentIds}
+                    chosen={newGoal.parentIds.flatMap((id) => monthGoals.filter((o) => o.id === id))}
+                    disabled={disabled}
+                    onChange={(ids) => setNewGoal({ ...newGoal, parentIds: ids })}
+                  />
+                  <div className="button-row">
+                    <button type="button" className="ghost-button" onClick={() => setNewGoal(null)}>
+                      {t("common.cancel")}
+                    </button>
+                    <button type="button" className="primary-button" onClick={() => void createWeekGoal()}>
+                      {t("goalPicker.create")}
+                    </button>
+                  </div>
+                </div>
               ) : null}
             </div>
           ) : null}

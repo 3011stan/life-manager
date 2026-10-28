@@ -4,7 +4,7 @@
 
 **Created**: 2026-10-27
 
-**Status**: Draft — awaiting the owner's approval
+**Status**: Approved (2026-10-28) — E1–E5 as recommended (★), with finding 7
 
 **Input**: The owner's fourth round (2026-10-27):
 1. A day's task may only be linked to a week goal. A week goal may only be
@@ -103,9 +103,9 @@ owner's goal names.
   such a goal requires a link that follows FR-001. The tree marks them.
 - **FR-009** The fix script of E4 has a dry run, is idempotent, and touches the
   database only when the owner runs it.
+- **FR-010** Every screen keeps passing axe in light and dark.
 - **FR-011** A task's "Counts for" starts only from the goals the task counts
   for directly and lists each goal once, even when paths join above (finding 7).
-- **FR-010** Every screen keeps passing axe in light and dark.
 
 ## Success Criteria
 

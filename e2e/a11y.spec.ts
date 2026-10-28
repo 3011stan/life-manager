@@ -39,6 +39,10 @@ for (const colorScheme of ["light", "dark"] as const) {
     // The short entry sheet, open with "More" (005 D2).
     await page.getByTestId("entry-row").locator(".entry-row__main").click();
     await page.getByRole("button", { name: "More" }).click();
+    // 007 E3: the goal picker open, and the new week goal form under it.
+    await page.getByRole("dialog").getByRole("button", { name: "Add a goal" }).click();
+    await page.getByRole("dialog").getByRole("button", { name: "New week goal" }).click();
+    await page.getByRole("dialog").getByRole("group", { name: "Month goal it counts for" }).getByRole("button", { name: "Add a goal" }).click();
     const sheet = await new AxeBuilder({ page }).include("dialog").withTags(["wcag2a", "wcag2aa", "wcag21aa"]).analyze();
     expect(sheet.violations.map((v) => `sheet: ${v.id}`)).toEqual([]);
     await page.keyboard.press("Escape");

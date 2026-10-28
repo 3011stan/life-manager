@@ -1,14 +1,16 @@
 "use client";
 
-import { useQueries } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
+import { GoalPicker } from "@/components/GoalPicker";
 import { useGetCatalog } from "@/lib/api/generated/catalog/catalog";
 import type { CreateObjectiveBody } from "@/lib/api/generated/lifeManagerAPI.schemas";
-import { addMeasurement, createObjective, deleteObjective, getCycle, getGetCycleQueryKey, updateObjective } from "@/lib/api/generated/objectives/objectives";
+import { addMeasurement, createObjective, deleteObjective, updateObjective, useGetGoalsTree } from "@/lib/api/generated/objectives/objectives";
 import { ApiError } from "@/lib/api/mutator";
+import { goalOptions, nextHorizon, skipsLevel } from "@/lib/day/chain";
 import { addDays, todayIn, deviceTimeZone } from "@/lib/day/dates";
+import { chainOf } from "@/lib/day/groups";
 import { progressText } from "@/lib/day/objectives";
-import { HORIZONS, type CycleHorizon, type Objective } from "@/lib/day/types";
+import { type CycleHorizon, type Objective } from "@/lib/day/types";
 import { useT } from "@/lib/i18n";
 import { closeOnBackdrop } from "@/components/dialog";
 
@@ -67,15 +69,22 @@ export function ObjectiveSheet({ horizon, startDate, objective, preset, disabled
     dialog.current?.showModal();
   }, []);
 
-  // Parents come from the higher cycles that contain this one; a week counts
-  // in the month holding most of its days (research R2).
+  // 007 E1: goals above come only from the horizon right above, in the period
+  // that contains this one; a week counts in the month holding most of its
+  // days (research R2). A link kept from before shows, marked.
   const anchor = horizon === "week" ? addDays(startDate, 3) : startDate;
-  const higher = HORIZONS.slice(HORIZONS.indexOf(horizon) + 1);
-  const parents = useQueries({
-    queries: higher.map((h) => ({ queryKey: getGetCycleQueryKey(h, anchor), queryFn: () => getCycle(h, anchor) })),
-  })
-    .flatMap((q) => q.data?.data.objectives ?? [])
-    .filter((o) => o.status === "active");
+  const above = nextHorizon(horizon);
+  const tree = useGetGoalsTree({ date: anchor });
+  const goals = tree.data?.data.objectives ?? [];
+  const parents = above ? goalOptions(goals.filter((o) => o.status === "active"), above) : [];
+  const chosenParents = form.parentIds.flatMap((id) => {
+    const o = goals.find((x) => x.id === id);
+    const path = chainOf(goals, id)
+      .slice(1)
+      .map((x) => x.title)
+      .join(" › ");
+    return o ? [{ id, title: o.title, horizon: o.horizon, path, skips: skipsLevel({ horizon }, o) }] : [];
+  });
 
   const rhythmAllowed = (horizon === "year" || horizon === "month") && (form.targetType === "count" || form.targetType === "duration");
   const periods: ("week" | "month")[] = horizon === "year" ? ["week", "month"] : ["week"];
@@ -321,24 +330,17 @@ export function ObjectiveSheet({ horizon, startDate, objective, preset, disabled
             </div>
           ) : null}
 
-          {higher.length > 0 && parents.length > 0 ? (
-            <fieldset className="stack plain-fieldset">
-              <legend className="field">{t("objective.parent")}</legend>
-              <ul className="check-list check-list--scroll">
-                {parents.map((p) => (
-                  <li key={p.id}>
-                    <label className="toggle">
-                      <input
-                        type="checkbox"
-                        checked={form.parentIds.includes(p.id)}
-                        onChange={(e) => set("parentIds", e.target.checked ? [...form.parentIds, p.id] : form.parentIds.filter((x) => x !== p.id))}
-                      />
-                      {p.title} <span className="muted small">{t(`horizon.${p.horizon as CycleHorizon}`)}</span>
-                    </label>
-                  </li>
-                ))}
-              </ul>
-            </fieldset>
+          {above && (parents.length > 0 || chosenParents.length > 0) ? (
+            <div className="card">
+              <GoalPicker
+                label={t("goalPicker.parentOf", { horizon: t(`horizon.${above as CycleHorizon}`) })}
+                options={parents}
+                value={form.parentIds}
+                chosen={chosenParents}
+                disabled={disabled}
+                onChange={(ids) => set("parentIds", ids)}
+              />
+            </div>
           ) : null}
 
           {error ? (

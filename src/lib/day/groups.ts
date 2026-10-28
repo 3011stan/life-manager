@@ -40,3 +40,21 @@ export function chainOf(objectives: DayObjective[], id: string): DayObjective[] 
   }
   return chain;
 }
+
+// 007 FR-011: what a task counts for, as paths from the goals it counts for
+// directly (none of their goals below is in the list), each goal drawn once
+// even where paths join above.
+export function countedPaths(objectives: DayObjective[], contributesTo: string[]): DayObjective[][] {
+  const chains = new Map(contributesTo.map((id) => [id, chainOf(objectives, id)]));
+  const direct = contributesTo.filter((id) => !contributesTo.some((other) => other !== id && chains.get(other)?.some((o) => o.id === id)));
+  const drawn = new Set<string>();
+  return direct
+    .map((id) =>
+      (chains.get(id) ?? []).filter((o) => {
+        if (drawn.has(o.id)) return false;
+        drawn.add(o.id);
+        return true;
+      }),
+    )
+    .filter((path) => path.length > 0);
+}

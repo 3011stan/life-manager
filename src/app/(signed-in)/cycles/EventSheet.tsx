@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { ActivityPicker } from "@/components/ActivityPicker";
 import { closeOnBackdrop } from "@/components/dialog";
 import { DurationInput } from "@/components/DurationInput";
+import { GoalPicker } from "@/components/GoalPicker";
 import { Trash } from "@/components/icons";
 import { createEvent, deleteEvent, updateEvent } from "@/lib/api/generated/agenda/agenda";
 import { createActivity, getGetCatalogQueryKey, useGetCatalog } from "@/lib/api/generated/catalog/catalog";
@@ -12,7 +13,7 @@ import type { CreateEventBody, GetAgenda200EventsItem } from "@/lib/api/generate
 import { useGetGoalsTree } from "@/lib/api/generated/objectives/objectives";
 import { ApiError } from "@/lib/api/mutator";
 import { weekdayNames } from "@/lib/day/agenda";
-import type { CycleHorizon } from "@/lib/day/types";
+import { goalOptions } from "@/lib/day/chain";
 import { useI18n } from "@/lib/i18n";
 
 export type AgendaEvent = GetAgenda200EventsItem;
@@ -64,9 +65,13 @@ export function EventSheet({ event, preset, today, disabled, onClose, onSaved }:
   });
   const [error, setError] = useState<string>();
   const names = weekdayNames(locale);
-  // Goals of the periods holding the first date, above a week.
+  // 007 FR-007: month and year goals of the periods holding the first date;
+  // applying the week builds the chain between (R6).
   const tree = useGetGoalsTree({ date: form.onDate });
-  const goals = (tree.data?.data.objectives ?? []).filter((o) => o.horizon !== "week" && o.status === "active");
+  const all = tree.data?.data.objectives ?? [];
+  const active = all.filter((o) => o.status === "active");
+  const goals = [...goalOptions(active, "month"), ...goalOptions(active, "year")];
+  const chosenGoals = form.objectiveIds.flatMap((id) => goalOptions(all, all.find((o) => o.id === id)?.horizon ?? "").filter((o) => o.id === id));
 
   useEffect(() => {
     dialog.current?.showModal();
@@ -198,24 +203,17 @@ export function EventSheet({ event, preset, today, disabled, onClose, onSaved }:
             </span>
           </label>
 
-          {form.makesWeekGoal && goals.length > 0 ? (
-            <fieldset className="stack plain-fieldset">
-              <legend className="field">{t("event.countsFor")}</legend>
-              <ul className="check-list check-list--scroll">
-                {goals.map((g) => (
-                  <li key={g.id}>
-                    <label className="toggle">
-                      <input
-                        type="checkbox"
-                        checked={form.objectiveIds.includes(g.id)}
-                        onChange={(e) => set("objectiveIds", e.target.checked ? [...form.objectiveIds, g.id] : form.objectiveIds.filter((x) => x !== g.id))}
-                      />
-                      {g.title} <span className="muted small">{t(`horizon.${g.horizon as CycleHorizon}`)}</span>
-                    </label>
-                  </li>
-                ))}
-              </ul>
-            </fieldset>
+          {form.makesWeekGoal && (goals.length > 0 || chosenGoals.length > 0) ? (
+            <div className="card">
+              <GoalPicker
+                label={t("event.countsFor")}
+                options={goals}
+                value={form.objectiveIds}
+                chosen={chosenGoals}
+                disabled={disabled}
+                onChange={(ids) => set("objectiveIds", ids)}
+              />
+            </div>
           ) : null}
 
           <label className="field">

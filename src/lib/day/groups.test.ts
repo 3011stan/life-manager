@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { chainOf, childrenOf, groupMinutes, siblingsOf, topLevel } from "./groups";
+import { chainOf, childrenOf, countedPaths, groupMinutes, siblingsOf, topLevel } from "./groups";
 import type { Entry } from "./types";
 
 const e = (id: string, orderKey: string, extra: Partial<Entry> = {}) =>
@@ -41,5 +41,23 @@ describe("groups", () => {
     expect(chainOf(objectives, "w").map((o) => o.id)).toEqual(["w", "m", "y", "y2", "l"]);
     expect(chainOf(objectives, "loop").map((o) => o.id)).toEqual(["loop"]);
     expect(chainOf(objectives, "missing")).toEqual([]);
+  });
+
+  // 007 finding 7: a task counting for six goals whose paths join above drew
+  // the top goal six times.
+  it("draws what a task counts for from its direct goals, each goal once", () => {
+    const objectives = [
+      { id: "week", title: "Class 2×", horizon: "week", parentIds: ["month"] },
+      { id: "month", title: "Class · Nov", horizon: "month", parentIds: ["classes"] },
+      { id: "classes", title: "Classes", horizon: "year", parentIds: ["fluent"] },
+      { id: "b2", title: "Reach B2", horizon: "year", parentIds: ["fluent", "job"] },
+      { id: "fluent", title: "Fluent", horizon: "y5", parentIds: ["career"] },
+      { id: "job", title: "Job", horizon: "y5", parentIds: ["career"] },
+      { id: "career", title: "Career", horizon: "y15", parentIds: [] },
+    ];
+    const paths = countedPaths(objectives, ["career", "job", "fluent", "b2", "week", "month", "classes"]);
+    expect(paths.map((p) => p.map((o) => o.id))).toEqual([["b2", "fluent", "job", "career"], ["week", "month", "classes"]]);
+    expect(paths.flat()).toHaveLength(7);
+    expect(countedPaths(objectives, [])).toEqual([]);
   });
 });
