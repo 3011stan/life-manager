@@ -21,7 +21,7 @@
 - [x] T007 [US3] `GoalPicker` and its use in the entry, goal, and event sheets; i18n en and pt-BR
 - [x] T007b [US1] Unit tests (a task counting for several goals whose paths join, as in finding 7) then the "Counts for" helper of R10; e2e: no goal appears twice in "Counts for"
 - [x] T008 [US2] "Skips a level" mark in the goals tree
-- [ ] T009 e2e: a task of a tracked activity credits its year goal through new week and month goals; the entry picker shows only week goals; a week goal can count only for month goals; axe on the pickers, light and dark
+- [x] T009 e2e: a task of a tracked activity credits its year goal through new week and month goals; the entry picker shows only week goals; a week goal can count only for month goals; axe on the pickers, light and dark
 
 ## Phase 4: Existing data (US4)
 
@@ -31,5 +31,5 @@
 
 ## Phase 5: Release
 
-- [ ] T013 Local e2e green, backend CI green, staging (web first, then backend)
-- [ ] T014 Verification report
+- [ ] T013 Local e2e green, backend CI green, staging (web first, then backend) — local e2e and CI green 2026-10-28; staging waits for the go-ahead
+- [x] T014 Verification report ([verification.md](verification.md))
