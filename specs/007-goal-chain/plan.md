@@ -23,6 +23,7 @@ moves existing data onto the chain.
 | R6 | Rhythm apply for a week under a year goal goes through `ensureChain` (month first); month rhythm targets come from the weekly rhythm × weeks whose `weekMonthStart` is that month. Event and repeating-item apply call `ensureChain` toward each of the event's goals | FR-005 |
 | R7 | Web: a `GoalPicker` component (pattern of `ActivityPicker`): search, max 8 options, each with its path (`chainOf`), "+ New … goal". Used in `EntrySheet` (week goals), `ObjectiveSheet` (horizon above), `EventSheet` (month and year goals). The old checklist goes away | FR-007, E3 |
 | R8 | Goals tree: a "skips a level" mark on goals whose links break R1 | FR-008 |
+| R10 | "Counts for" in `EntrySheet`: start from the goals in `contributesTo` that have no descendant also in it (the direct ones), draw each path with `chainOf`, and skip a goal already drawn in an earlier path. A pure helper in `src/lib/day/groups.ts` with unit tests | FR-011, finding 7 |
 | R9 | `scripts/fix-chain.ts` with `--dry-run`, run like the seed: (a) week goals linked to a year goal are re-linked through `ensureChain`; (b) hand links from entries to longer goals move to the week goal from `ensureChain`; (c) long-horizon skips are re-linked to goals named in the private seed file (`goals[].parents` already follows the chain once the owner names the missing goals); (d) prints every change | FR-009, E4 |
 
 ## Delivery

@@ -23,6 +23,7 @@
 | 4 | Rhythms create week goals linked straight to the year goal (no month goal). Events and repeating items (006) link their week goal straight to the event's goals, often a year goal. |
 | 5 | A week belongs to the month holding its fourth day (`weekMonthStart`), so every week has exactly one month above it. |
 | 6 | A higher goal's progress already includes everything that counts for the goals below it, so a strict chain loses no credit as long as each task reaches a week goal. |
+| 7 | Bug (2026-10-28): a task's "Counts for" repeats goals. The API's `contributesTo` already lists every goal the task counts for, ancestors included, and the entry sheet draws the whole path above each of them again, so one class showed 6 blocks and 16 rows for 6 goals, the top goal 6 times. Progress is not affected: each goal counts a task once. |
 
 ## Decisions
 
@@ -47,7 +48,8 @@ owner's goal names.
    if the week had none for that activity (E2).
 2. A second task of the same activity that week reuses the same week goal.
 3. A task no goal tracks counts for nothing until linked by hand.
-4. A task's "Counts for" shows its whole path, from the week goal to the top.
+4. A task's "Counts for" shows its whole path, from the week goal to the top,
+   with each goal once (finding 7).
 
 ### US2 — Links only to the level right above (P1)
 
@@ -101,6 +103,8 @@ owner's goal names.
   such a goal requires a link that follows FR-001. The tree marks them.
 - **FR-009** The fix script of E4 has a dry run, is idempotent, and touches the
   database only when the owner runs it.
+- **FR-011** A task's "Counts for" starts only from the goals the task counts
+  for directly and lists each goal once, even when paths join above (finding 7).
 - **FR-010** Every screen keeps passing axe in light and dark.
 
 ## Success Criteria

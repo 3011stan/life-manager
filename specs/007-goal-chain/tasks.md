@@ -19,6 +19,7 @@
 
 - [ ] T006 Regenerate the client
 - [ ] T007 [US3] `GoalPicker` and its use in the entry, goal, and event sheets; i18n en and pt-BR
+- [ ] T007b [US1] Unit tests (a task counting for several goals whose paths join, as in finding 7) then the "Counts for" helper of R10; e2e: no goal appears twice in "Counts for"
 - [ ] T008 [US2] "Skips a level" mark in the goals tree
 - [ ] T009 e2e: a task of a tracked activity credits its year goal through new week and month goals; the entry picker shows only week goals; a week goal can count only for month goals; axe on the pickers, light and dark
 
