@@ -31,5 +31,5 @@
 
 ## Phase 5: Release
 
-- [ ] T013 Local e2e green, backend CI green, staging (web first, then backend) — local e2e and CI green 2026-10-28; staging waits for the go-ahead
+- [x] T013 Local e2e green, backend CI green, staging (web first, then backend) — local e2e and CI green 2026-10-28; staging 2026-10-29 (web 2358d67, API e2b81be)
 - [x] T014 Verification report ([verification.md](verification.md))
