@@ -1248,6 +1248,16 @@ h2 {
   padding: var(--space-2) var(--space-4);
 }
 
+/* 007b F5: the goals shown, grouped under the goal above them. */
+.goal-picker__group-title {
+  display: block;
+  padding: var(--space-2) var(--space-2) 2px;
+}
+
+.goal-picker__more {
+  padding: var(--space-2);
+}
+
 .skip-mark {
   margin-right: 6px;
   padding: 0 6px;

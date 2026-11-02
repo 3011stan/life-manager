@@ -21,18 +21,35 @@ describe("goal chain in the interface", () => {
     expect(skipsLevel({ horizon: "year" }, { horizon: "y15" })).toBe(true);
   });
 
-  it("offers only goals of one horizon, each with its path", () => {
+  it("offers only goals of one horizon, each with its path and the goal right above", () => {
     expect(goalOptions(goals, "week")).toEqual([
-      { id: "w1", title: "Gym 4×", horizon: "week", path: "Gym · Nov › Gym › Fit body" },
-      { id: "w2", title: "Inglês", horizon: "week", path: "" },
+      { id: "w1", title: "Gym 4×", horizon: "week", path: "Gym · Nov › Gym › Fit body", parentTitle: "Gym · Nov" },
+      { id: "w2", title: "Inglês", horizon: "week", path: "", parentTitle: null },
     ]);
   });
 
   it("finds goals by title or path, at most 8, without accents or case", () => {
-    const many = Array.from({ length: 12 }, (_, i) => ({ id: String(i), title: `Goal ${String(i)}`, horizon: "week" as const, path: "" }));
-    expect(matchGoals(many, "", [])).toHaveLength(8);
-    expect(matchGoals(goalOptions(goals, "week"), "ingles", []).map((o) => o.id)).toEqual(["w2"]);
-    expect(matchGoals(goalOptions(goals, "week"), "fit", []).map((o) => o.id)).toEqual(["w1"]);
-    expect(matchGoals(goalOptions(goals, "week"), "", ["w1"]).map((o) => o.id)).toEqual(["w2"]);
+    const many = Array.from({ length: 12 }, (_, i) => ({ id: String(i), title: `Goal ${String(i)}`, horizon: "week" as const, path: "", parentTitle: null }));
+    expect(matchGoals(many, "", []).groups.flatMap((g) => g.options)).toHaveLength(8);
+    const ids = (q: string, chosen: string[] = []) => matchGoals(goalOptions(goals, "week"), q, chosen).groups.flatMap((g) => g.options.map((o) => o.id));
+    expect(ids("ingles")).toEqual(["w2"]);
+    expect(ids("fit")).toEqual(["w1"]);
+    expect(ids("", ["w1"])).toEqual(["w2"]);
+  });
+
+  // 007b F5: the picker says how many more match, and groups by the goal above.
+  it("groups the goals shown under the goal above, those with none last, and counts the rest", () => {
+    const option = (id: string, parentTitle: string | null) => ({ id, title: `Goal ${id}`, horizon: "year" as const, path: parentTitle ?? "", parentTitle });
+    const options = [option("a", "Health"), option("b", null), option("c", "Career"), option("d", "Health"), ...Array.from({ length: 8 }, (_, i) => option(`z${String(i)}`, "Money"))];
+    const { groups, more } = matchGoals(options, "", []);
+    expect(groups.map((g) => [g.parent, g.options.map((o) => o.id)])).toEqual([
+      ["Career", ["c"]],
+      ["Health", ["a", "d"]],
+      ["Money", ["z0", "z1", "z2", "z3", "z4"]],
+    ]);
+    expect(more).toBe(4);
+    const few = matchGoals(options, "goal a", []);
+    expect(few).toEqual({ groups: [{ parent: "Health", options: [options[0]] }], more: 0 });
+    expect(matchGoals([option("b", null)], "", []).groups).toEqual([{ parent: null, options: [option("b", null)] }]);
   });
 });

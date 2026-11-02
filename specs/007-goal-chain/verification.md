@@ -77,3 +77,25 @@ and export tests); web tests are in this repository (`src/lib/day/chain.test.ts`
   (check, and e2e against the web branch `007-goal-chain`).
 - Pending: T012 (the owner reads the fix-chain dry run on staging and runs
   it), staging release, and the owner's run on phone and desktop.
+
+## 007b (2026-11-02)
+
+| Scenario | Tests |
+|---|---|
+| 1 Hand links of one line: one kept, the others dropped and listed | integration "keeps only the most specific of a task's hand links, and leaves a lone long link for a choice (F1)" |
+| 2 A lone link to a goal longer than a year is listed as needing a choice | same test ("Talk") |
+| 3 No chain toward value, level, or milestone goals; the count goal's chain only | integration "makes no goal toward a value, level, or milestone goal that lists the activity"; "builds the goals between a task and a 5-year goal…" now uses a count goal |
+| 4 The script removes goals made toward measured goals; a goal a task is linked to by hand and a goal the person made stay; second run changes nothing | integration "removes only the goals the app made toward a value, level, or milestone goal (F2)" |
+| 5 Weeks and months dated in the report | integration (both 007b tests and the updated dry-run test) |
+| 6 Activity field label and hints | e2e "the goal sheet names how activities count, and the picker groups goals and counts the rest (007b)" |
+| 7 Picker: 8 shown, grouped by the goal above, "+N more" | unit "groups the goals shown under the goal above, those with none last, and counts the rest"; same e2e, with axe on the open picker in light and dark |
+
+Runs:
+
+- Backend: lint and types clean; vitest 275 passed (33 files).
+- Web: lint and types clean; unit 57 passed; build ok.
+- Local e2e on a fresh stack with 2 workers: the first full run had 2
+  failures (the a11y dark spec waiting for a screen, and the new 007b test on
+  desktop at sign-in) that passed alone; then two full runs back to back: 94
+  passed, 6 skipped, 0 failed. The new test passed 12 of 12 with
+  `--repeat-each=6`.

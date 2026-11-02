@@ -33,3 +33,14 @@
 
 - [x] T013 Local e2e green, backend CI green, staging (web first, then backend) — local e2e and CI green 2026-10-28; staging 2026-10-29 (web 2358d67, API e2b81be)
 - [x] T014 Verification report ([verification.md](verification.md))
+
+## 007b — follow-up (2026-11-02)
+
+- [x] T015 [F1] Integration tests then fix-chain (b): drop ancestor hand links, "needs a choice" for links longer than a year
+- [x] T016 [F2] Integration tests then `chainEntry` trackers limited to count and duration goals
+- [x] T017 [F2] Integration tests then fix-chain (f): remove goals made toward value, level, and milestone goals; idempotent
+- [x] T018 [F3] Report lines with the week's and month's start dates
+- [x] T019 [F4] Activity field label and hints, en and pt-BR; e2e
+- [x] T020 [F5] Unit tests then grouped matches and "+N more"; `GoalPicker`; e2e and axe light and dark
+- [x] T021 Local e2e green, CI green on both branches; verification report
+- [ ] T022 Staging (after the owner's go-ahead), then the owner's new dry run and run (T012)

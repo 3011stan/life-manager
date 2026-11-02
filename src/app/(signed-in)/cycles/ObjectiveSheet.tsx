@@ -86,6 +86,13 @@ export function ObjectiveSheet({ horizon, startDate, objective, preset, disabled
     return o ? [{ id, title: o.title, horizon: o.horizon, path, skips: skipsLevel({ horizon }, o) }] : [];
   });
 
+  // 007b F4: a week goal counts its activities' tasks; a longer goal tracks
+  // them through week goals made for them; a value, level, or milestone goal
+  // keeps the activities it already lists as a reference only.
+  const measured = form.targetType === "value" || form.targetType === "level" || form.targetType === "milestone";
+  const showActivities = form.targetType === "count" || form.targetType === "duration" || (measured && form.activityIds.length > 0);
+  const activitiesHint = measured ? t("objective.activitiesReference") : horizon === "week" ? null : t("objective.activitiesTrackedHint");
+
   const rhythmAllowed = (horizon === "year" || horizon === "month") && (form.targetType === "count" || form.targetType === "duration");
   const periods: ("week" | "month")[] = horizon === "year" ? ["week", "month"] : ["week"];
 
@@ -271,9 +278,14 @@ export function ObjectiveSheet({ horizon, startDate, objective, preset, disabled
             </>
           ) : null}
 
-          {form.targetType === "count" || form.targetType === "duration" ? (
-            <fieldset className="stack plain-fieldset">
-              <legend className="field">{t("objective.activities")}</legend>
+          {showActivities ? (
+            <fieldset className="stack plain-fieldset" aria-describedby={activitiesHint ? "objective-activities-hint" : undefined}>
+              <legend className="field">{horizon === "week" && !measured ? t("objective.activities") : t("objective.activitiesTracked")}</legend>
+              {activitiesHint ? (
+                <p id="objective-activities-hint" className="muted small">
+                  {activitiesHint}
+                </p>
+              ) : null}
               <ul className="check-list check-list--scroll">
                 {activities.map((a) => (
                   <li key={a.id}>

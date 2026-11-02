@@ -119,3 +119,62 @@ owner's goal names.
 
 Day goals (a day's tasks are its plan), links across workspaces, reordering the
 horizons.
+
+## 007b — follow-up (2026-11-02)
+
+**Status**: Approved (2026-11-02).
+
+**Input**: the owner's first fix-chain dry run on staging, and two questions
+about the goal sheet.
+
+### Findings
+
+| # | Finding |
+|---|---|
+| 8 | A task linked by hand to several goals of one line (a year goal, the 5-year goal above it, and the 10-year goal above that) had each link moved on its own: for the long ones the script picked a year goal below at random and made week and month goals named after the long goal under it. The link to the most specific goal already carries the credit up the chain. |
+| 9 | Value, level, and milestone goals take their progress from measurements or from being marked done, never from tasks. When such a goal also lists activities, completing a task made a week goal and a month goal under it that change nothing and repeat the week goal of the count goal for the same activity, so "Counts for" shows two paths. This happens for new tasks since 007 went live. |
+| 10 | The dry run names a week goal without its week ("Gym 4×" twice, for two weeks). |
+| 11 | "Counts these activities" reads as if a task counts straight for a month or year goal; since 007 it counts through a week goal made for it. |
+| 12 | The "Counts for" picker shows at most 8 goals and does not say more exist, so goals seem missing. |
+
+### Decisions
+
+| ID | Decision |
+|---|---|
+| F1 | The fix script keeps only the most specific of a task's hand links when one goal is below another; the others are dropped (credit reaches them through the chain). A remaining link to a goal longer than a year is not moved by guessing a path: the dry run lists it as needing a choice. Links to month and year goals move to a week goal as before. |
+| F2 | Only count and duration goals get a chain from completed tasks. Value, level, and milestone goals keep their activities as a reference. The fix script removes the week and month goals the app made toward such a goal, when nothing else counts for them and no task is linked to them by hand; nothing else is deleted. |
+| F3 | Every week and month in the dry run carries its start date. |
+| F4 | The activity field reads "Counts these activities" on a week goal and "Tracks these activities" on longer goals, with one line saying tasks count through a week goal made for them; on a value, level, or milestone goal that already lists activities, one line says they do not change its progress. English and Portuguese. |
+| F5 | The picker says how many more goals match ("+N more — type to search") and groups the goals it shows under the goal above them (goals with none under "No goal above"), still at most 8. |
+
+### Acceptance
+
+1. A task linked by hand to a year goal and to the 5-year and 10-year goals
+   above it ends with one link, to a week goal under the year goal; the dry run
+   lists the two dropped links.
+2. A task linked by hand only to a 5-year goal keeps its link, and the dry run
+   lists it as needing a choice.
+3. Completing a task whose activity only a value, level, or milestone goal
+   lists makes no goal; with a count goal for the same activity, only that
+   chain is made.
+4. The fix script lists and removes the goals made earlier toward a value,
+   level, or milestone goal; a second run changes nothing.
+5. Every week and month in the dry run shows its start date.
+6. The activity field's label and hint follow F4 by horizon and target type.
+7. With more than 8 matching goals the picker shows 8, grouped by the goal
+   above, and "+N more — type to search".
+
+### Requirements
+
+- **FR-012** The fix script drops a task's hand links to goals above another of
+  its linked goals, and lists links to goals longer than a year with no more
+  specific link as needing a choice (F1).
+- **FR-013** Completed tasks build a chain only toward count and duration goals
+  (F2). Events, repeating items, and hand links keep the goals chosen for them.
+- **FR-014** The fix script removes only goals the app made toward a value,
+  level, or milestone goal that nothing counts for and no task is linked to
+  (F2).
+- **FR-015** Report lines name weeks and months with their start dates (F3).
+- **FR-016** The activity field's label and hint by horizon and target type (F4).
+- **FR-017** The picker's count of hidden matches and grouping by the goal above
+  (F5), passing axe in light and dark.

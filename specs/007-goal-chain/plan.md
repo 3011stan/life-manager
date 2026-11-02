@@ -54,3 +54,19 @@ moves existing data onto the chain.
 - The API keeps accepting any goal above a week for an event; the event
   sheet's picker offers month and year goals (FR-007).
 - Export format 6 adds `cycles[].chainLinks`.
+
+## 007b — follow-up (2026-11-02)
+
+| # | Decision | Why |
+|---|---|---|
+| R11 | fix-chain (b) works per task: a hand link to a goal that is an ancestor of another of the task's links (hand-linked week goals included) is dropped and reported; a remaining link to a month or year goal moves as before; one to a goal longer than a year stays and is reported `needs a choice` | FR-012, F1 |
+| R12 | `chainEntry` takes as trackers only count and duration goals. Rhythms exist only on count and duration goals, so they need no change. Events and repeating items keep building a chain toward the goals chosen for them, whatever their type (an explicit choice), and so do hand links | FR-013, F2 |
+| R13 | fix-chain (f): for each goal recorded in `chain_link` as made (not reused), follow the made goals up to the first goal the app did not make; when that goal is value, level, or milestone, and the made goal has no live goal below it and no task linked to it by hand, it is soft-deleted with its links and its `chain_link` row (so an explicit need later can make it again), without reopening its period; repeated until nothing changes, so a month goal goes once its week goals are gone | FR-014, F2 |
+| R14 | The report's `label` adds the start date for week and month goals | FR-015, F3 |
+| R15 | `ObjectiveSheet`: label "Counts these activities" (week) or "Tracks these activities" (longer) with a hint; the field also shows on a value, level, or milestone goal that already lists activities, with the reference hint | FR-016, F4 |
+| R16 | `matchGoals` returns the goals shown, grouped by their nearest goal above, and how many more match; `GoalPicker` renders a small heading per group and "+N more — type to search" | FR-017, F5 |
+
+Consequence of R12, noted for the owner: a task whose activity only a value,
+level, or milestone goal lists counts for no goal (and not for alignment) until
+a week goal for that activity exists (a count goal, a rhythm, a template, or a
+hand link).

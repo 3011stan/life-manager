@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import { Close, Plus } from "@/components/icons";
 import { matchGoals, type GoalOption } from "@/lib/day/chain";
 import { useT } from "@/lib/i18n";
@@ -12,7 +12,7 @@ interface Props {
   // Goals already chosen; a kept link that skips a level comes in `chosen`
   // without being an option, marked.
   value: string[];
-  chosen: (GoalOption & { skips?: boolean })[];
+  chosen: (Omit<GoalOption, "parentTitle"> & { skips?: boolean })[];
   disabled?: boolean;
   createLabel?: string;
   onChange: (ids: string[]) => void;
@@ -20,12 +20,14 @@ interface Props {
 }
 
 // 007 E3: what a task or a goal counts for, picked by typing among the goals
-// of the level right above, at most 8 at a time, each with its path.
+// of the level right above, at most 8 at a time, each with its path; 007b F5:
+// grouped under the goal above them, saying how many more match.
 export function GoalPicker({ label, options, value, chosen, disabled, createLabel, onChange, onCreate }: Props) {
   const t = useT();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const matches = matchGoals(options, query, value);
+  const id = useId();
+  const { groups, more } = matchGoals(options, query, value);
 
   function pick(id: string) {
     onChange([...value, id]);
@@ -68,17 +70,31 @@ export function GoalPicker({ label, options, value, chosen, disabled, createLabe
         <div className="picker__panel">
           <input aria-label={t("goalPicker.find")} placeholder={t("goalPicker.find")} value={query} autoFocus onChange={(e) => setQuery(e.target.value)} />
           <ul className="picker__list">
-            {matches.map((o) => (
-              <li key={o.id}>
-                <button type="button" className="picker__option" onClick={() => pick(o.id)}>
-                  <span className="picker__value">
-                    <span className="picker__name">{o.title}</span>
-                    {o.path ? <span className="picker__path">{o.path}</span> : null}
-                  </span>
-                </button>
+            {groups.map((g, i) => (
+              <li key={g.parent ?? `none-${String(i)}`} data-testid="goal-picker-group">
+                <span className="goal-picker__group-title muted small" id={`${id}-group-${String(i)}`}>
+                  {g.parent ?? t("goalPicker.noParent")}
+                </span>
+                <ul className="picker__list" aria-labelledby={`${id}-group-${String(i)}`}>
+                  {g.options.map((o) => (
+                    <li key={o.id}>
+                      <button type="button" className="picker__option" onClick={() => pick(o.id)}>
+                        <span className="picker__value">
+                          <span className="picker__name">{o.title}</span>
+                          {o.path ? <span className="picker__path">{o.path}</span> : null}
+                        </span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
               </li>
             ))}
-            {matches.length === 0 ? <li className="muted small goal-picker__empty">{t("goalPicker.none")}</li> : null}
+            {groups.length === 0 ? <li className="muted small goal-picker__empty">{t("goalPicker.none")}</li> : null}
+            {more > 0 ? (
+              <li className="muted small goal-picker__more" data-testid="goal-picker-more">
+                {t("goalPicker.more", { count: String(more) })}
+              </li>
+            ) : null}
             {onCreate && createLabel ? (
               <li>
                 <button
