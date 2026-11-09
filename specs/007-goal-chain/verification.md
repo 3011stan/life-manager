@@ -99,3 +99,21 @@ Runs:
   desktop at sign-in) that passed alone; then two full runs back to back: 94
   passed, 6 skipped, 0 failed. The new test passed 12 of 12 with
   `--repeat-each=6`.
+
+## 007c (2026-11-09)
+
+| Scenario | Tests |
+|---|---|
+| 1 A person's month goal reused by a chain toward a measured goal keeps its link; no `unlink` line | integration "keeps a person's link to a measured goal, and removes only the link the app added (F6)" |
+| 2 A loose week goal the app linked still loses that link | same test |
+| 3 Closed week, goal done, carried, or dropped: no second week goal | integration "makes no second week goal in a closed week whose rhythm goal is …" (task completed) and "… for tasks of a closed week whose rhythm goal is … (F7)" (fix script) |
+| 4 Closed month: the goal already there is used; no period reopened | integration "uses the goal already under the year goal in a closed month when it is …"; the tests above check the period stays closed |
+
+Each new test failed before its fix.
+
+Runs:
+
+- Backend: lint and types clean; vitest 284 passed (33 files).
+- Local e2e on a fresh stack with 2 workers: the first full run had 1 failure
+  (the a11y dark spec waiting for a screen, the same one as in 007b); then two
+  full runs back to back: 94 passed, 6 skipped, 0 failed.

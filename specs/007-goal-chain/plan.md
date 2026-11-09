@@ -70,3 +70,17 @@ Consequence of R12, noted for the owner: a task whose activity only a value,
 level, or milestone goal lists counts for no goal (and not for alignment) until
 a week goal for that activity exists (a count goal, a rhythm, a template, or a
 hand link).
+
+## 007c — follow-up (2026-11-09)
+
+| # | Decision | Why |
+|---|---|---|
+| R17 | `removeMeasuredChains` skips a `chain_link` row with `reused` and no activity: those come from `bridge`, where the link already existed. Only a reused row with an activity (the loose week goal `weekGoal` linked) is unlinked | FR-018, F6 |
+| R18 | `covered` in `chainEntry`, `below` in `bridge`, and `loose` in `weekGoal` no longer need an active goal; `below` and `loose` still prefer one. A closed goal passes credit up (`descendantsOf` has no status filter). `trackersIn` stays active-only | FR-019, F7 |
+
+Other active-only checks on these paths, reviewed: `sharedGoal` in the events
+service cannot duplicate, because `applyWeek` returns early for a closed week.
+`applyRhythms` is idempotent through `rhythm_application`, so a closed rhythm
+goal is not made again. fix-chain (a) stays active-only on purpose: a closed
+week goal that skips the month keeps its old link, its credit still reaches the
+year, and history is not rewritten.

@@ -178,3 +178,27 @@ about the goal sheet.
 - **FR-016** The activity field's label and hint by horizon and target type (F4).
 - **FR-017** The picker's count of hidden matches and grouping by the goal above
   (F5), passing axe in light and dark.
+
+## 007c — follow-up (2026-11-09)
+
+The owner's second dry run of the fix script showed two errors.
+
+| # | Finding | Decision |
+|---|---|---|
+| F6 | The script would remove a link the person made. When a chain reuses a person's month goal that already counts for a year goal, the app records the reuse; the script read that record as a link the app had given, and listed `unlink` for it when the year goal is value, level, or milestone | The script removes only a link the app itself added |
+| F7 | Closing a period takes its goals out of "active", and the chain looked only at active goals. In a closed week holding a rhythm goal for an activity, the script (and completing a task there) made a second week goal for the same activity | A goal of a closed period still counts as existing: the chain reuses it and makes no second one. Goals that track an activity must still be active to start a chain |
+
+### Acceptance
+
+1. A person's month goal under a value, level, or milestone year goal, reused by
+   a chain, keeps its link; the dry run has no `unlink` line for it.
+2. A loose week goal the app linked into such a chain still loses that link.
+3. Completing a task, or running the script, in a closed week whose goal for the
+   activity is done, carried, or dropped makes no second week goal.
+4. In a closed month, a goal already under the year goal is used; no second
+   month goal is made. No period is reopened.
+
+### Requirements
+
+- **FR-018** The fix script deletes only links the app added (F6).
+- **FR-019** The chain treats goals of closed periods as existing (F7).
