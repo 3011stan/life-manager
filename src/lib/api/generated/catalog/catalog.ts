@@ -33,6 +33,8 @@ import type {
   CreateTag201,
   CreateTagBody,
   GetCatalog200,
+  SuggestActivity200,
+  SuggestActivityParams,
   UpdateActivity200,
   UpdateActivityBody,
   UpdateArea200,
@@ -969,7 +971,120 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
       > => {
       return useMutation(getDeleteTagMutationOptions(options), queryClient);
     }
-    export type createActivityResponse201 = {
+    export type suggestActivityResponse200 = {
+  data: SuggestActivity200
+  status: 200
+}
+
+export type suggestActivityResponseSuccess = (suggestActivityResponse200) & {
+  headers: Headers;
+};
+;
+
+export type suggestActivityResponse = (suggestActivityResponseSuccess)
+
+export const getSuggestActivityUrl = (params: SuggestActivityParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/v1/activities/suggest?${stringifiedParams}` : `/v1/activities/suggest`
+}
+
+export const suggestActivity = async (params: SuggestActivityParams, options?: Parameters<typeof apiFetch>[1]): Promise<suggestActivityResponse> => {
+
+  return apiFetch<suggestActivityResponse>(getSuggestActivityUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getSuggestActivityQueryKey = (params?: SuggestActivityParams,) => {
+    return [
+    `/v1/activities/suggest`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getSuggestActivityQueryOptions = <TData = Awaited<ReturnType<typeof suggestActivity>>, TError = unknown>(params: SuggestActivityParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof suggestActivity>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getSuggestActivityQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof suggestActivity>>> = ({ signal }) => suggestActivity(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof suggestActivity>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type SuggestActivityQueryResult = NonNullable<Awaited<ReturnType<typeof suggestActivity>>>
+export type SuggestActivityQueryError = unknown
+
+
+export function useSuggestActivity<TData = Awaited<ReturnType<typeof suggestActivity>>, TError = unknown>(
+ params: SuggestActivityParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof suggestActivity>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof suggestActivity>>,
+          TError,
+          Awaited<ReturnType<typeof suggestActivity>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useSuggestActivity<TData = Awaited<ReturnType<typeof suggestActivity>>, TError = unknown>(
+ params: SuggestActivityParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof suggestActivity>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof suggestActivity>>,
+          TError,
+          Awaited<ReturnType<typeof suggestActivity>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useSuggestActivity<TData = Awaited<ReturnType<typeof suggestActivity>>, TError = unknown>(
+ params: SuggestActivityParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof suggestActivity>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+
+export function useSuggestActivity<TData = Awaited<ReturnType<typeof suggestActivity>>, TError = unknown>(
+ params: SuggestActivityParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof suggestActivity>>, TError, TData>>, request?: SecondParameter<typeof apiFetch>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getSuggestActivityQueryOptions(params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+export type createActivityResponse201 = {
   data: CreateActivity201
   status: 201
 }

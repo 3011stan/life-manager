@@ -349,6 +349,17 @@ export type UpdateTag200 = {
   version: number;
 };
 
+export type SuggestActivityParams = {
+/**
+ * @maxLength 200
+ */
+title: string;
+};
+
+export type SuggestActivity200 = {
+  activityId: string | null;
+};
+
 export const CreateActivityBodyDefaultTimeValue = {  useful: 'useful',
   support: 'support',
 } as const
@@ -612,10 +623,16 @@ export type GetDay200WeekEssentialsItem = {
   progress: number;
 };
 
+export const GetDay200ObjectivesItemStatus = {  active: 'active',
+  done: 'done',
+  carried: 'carried',
+  dropped: 'dropped',
+} as const
 export type GetDay200ObjectivesItem = {
   id: string;
   title: string;
   horizon: string;
+  status: typeof GetDay200ObjectivesItemStatus[keyof typeof GetDay200ObjectivesItemStatus];
   parentIds: string[];
 };
 
@@ -749,10 +766,16 @@ export type UpdateDay200WeekEssentialsItem = {
   progress: number;
 };
 
+export const UpdateDay200ObjectivesItemStatus = {  active: 'active',
+  done: 'done',
+  carried: 'carried',
+  dropped: 'dropped',
+} as const
 export type UpdateDay200ObjectivesItem = {
   id: string;
   title: string;
   horizon: string;
+  status: typeof UpdateDay200ObjectivesItemStatus[keyof typeof UpdateDay200ObjectivesItemStatus];
   parentIds: string[];
 };
 
@@ -1181,6 +1204,62 @@ export type GetDayClose200UnresolvedItem = {
   version: number;
 };
 
+export const GetDayClose200WithoutActivityItemStatus = {  planned: 'planned',
+  completed: 'completed',
+  skipped: 'skipped',
+  cancelled: 'cancelled',
+} as const
+export const GetDayClose200WithoutActivityItemTimeValue = {  useful: 'useful',
+  support: 'support',
+} as const
+export const GetDayClose200WithoutActivityItemSegmentsItemTimeValue = {  useful: 'useful',
+  support: 'support',
+} as const
+export type GetDayClose200WithoutActivityItemSegmentsItem = {
+  id: string;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  title: string;
+  /**
+     * @minimum 1
+     * @maximum 1440
+     */
+  minutes: number;
+  timeValue: typeof GetDayClose200WithoutActivityItemSegmentsItemTimeValue[keyof typeof GetDayClose200WithoutActivityItemSegmentsItemTimeValue];
+};
+
+export const GetDayClose200WithoutActivityItemKind = {  item: 'item',
+  heading: 'heading',
+} as const
+export type GetDayClose200WithoutActivityItem = {
+  id: string;
+  date: string;
+  title: string;
+  activityId: string | null;
+  orderKey: string;
+  startTime: string | null;
+  plannedMinutes: number;
+  actualMinutes: number | null;
+  status: typeof GetDayClose200WithoutActivityItemStatus[keyof typeof GetDayClose200WithoutActivityItemStatus];
+  isUnplanned: boolean;
+  isTimeBlock: boolean;
+  timeValue: typeof GetDayClose200WithoutActivityItemTimeValue[keyof typeof GetDayClose200WithoutActivityItemTimeValue];
+  deepWork: boolean;
+  /** @maxItems 20 */
+  segments: GetDayClose200WithoutActivityItemSegmentsItem[];
+  notes: string;
+  objectiveIds: string[];
+  contributesTo: string[];
+  carriedFromEntryId: string | null;
+  copiedFromEntryId: string | null;
+  kind: typeof GetDayClose200WithoutActivityItemKind[keyof typeof GetDayClose200WithoutActivityItemKind];
+  groupId: string | null;
+  eventId: string | null;
+  version: number;
+};
+
 export type GetDayClose200Scores = {
   execution: number | null;
   alignment: number | null;
@@ -1196,6 +1275,7 @@ export type GetDayClose200ExplanationAlignmentItem = {
   entryId: string;
   minutes: number;
   credited: number;
+  support: boolean;
 };
 
 export type GetDayClose200Explanation = {
@@ -1279,6 +1359,7 @@ export type GetDayClose200 = {
   date: string;
   closedAt: string | null;
   unresolved: GetDayClose200UnresolvedItem[];
+  withoutActivity: GetDayClose200WithoutActivityItem[];
   scores: GetDayClose200Scores;
   explanation: GetDayClose200Explanation;
   totals: GetDayClose200Totals;
@@ -1419,10 +1500,16 @@ export type CloseDay200WeekEssentialsItem = {
   progress: number;
 };
 
+export const CloseDay200ObjectivesItemStatus = {  active: 'active',
+  done: 'done',
+  carried: 'carried',
+  dropped: 'dropped',
+} as const
 export type CloseDay200ObjectivesItem = {
   id: string;
   title: string;
   horizon: string;
+  status: typeof CloseDay200ObjectivesItemStatus[keyof typeof CloseDay200ObjectivesItemStatus];
   parentIds: string[];
 };
 
@@ -2017,6 +2104,64 @@ export type GetCycleClose200UnfinishedItem = {
   version: number;
 };
 
+export const GetCycleClose200RhythmNotMetItemTier = {  essential: 'essential',
+  secondary: 'secondary',
+  parked: 'parked',
+} as const
+export const GetCycleClose200RhythmNotMetItemStatus = {  active: 'active',
+  done: 'done',
+  carried: 'carried',
+  dropped: 'dropped',
+} as const
+export const GetCycleClose200RhythmNotMetItemTargetType = {  count: 'count',
+  duration: 'duration',
+  value: 'value',
+  level: 'level',
+  milestone: 'milestone',
+  composite: 'composite',
+} as const
+export type GetCycleClose200RhythmNotMetItemCheckpoint = {
+  year: number;
+  relevant: boolean;
+  onTrack: boolean;
+  note: string;
+} | null;
+
+export type GetCycleClose200RhythmNotMetItem = {
+  id: string;
+  cycleId: string;
+  horizon: string;
+  startDate: string;
+  endDate: string;
+  title: string;
+  tier: typeof GetCycleClose200RhythmNotMetItemTier[keyof typeof GetCycleClose200RhythmNotMetItemTier];
+  status: typeof GetCycleClose200RhythmNotMetItemStatus[keyof typeof GetCycleClose200RhythmNotMetItemStatus];
+  targetType: typeof GetCycleClose200RhythmNotMetItemTargetType[keyof typeof GetCycleClose200RhythmNotMetItemTargetType];
+  targetCount: number | null;
+  targetMinutes: number | null;
+  unit: string | null;
+  startValue: number | null;
+  targetValue: number | null;
+  isCumulative: boolean;
+  levelScale: string[];
+  targetLevel: string | null;
+  milestoneEntryId: string | null;
+  doneAt: string | null;
+  parentIds: string[];
+  rhythmPeriod: 'week' | 'month' | null;
+  rhythmCount: number | null;
+  rhythmMinutes: number | null;
+  activityIds: string[];
+  childIds: string[];
+  carriedFromObjectiveId: string | null;
+  checkpoint: GetCycleClose200RhythmNotMetItemCheckpoint;
+  orderKey: string;
+  progress: number;
+  current: number | string | null;
+  pace: number;
+  version: number;
+};
+
 export const GetCycleClose200CheckpointsItemTier = {  essential: 'essential',
   secondary: 'secondary',
   parked: 'parked',
@@ -2084,6 +2229,7 @@ export type GetCycleClose200 = {
   objectives: GetCycleClose200ObjectivesItem[];
   closeRequired: GetCycleClose200CloseRequired;
   unfinished: GetCycleClose200UnfinishedItem[];
+  rhythmNotMet: GetCycleClose200RhythmNotMetItem[];
   checkpoints: GetCycleClose200CheckpointsItem[];
 };
 
