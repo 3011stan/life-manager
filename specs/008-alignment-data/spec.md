@@ -4,7 +4,7 @@
 
 **Created**: 2026-11-10
 
-**Status**: Draft — awaiting the owner's approval
+**Status**: Approved by the owner on 2026-11-12
 
 **Input**: The owner's fifth round (2026-11-10): closing a day showed an
 alignment of 9%, and its "Why?" listed "0m of 1h toward objectives" for tasks
@@ -25,8 +25,8 @@ that were done. A read-only diagnosis of two days explained every line.
 
 ## Decisions
 
-★ marks the recommendation. G1–G6 were agreed on 2026-11-10 unless marked
-open.
+★ marks the recommendation. G1–G4 and G7 were agreed on 2026-11-10; G5 and
+G6 on 2026-11-12.
 
 | ID | Question | Options |
 |---|---|---|
@@ -34,8 +34,8 @@ open.
 | G2 | Rhythm goals at a week's close | ★ **A** A rhythm's week goal is never carried: the close lists it as not met and the next week already has its own. Existing duplicates are merged by the fix script (the rhythm's goal stays; links and tasks of the copy move to it). |
 | G3 | Tasks with no activity | ★ **A** A script with a dry run gives activities by title rules kept in a private file (prefix → activity), to past tasks and to the tasks repeating items make; and merges a twin activity into the one goals track (its tasks, templates, and goal links move; the twin is archived). Run like the seed, by the owner. |
 | G4 | Keeping it from coming back | ★ **A** (1) Creating a task with no activity suggests the activity most used by past tasks with the same title prefix (text before ":"), one tap to accept. (2) The day's close says how many done tasks have no activity, each with an activity picker in place. |
-| G5 | Support time in alignment | **Open** ★ **A** Alignment weighs only useful time: support entries (and support segments) leave both sides. **B** Keep weighing all work. |
-| G6 | Client B's hours | **Open** ★ **A** Client B gets its own activity and a weekly template "Client B N h" (duration, N from the owner), so its hours count. **B** Its own activity, no goal: its hours stay outside alignment's credit. |
+| G5 | Support time in alignment | **Agreed: A** Alignment weighs only useful time: support entries (and support segments) leave both sides. ~~B Keep weighing all work.~~ |
+| G6 | Client B's hours | **Resolved without code**: the owner creates client B's activity (Catalog) and its weekly duration template (Templates) in the interface. The title rules then point client B's tasks at that activity. |
 | G7 | The "Why?" lines | ★ **A** "Skipped" for skipped tasks; "1h done · 0m toward goals" for done ones; support entries say "support, not weighed" (with G5 A). |
 
 Agreed with the owner on 2026-11-10: client A's tasks use the main-job
