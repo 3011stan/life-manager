@@ -28,8 +28,8 @@ type DayObjective = Day["objectives"][number];
 
 // An objective and everything above it, nearest first (004 FR-010). A goal
 // may count for several goals above (005 D5); each appears once.
-export function chainOf(objectives: DayObjective[], id: string): DayObjective[] {
-  const chain: DayObjective[] = [];
+export function chainOf<T extends Pick<DayObjective, "id" | "parentIds">>(objectives: T[], id: string): T[] {
+  const chain: T[] = [];
   const queue = [id];
   while (queue.length > 0) {
     const next = queue.shift();
@@ -44,7 +44,7 @@ export function chainOf(objectives: DayObjective[], id: string): DayObjective[] 
 // 007 FR-011: what a task counts for, as paths from the goals it counts for
 // directly (none of their goals below is in the list), each goal drawn once
 // even where paths join above.
-export function countedPaths(objectives: DayObjective[], contributesTo: string[]): DayObjective[][] {
+export function countedPaths<T extends Pick<DayObjective, "id" | "parentIds">>(objectives: T[], contributesTo: string[]): T[][] {
   const chains = new Map(contributesTo.map((id) => [id, chainOf(objectives, id)]));
   const direct = contributesTo.filter((id) => !contributesTo.some((other) => other !== id && chains.get(other)?.some((o) => o.id === id)));
   const drawn = new Set<string>();

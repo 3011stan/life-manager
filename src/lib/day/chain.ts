@@ -19,6 +19,9 @@ interface Linked {
   id: string;
   title: string;
   horizon: string;
+  // 008 FR-001: the day lists goals of any status, so what a task counted for
+  // still shows; pickers offer active goals only.
+  status?: string;
   parentIds: string[];
 }
 
@@ -39,7 +42,7 @@ export interface GoalGroup {
 
 export function goalOptions(goals: Linked[], horizon: string): GoalOption[] {
   return goals
-    .filter((g) => g.horizon === horizon)
+    .filter((g) => g.horizon === horizon && (g.status === undefined || g.status === "active"))
     .map((g) => {
       const above = chainOf(goals, g.id).slice(1);
       return {

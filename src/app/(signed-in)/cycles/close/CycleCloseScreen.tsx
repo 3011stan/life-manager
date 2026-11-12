@@ -95,6 +95,21 @@ export function CycleCloseScreen() {
         </section>
       ) : null}
 
+      {data.rhythmNotMet.length > 0 ? (
+        <section className="stack">
+          <h2>{t("cycleClose.rhythmNotMet")}</h2>
+          <p className="muted">{t("cycleClose.rhythmNotMetHint")}</p>
+          <ul className="check-list">
+            {data.rhythmNotMet.map((o) => (
+              <li key={o.id} className="resolve-row" data-testid="rhythm-not-met">
+                <span className="catalog-item__name">{o.title}</span>
+                <span className="muted">{progressText(o)}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+
       {data.checkpoints.length > 0 ? (
         <section className="stack">
           <h2>{t("cycleClose.checkpoints")}</h2>

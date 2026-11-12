@@ -53,3 +53,16 @@ describe("goal chain in the interface", () => {
     expect(matchGoals([option("b", null)], "", []).groups).toEqual([{ parent: null, options: [option("b", null)] }]);
   });
 });
+
+// 008 FR-001: a closed week's goals stay on the day for "Counts for"; the
+// pickers offer active goals only.
+describe("goals that are no longer active", () => {
+  it("are left out of the picker, with their goals above still on the path", () => {
+    const listed = [
+      { id: "old", title: "Prayer 7×", horizon: "week", status: "done", parentIds: ["m"] },
+      { id: "now", title: "Gym 4×", horizon: "week", status: "active", parentIds: ["m"] },
+      { id: "m", title: "Gym · Nov", horizon: "month", status: "active", parentIds: [] },
+    ];
+    expect(goalOptions(listed, "week").map((o) => o.id)).toEqual(["now"]);
+  });
+});

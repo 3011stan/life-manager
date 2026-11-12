@@ -7,7 +7,7 @@ import { closeOnBackdrop } from "@/components/dialog";
 import { DurationInput } from "@/components/DurationInput";
 import { GoalPicker } from "@/components/GoalPicker";
 import { Check, ChevronDown, Repeat, Trash } from "@/components/icons";
-import { createActivity, getGetCatalogQueryKey } from "@/lib/api/generated/catalog/catalog";
+import { createActivity, getGetCatalogQueryKey, useSuggestActivity } from "@/lib/api/generated/catalog/catalog";
 import type { UpdateEntryBody } from "@/lib/api/generated/lifeManagerAPI.schemas";
 import { createObjective } from "@/lib/api/generated/objectives/objectives";
 import { isPlanningKey } from "@/lib/day/agenda";
@@ -52,6 +52,12 @@ export function EntrySheet({ entry, entries, objectives, catalog, disabled, onCl
 
   const set = <K extends keyof Entry>(key: K, value: Entry[K]) => setForm((f) => ({ ...f, [key]: value }));
   const heading = entry.kind === "heading";
+  // 008 FR-004: a task with no activity is offered the one past tasks with the
+  // same title prefix (the text before ":") used most.
+  const prefix = (form.title.split(":")[0] ?? "").trim();
+  const suggestion = useSuggestActivity({ title: prefix }, { query: { enabled: !heading && form.activityId === null && prefix !== "", staleTime: 60_000 } });
+  const suggestedId = form.activityId === null ? (suggestion.data?.data.activityId ?? null) : null;
+  const suggested = catalog?.activities.find((a) => a.id === suggestedId && !a.archivedAt);
   const done = form.status === "completed";
   const headings = entries.filter((e) => e.kind === "heading");
 
@@ -151,6 +157,13 @@ export function EntrySheet({ entry, entries, objectives, catalog, disabled, onCl
             <>
               <div className="card">
                 <ActivityPicker catalog={catalog} value={form.activityId} disabled={disabled} onChange={(id) => set("activityId", id)} onCreate={create} />
+                {suggested ? (
+                  <p className="activity-suggestion">
+                    <button type="button" className="chip" disabled={disabled} onClick={() => set("activityId", suggested.id)}>
+                      {t("entry.suggestActivity", { name: suggested.name })}
+                    </button>
+                  </p>
+                ) : null}
                 <div className="card__divider" />
                 <div className="card__pair">
                   <label className="card__field">

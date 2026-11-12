@@ -4,9 +4,10 @@ import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import { ActivityPicker } from "@/components/ActivityPicker";
 import { ChevronLeft } from "@/components/icons";
-import { useGetCatalog } from "@/lib/api/generated/catalog/catalog";
-import { closeDay, getGetDayCloseQueryKey, getGetDayQueryKey, updateEntry, useGetDayClose } from "@/lib/api/generated/days/days";
+import { createActivity, getGetCatalogQueryKey, useGetCatalog } from "@/lib/api/generated/catalog/catalog";
+import { closeDay, getGetDayCloseQueryKey, getGetDayQueryKey, updateEntry, useGetDay, useGetDayClose } from "@/lib/api/generated/days/days";
 import { addDays, formatMinutes, isDate } from "@/lib/day/dates";
 import type { Activity } from "@/lib/day/types";
 import { formatDate, useI18n } from "@/lib/i18n";
@@ -30,6 +31,7 @@ export function CloseScreen() {
   const date = isDate(params.get("date")) ? (params.get("date") ?? "") : "";
   const preview = useGetDayClose(date, { query: { enabled: date !== "" } });
   const catalog = useGetCatalog();
+  const day = useGetDay(date, { query: { enabled: date !== "" } });
   const [decisions, setDecisions] = useState<Record<string, { decision: Decision; title: string; minutes: number }>>({});
   const [checkIn, setCheckIn] = useState<Record<CheckInKey, number | null>>({ physicalEnergy: null, mentalEnergy: null, emotionalEnergy: null, satisfaction: null });
   const [notes, setNotes] = useState("");
@@ -48,9 +50,34 @@ export function CloseScreen() {
     return entry.activityId ? (activities.get(entry.activityId)?.name ?? entry.title) : entry.title;
   };
   const refresh = () => queryClient.invalidateQueries({ queryKey: getGetDayCloseQueryKey(date) });
+  const statusOf = (id: string) => day.data?.data.entries.find((x) => x.id === id)?.status;
+
+  // 008 G7: each line says what the task weighed and what reached a goal.
+  function alignmentLine(l: { entryId: string; minutes: number; credited: number; support: boolean }): string {
+    const title = nameOf(l.entryId);
+    if (statusOf(l.entryId) === "skipped") return t("close.alignmentSkipped", { title });
+    if (l.support) return t("close.alignmentSupport", { title });
+    return t("close.alignmentLine", { title, done: formatMinutes(l.minutes), credited: formatMinutes(l.credited) });
+  }
+
+  // 008 FR-004: a done task with no activity gets one in place.
+  async function giveActivity(id: string, activityId: string | null) {
+    if (!activityId) return;
+    await updateEntry(id, { activityId });
+    await queryClient.invalidateQueries({ queryKey: getGetDayQueryKey(date) });
+    await refresh();
+  }
+
+  async function createAndGive(name: string, areaId: string): Promise<string> {
+    const id = crypto.randomUUID();
+    await createActivity({ id, name, areaId });
+    await queryClient.invalidateQueries({ queryKey: getGetCatalogQueryKey() });
+    return id;
+  }
 
   async function resolve(id: string, status: "completed" | "skipped" | "cancelled") {
     await updateEntry(id, { status });
+    await queryClient.invalidateQueries({ queryKey: getGetDayQueryKey(date) });
     await refresh();
   }
 
@@ -108,6 +135,27 @@ export function CloseScreen() {
         </section>
       ) : (
         <>
+          {data.withoutActivity.length > 0 ? (
+            <section className="stack" aria-labelledby="without-activity">
+              <h2 id="without-activity">{t("close.withoutActivity", { count: data.withoutActivity.length })}</h2>
+              <p className="muted">{t("close.withoutActivityHint")}</p>
+              <ul className="check-list">
+                {data.withoutActivity.map((e) => (
+                  <li key={e.id} className="stack" data-testid="without-activity">
+                    <span className="catalog-item__name">{e.title}</span>
+                    <ActivityPicker
+                      catalog={catalog.data?.data}
+                      value={null}
+                      disabled={readOnly}
+                      onChange={(id) => void giveActivity(e.id, id)}
+                      onCreate={createAndGive}
+                    />
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ) : null}
+
           <section className="stack">
             <h2>{t("close.scores")}</h2>
             <ScoreLine label={t("close.execution")} value={data.scores.execution} empty={t("close.noPlanned")}>
@@ -119,9 +167,7 @@ export function CloseScreen() {
             </ScoreLine>
             <ScoreLine label={t("close.alignment")} value={data.scores.alignment} empty={t("close.noWork")}>
               {data.explanation.alignment.map((l) => (
-                <li key={l.entryId}>
-                  {t("close.alignmentLine", { title: nameOf(l.entryId), credited: formatMinutes(l.credited), minutes: formatMinutes(l.minutes) })}
-                </li>
+                <li key={l.entryId}>{alignmentLine(l)}</li>
               ))}
             </ScoreLine>
           </section>
