@@ -31,6 +31,6 @@ the interface, before the fix-data run so a title rule can name it.
 
 ## Phase 5: Release
 
-- [ ] T011 Local e2e green (98/98, 2026-11-12), CI green, staging (web first, then backend) — staging waits for the owner's go
-- [ ] T012 The owner reads the fix-data dry run and runs it
-- [ ] T013 Verification report
+- [x] T011 Local e2e green (98/98, 2026-11-12), CI green, staging (web first, then backend); staging web 38fba07, API bba7caa (2026-11-12)
+- [x] T012 The owner reads the fix-data dry run and runs it
+- [x] T013 Verification report
