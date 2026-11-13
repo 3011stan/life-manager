@@ -27,7 +27,7 @@
 
 - [x] T010 [US4] Tests then `backend/scripts/fix-chain.ts` with `--dry-run`, idempotent
 - [x] T011 [US4] The owner names the missing long-horizon goals; update the private seed file (never committed) — done by the owner and the coordinator, 2026-10-28
-- [ ] T012 [US4] The owner reads the dry run and runs the script on staging
+- [x] T012 [US4] The owner reads the dry run and runs the script on staging
 
 ## Phase 5: Release
 
@@ -43,11 +43,11 @@
 - [x] T019 [F4] Activity field label and hints, en and pt-BR; e2e
 - [x] T020 [F5] Unit tests then grouped matches and "+N more"; `GoalPicker`; e2e and axe light and dark
 - [x] T021 Local e2e green, CI green on both branches; verification report
-- [ ] T022 Staging (after the owner's go-ahead), then the owner's new dry run and run (T012)
+- [x] T022 Staging (after the owner's go-ahead), then the owner's new dry run and run (T012)
 
 ## 007c — follow-up (2026-11-09)
 
 - [x] T023 [F6] Integration tests then fix-chain (f): only links the app added are removed
 - [x] T024 [F7] Integration tests then the chain reuses goals of closed periods
 - [x] T025 Tests and CI green on both branches; verification report
-- [ ] T026 Staging, then the owner's new dry run and run (T012)
+- [x] T026 Staging, then the owner's new dry run and run (T012)

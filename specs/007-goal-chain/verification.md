@@ -117,3 +117,10 @@ Runs:
 - Local e2e on a fresh stack with 2 workers: the first full run had 1 failure
   (the a11y dark spec waiting for a screen, the same one as in 007b); then two
   full runs back to back: 94 passed, 6 skipped, 0 failed.
+
+## Data on staging (2026-11-12)
+
+The owner ran fix-chain on staging after a backup: 15 goals made, 21 relinked,
+1 task moved, 2 links dropped, 4 goals removed (all made toward measured goals),
+0 needing a choice, 0 still skipping a level. The confirmation dry run reported
+0 changes.
