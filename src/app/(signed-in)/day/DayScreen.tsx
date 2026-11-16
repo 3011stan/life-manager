@@ -209,7 +209,8 @@ export function DayScreen() {
             ) : null}
             <CopyDialog
               date={date}
-              present={new Set(data.entries.flatMap((e) => [e.carriedFromEntryId, e.copiedFromEntryId]).filter((id): id is string => id !== null))}
+              present={new Set(data.copySources)}
+              current={data.entries.filter((e) => e.kind === "item")}
               disabled={readOnly} onCopy={(fromDate, entryIds) => mutations.copy.mutateAsync({ fromDate, entryIds }).then(() => undefined, report)} />
           </div>
 

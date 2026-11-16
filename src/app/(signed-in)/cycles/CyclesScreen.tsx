@@ -31,6 +31,14 @@ export function cycleName(view: Pick<CycleView, "horizon" | "startDate" | "endDa
   }
 }
 
+// 009 G5: each tab reopens the period last viewed in it while the app is open;
+// a reload starts again from the current period.
+const lastViewed = new Map<CycleHorizon, string>();
+
+export function tabDate(horizon: CycleHorizon): string {
+  return lastViewed.get(horizon) ?? "current";
+}
+
 // US6, US7: objectives of one cycle, grouped by tier, with progress and pace.
 export function CyclesScreen() {
   const { t, locale } = useI18n();
@@ -47,6 +55,10 @@ export function CyclesScreen() {
   const go = (h: CycleHorizon, d: string) => router.push(`/cycles?h=${h}&date=${d}`);
   const refresh = () => queryClient.invalidateQueries({ queryKey: getGetCycleQueryKey(horizon, date) });
 
+  useEffect(() => {
+    if (view) lastViewed.set(horizon, view.startDate);
+  }, [horizon, view]);
+
   // 005 D7: opening a week or a month creates its rhythm goals once.
   const applied = useRef<string>(undefined);
   useEffect(() => {
@@ -58,6 +70,7 @@ export function CyclesScreen() {
     // week then gets its agenda items' tasks and goals (006 FR-004).
     void applyRhythms(horizon, view.startDate, {})
       .then(() => (horizon === "week" ? applyEvents(view.startDate, {}) : undefined))
+      .then(() => queryClient.invalidateQueries({ queryKey: getGetTemplateProposalsQueryKey(view.startDate) }))
       .then(refresh, () => undefined);
   });
 
@@ -65,7 +78,7 @@ export function CyclesScreen() {
     <section className="day">
       <nav className="tabs" aria-label={t("cycles.title")}>
         {HORIZONS.map((h) => (
-          <button key={h} type="button" aria-pressed={h === horizon} className={h === horizon ? "tab tab--active" : "tab"} onClick={() => go(h, view?.startDate ?? "current")}>
+          <button key={h} type="button" aria-pressed={h === horizon} className={h === horizon ? "tab tab--active" : "tab"} onClick={() => go(h, h === horizon ? (view?.startDate ?? "current") : tabDate(h))}>
             {t(`horizon.${h}`)}
           </button>
         ))}
@@ -168,7 +181,9 @@ function Proposals({ date, disabled, onApplied }: { date: string; disabled: bool
   const queryClient = useQueryClient();
   const proposals = useGetTemplateProposals(date);
   const items = proposals.data?.data.templates ?? [];
-  if (items.length === 0) return null;
+  // 009 G3: a template for something the week already has a goal for.
+  const covered = proposals.data?.data.covered ?? [];
+  if (items.length === 0 && covered.length === 0) return null;
 
   async function decide(templateId: string, accept: boolean) {
     await applyTemplates(date, accept ? { accept: [{ templateId, objectiveId: crypto.randomUUID() }], skip: [] } : { accept: [], skip: [templateId] });
@@ -189,6 +204,12 @@ function Proposals({ date, disabled, onApplied }: { date: string; disabled: bool
             <button type="button" className="ghost-button" disabled={disabled} onClick={() => void decide(tpl.id, false)}>
               {t("cycles.skip")}
             </button>
+          </li>
+        ))}
+        {covered.map((c) => (
+          <li key={c.template.id} className="resolve-row" data-testid="covered">
+            <span className="catalog-item__name">{c.template.title}</span>
+            <span className="muted small">{t("cycles.covered", { title: c.objectiveTitle })}</span>
           </li>
         ))}
       </ul>

@@ -8,6 +8,7 @@ import { addMeasurement, createObjective, deleteObjective, updateObjective, useG
 import { ApiError } from "@/lib/api/mutator";
 import { goalOptions, nextHorizon, skipsLevel } from "@/lib/day/chain";
 import { addDays, todayIn, deviceTimeZone } from "@/lib/day/dates";
+import { sameThing } from "@/lib/day/goals";
 import { chainOf } from "@/lib/day/groups";
 import { progressText } from "@/lib/day/objectives";
 import { type CycleHorizon, type Objective } from "@/lib/day/types";
@@ -64,6 +65,8 @@ export function ObjectiveSheet({ horizon, startDate, objective, preset, disabled
   const [showMore, setShowMore] = useState(MORE.includes(form.targetType));
   const [measure, setMeasure] = useState("");
   const [error, setError] = useState<string>();
+  // 009 G9: a goal of this period that looks like the one being created.
+  const [similar, setSimilar] = useState<Objective>();
 
   useEffect(() => {
     dialog.current?.showModal();
@@ -137,11 +140,22 @@ export function ObjectiveSheet({ horizon, startDate, objective, preset, disabled
     }
   }
 
-  const save = () =>
-    run(() => {
+  const save = (confirmed = false) => {
+    if (!objective && !confirmed) {
+      const alike = goals.find(
+        (o) => o.horizon === horizon && o.startDate === startDate && sameThing(o, { title: form.title, activityIds: form.activityIds }),
+      );
+      if (alike) {
+        setSimilar(alike);
+        return Promise.resolve();
+      }
+    }
+    setSimilar(undefined);
+    return run(() => {
       if (objective) return updateObjective(objective.id, fields());
       return createObjective(horizon, startDate, { id: crypto.randomUUID(), targetType: form.targetType, ...fields() });
     });
+  };
 
   const record = () =>
     objective &&
@@ -359,6 +373,19 @@ export function ObjectiveSheet({ horizon, startDate, objective, preset, disabled
             <p role="alert" className="notice notice--error">
               {error}
             </p>
+          ) : null}
+          {similar ? (
+            <div role="alertdialog" aria-labelledby="similar-goal" className="notice stack" data-testid="similar-goal">
+              <p id="similar-goal">{t("objective.similar", { title: similar.title })}</p>
+              <div className="button-row">
+                <button type="button" className="ghost-button" onClick={() => setSimilar(undefined)}>
+                  {t("common.cancel")}
+                </button>
+                <button type="button" className="primary-button" onClick={() => void save(true)}>
+                  {t("objective.createAnyway")}
+                </button>
+              </div>
+            </div>
           ) : null}
           <div className="button-row sheet__actions">
             {objective ? (

@@ -61,7 +61,15 @@ test("a weekly objective counts done entries of its activity and carries at the 
   await page.goto(`/cycles?h=week&date=${week}`);
   await expect(page.getByTestId("objective-row").filter({ hasText: "Practice 3×" })).toContainText("1 / 3");
 
+  // 009 G4: the day with the task closes first; the week's close links to it.
   await page.getByRole("link", { name: "Close the cycle" }).click();
+  await expect(page.getByRole("button", { name: "Close the cycle" })).toBeDisabled();
+  await page.getByTestId("open-inside").getByRole("link").click();
+  await page.getByRole("button", { name: "Close the day" }).click();
+  await page.waitForURL((url) => !url.pathname.startsWith("/day/close"));
+  await page.goto(`/cycles/close?h=week&date=${week}`);
+  await expect(page.getByTestId("unfinished").filter({ hasText: "Practice 3×" })).toBeVisible();
+  await expect(page.getByTestId("open-inside")).toHaveCount(0);
   await page.getByTestId("unfinished").filter({ hasText: "Practice 3×" }).getByRole("button", { name: "Carry" }).click();
   await page.getByRole("button", { name: "Close the cycle" }).click();
   await expect(page.getByText("Closed")).toBeVisible();

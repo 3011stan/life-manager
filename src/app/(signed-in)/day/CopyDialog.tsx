@@ -11,13 +11,23 @@ import { closeOnBackdrop } from "@/components/dialog";
 // recurrence exists.
 interface Props {
   date: string;
-  // Source entries this day already received by carry or copy (004 FR-003).
+  // Tasks this day already holds copies of, any number of copies back (004
+  // FR-003, 009 G6): locked.
   present: Set<string>;
+  // This day's tasks: one with the same title and activity starts unselected
+  // but can be chosen (009 G6).
+  current: Pick<Entry, "title" | "activityId">[];
   disabled: boolean;
   onCopy: (fromDate: string, ids: string[]) => Promise<void>;
 }
 
-export function CopyDialog({ date, present, disabled, onCopy }: Props) {
+const fold = (title: string) => title.trim().toLowerCase();
+
+export function sameAsCurrent(e: Pick<Entry, "title" | "activityId">, current: Pick<Entry, "title" | "activityId">[]): boolean {
+  return current.some((c) => fold(c.title) === fold(e.title) && c.activityId === e.activityId);
+}
+
+export function CopyDialog({ date, present, current, disabled, onCopy }: Props) {
   const t = useT();
   const dialog = useRef<HTMLDialogElement>(null);
   const [fromDate, setFromDate] = useState(addDays(date, -1));
@@ -28,7 +38,7 @@ export function CopyDialog({ date, present, disabled, onCopy }: Props) {
     setFromDate(target);
     const res = await getDay(target);
     setEntries(res.data.entries);
-    setChosen(new Set(res.data.entries.map((e) => e.id).filter((id) => !present.has(id))));
+    setChosen(new Set(res.data.entries.filter((e) => !present.has(e.id) && !sameAsCurrent(e, current)).map((e) => e.id)));
   }
 
   function open() {
@@ -69,7 +79,11 @@ export function CopyDialog({ date, present, disabled, onCopy }: Props) {
                     }
                   />
                   {e.title}
-                  {present.has(e.id) ? <span className="muted small"> · {t("day.copyPresent")}</span> : null}
+                  {present.has(e.id) ? (
+                    <span className="muted small"> · {t("day.copyPresent")}</span>
+                  ) : sameAsCurrent(e, current) ? (
+                    <span className="muted small"> · {t("day.copySame")}</span>
+                  ) : null}
                 </label>
               </li>
             ))}

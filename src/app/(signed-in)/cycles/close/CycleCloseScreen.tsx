@@ -6,12 +6,29 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { ChevronLeft } from "@/components/icons";
 import { closeCycle, getGetCycleQueryKey, useGetCycleClose } from "@/lib/api/generated/objectives/objectives";
-import { isDate } from "@/lib/day/dates";
+import { addDays, isDate } from "@/lib/day/dates";
 import { progressText } from "@/lib/day/objectives";
 import { HORIZONS, type CycleHorizon } from "@/lib/day/types";
-import { useI18n } from "@/lib/i18n";
+import { formatDate, useI18n } from "@/lib/i18n";
 import { useConnectivity } from "@/lib/offline/use-connectivity";
 import { cycleName } from "../CyclesScreen";
+
+// The last day of a period that starts at `start`.
+function endOf(horizon: CycleHorizon, start: string): string {
+  const year = Number(start.slice(0, 4));
+  switch (horizon) {
+    case "week":
+      return addDays(start, 6);
+    case "month": {
+      const month = Number(start.slice(5, 7));
+      return addDays(month === 12 ? `${String(year + 1)}-01-01` : `${String(year)}-${String(month + 1).padStart(2, "0")}-01`, -1);
+    }
+    case "year":
+      return `${String(year)}-12-31`;
+    default:
+      return `${String(year + ({ y5: 5, y10: 10, y15: 15, y20: 20 }[horizon] ?? 1) - 1)}-12-31`;
+  }
+}
 
 // FR-038, FR-040: final progress, carry or drop each unfinished objective,
 // long-horizon checkpoints at the annual close, notes.
@@ -33,6 +50,8 @@ export function CycleCloseScreen() {
   const data = preview.data?.data;
   if (!data) return <p>{t("common.loading")}</p>;
   const undecided = data.unfinished.some((o) => !decisions[o.id]);
+  // 009 G4: the periods inside close first.
+  const blocked = data.openInside.length > 0;
 
   async function submit() {
     if (!data) return;
@@ -58,6 +77,26 @@ export function CycleCloseScreen() {
         <ChevronLeft size={16} /> {t(`horizon.${horizon}`)}
       </Link>
       <h1>{t("cycleClose.title", { name: cycleName(data, locale, t) })}</h1>
+
+      {blocked ? (
+        <section className="stack notice" role="status" data-testid="open-inside">
+          <h2>{t("cycleClose.openInside")}</h2>
+          <ul className="check-list">
+            {data.openInside.map((p) => (
+              <li key={`${p.horizon}:${p.startDate}`}>
+                <Link
+                  className="link-button"
+                  href={p.horizon === "day" ? `/day/close?date=${p.startDate}` : `/cycles/close?h=${p.horizon}&date=${p.startDate}`}
+                >
+                  {p.horizon === "day"
+                    ? formatDate(locale, p.startDate, { weekday: "short", day: "numeric", month: "short" })
+                    : cycleName({ horizon: p.horizon as CycleHorizon, startDate: p.startDate, endDate: endOf(p.horizon as CycleHorizon, p.startDate) }, locale, t)}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       <section className="stack">
         <h2>{t("cycleClose.final")}</h2>
@@ -95,13 +134,13 @@ export function CycleCloseScreen() {
         </section>
       ) : null}
 
-      {data.rhythmNotMet.length > 0 ? (
+      {data.renews.length > 0 ? (
         <section className="stack">
-          <h2>{t("cycleClose.rhythmNotMet")}</h2>
-          <p className="muted">{t("cycleClose.rhythmNotMetHint")}</p>
+          <h2>{t("cycleClose.renews")}</h2>
+          <p className="muted">{t("cycleClose.renewsHint")}</p>
           <ul className="check-list">
-            {data.rhythmNotMet.map((o) => (
-              <li key={o.id} className="resolve-row" data-testid="rhythm-not-met">
+            {data.renews.map((o) => (
+              <li key={o.id} className="resolve-row" data-testid="renews">
                 <span className="catalog-item__name">{o.title}</span>
                 <span className="muted">{progressText(o)}</span>
               </li>
@@ -143,7 +182,7 @@ export function CycleCloseScreen() {
           {t("cycleClose.failed")}
         </p>
       ) : null}
-      <button type="button" className="primary-button" disabled={readOnly || busy || undecided} onClick={() => void submit()}>
+      <button type="button" className="primary-button" disabled={readOnly || busy || undecided || blocked} onClick={() => void submit()}>
         {busy ? t("close.closing") : t("cycleClose.submit")}
       </button>
     </section>
