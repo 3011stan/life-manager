@@ -4,7 +4,7 @@
 
 **Created**: 2026-11-15
 
-**Status**: Draft — awaiting the owner's approval
+**Status**: Approved by the owner on 2026-11-15
 
 **Input**: The owner's sixth round (2026-11-15), seven points: duplicated goals
 after a month's and a week's close, a month closed while one of its weeks was
@@ -27,18 +27,23 @@ line, the copy dialog's "already on this day" filter, and a missing tab icon.
 
 ## Decisions
 
-★ marks the recommendation.
+Agreed with the owner on 2026-11-15.
 
-| ID | Question | Options |
-|---|---|---|
-| G1 | Which goals a close offers to carry | ★ **A** Only goals the person made (by hand). Goals a rhythm, a template, or the chain made renew in the next period on their own: the close lists them as "renews next period" and sets the unmet ones not met. **B** Offer all and rely on G2 to avoid duplicates. |
-| G2 | A carry when the next period already has that goal | ★ **A** The carry joins the goal already there (same activities, or with no activity the same title without its period label): no new goal; links above are added to it. **B** Always make a new goal (today). |
-| G3 | A rhythm and a template for the same activity in a week | ★ **A** One goal per activity and week: the rhythm's goal is made first when the week opens; a template whose activity already has a goal that week is shown as "already in this week" and not proposed; a rhythm reuses a goal of its activity already in the week. **B** Allow both. |
-| G4 | When a period can close | ★ **A** Only when every period inside it that has something (a day with tasks; a week, month, or year with goals or with an open period inside) is closed. The close screen lists what is still open, each a link. Weeks belong to the month of their fourth day; long horizons (5, 10, 15 years) need their years closed. **B** Also require empty periods to be closed. **C** Warn but allow. |
-| G5 | What a tab opens | ★ **A** Each tab reopens the period last viewed in that tab during the session; the first time, the current period. **B** The period of that tab that holds today. |
-| G6 | "Already on this day" | ★ **A** A task counts as already on the day when this day has a copy of it (any number of copies back) or a task with the same title (ignoring case) and the same activity; those start unselected. Copies stay locked as today; same-title tasks can still be selected. **B** Copies only. |
-| G7 | Tab icon | ★ **A** A simple mark in the app's accent color for light and dark tabs, a touch icon, and a web manifest (name, icons, colors). **B** A favicon only. |
-| G8 | Existing duplicates | ★ **A** A new step in the owner-run data script (dry run first, idempotent): in each week and month, goals tracking the same activities merge into one (kept: the rhythm's, then the template's, then the oldest); with no activity, a carried chain goal merges into the chain goal of the same goal above. Its tasks, links, and measurements move. Other look-alikes are listed, not merged. **B** The owner merges by hand. |
+| ID | Decision |
+|---|---|
+| G1 | A close offers to carry only goals made by hand. A carried goal has the origin of the first goal of its carries (a copy of a copy of a template's goal is a template's goal). Goals a rhythm, a template, the chain, or the agenda made are listed as "Renews next period"; the unmet ones end not met. |
+| G2 | When the next period already has the same goal, a carry copies nothing; the old goal ends in its own period. "Same goal": the same activities when both track some; otherwise the same title without case, a trailing amount ("6×", "4h"), or a period label (" · Nov"). A different target does not matter: the goal already there stays. |
+| G3 | Never two goals for the same thing (the G2 rule) in one period. A year goal's rhythm and a weekly template never both make one: the rhythm wins; when its goal tracks no activity it takes the template's, so tasks keep counting. The template makes nothing that week and shows "already in this week". A rhythm, a carry, or the chain uses a goal of the same thing already in the period instead of making one. |
+| G4 | A period closes only when every period inside it that has something is closed: days with tasks; weeks, months, and years with goals or with an open period inside. A week belongs to the month of its fourth day; long horizons need their years closed. The close screen lists what is still open, each a link. Editing a day of a closed week reopens the day only, as before. A month already closed with a week open stays as it is. |
+| G5 | Each tab reopens the period last viewed in it while the app is open; the first time, and after a reload, the current period. |
+| G6 | "Already on this day" covers copies of copies (locked, as before) and tasks with the same title and activity (unselected but selectable), for any day picked. |
+| G7 | A simple mark in the app's accent color for light and dark tabs, a touch icon, and a web manifest. |
+| G8 | Existing duplicates are merged once, by a database migration that runs with the deploy (the owner downloads a backup first). In each week and month, goals for the same thing (G2 rule) become one: the rhythm's, then the template's, then the oldest is kept; it takes the others' activities, tasks, links above and below, measurements, and agenda and chain bookkeeping, and the largest target with its title. Goals alike only in part of their titles stay. |
+| G9 | Creating a goal by hand when the period already has one for the same thing (G2 rule) asks "A similar goal already exists in this period: X. Create anyway?" (Create / Cancel). A template for such a thing is already not proposed (G3). No looser word matching. |
+
+Kept by the owner's choice: maintenance goals stay goals, their time still
+weighs in alignment, and a month goal may track several activities (a week
+goal of one of them then counts for both goals above).
 
 ## User Stories
 
@@ -82,10 +87,16 @@ line, the copy dialog's "already on this day" filter, and a missing tab icon.
 ### US5 — The existing duplicates are gone (P1)
 
 **Acceptance**:
-1. The dry run lists every merge and every look-alike left for the owner (G8).
-2. After the run, each week and month has one goal per activity, with its
-   tasks and links.
-3. A second run changes nothing.
+1. After the deploy's migration, each week and month has one goal per thing,
+   with its tasks and links, and the largest target (G8).
+2. Goals alike only in part of their titles stay.
+3. Running the migration again changes nothing.
+
+### US6 — A possible duplicate is asked about (P2)
+
+**Acceptance**:
+1. Creating a goal by hand like one the period has asks first; Cancel makes
+   nothing, Create makes it (G9).
 
 ## Requirements
 
@@ -96,7 +107,8 @@ line, the copy dialog's "already on this day" filter, and a missing tab icon.
 - **FR-005** Each horizon tab remembers its last period for the session (G5).
 - **FR-006** The copy dialog's "already on this day" covers older copies and same title and activity (G6).
 - **FR-007** Tab icon, touch icon, and web manifest (G7).
-- **FR-008** The data script merges existing duplicates, with a dry run (G8).
+- **FR-008** A one-time migration merges existing duplicates (G8).
+- **FR-010** Creating a goal like one of its period asks first (G9).
 - **FR-009** Every screen keeps passing axe in light and dark.
 
 ## Success Criteria
@@ -112,4 +124,4 @@ line, the copy dialog's "already on this day" filter, and a missing tab icon.
 Reopening a closed month when one of its weeks is closed later (the owner can
 close the open week now; the month stays closed); renaming goals made before
 this round, other than through a merge; changing the rule that a week belongs
-to the month of its fourth day.
+to the month of its fourth day; matching goals by similar words.
