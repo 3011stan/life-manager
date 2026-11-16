@@ -33,5 +33,5 @@
 ## Phase 5: Release
 
 - [x] T012 Local e2e green, CI green, staging (web first, then backend; the migration runs with the deploy)
-- [ ] T013 The owner runs the read-only listing once more to confirm
+- [x] T013 The owner runs the read-only listing once more to confirm
 - [x] T014 Verification report

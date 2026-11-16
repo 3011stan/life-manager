@@ -26,4 +26,4 @@ tests); web tests are in this repository (`src/lib/day/goals.test.ts`,
   deploy job first failed at checkout ("Repository not found", a GitHub
   error before any migration ran) and passed on rerun, with migration 0017.
 - Staging: web `d45f16a`, API `a99a4e7`, health ok.
-- Data: pending the owner's read-only listing (T013).
+- Data: the owner's read-only listing after the deploy found 0 groups of goals that look alike (8 before).
