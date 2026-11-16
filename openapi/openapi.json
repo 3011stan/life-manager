@@ -2273,6 +2273,7 @@
                     "scores",
                     "closeRequired",
                     "weekEssentials",
+                    "copySources",
                     "objectives"
                   ],
                   "properties": {
@@ -2764,6 +2765,12 @@
                             "type": "number"
                           }
                         }
+                      }
+                    },
+                    "copySources": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
                       }
                     },
                     "objectives": {
@@ -2974,6 +2981,7 @@
                     "scores",
                     "closeRequired",
                     "weekEssentials",
+                    "copySources",
                     "objectives"
                   ],
                   "properties": {
@@ -3465,6 +3473,12 @@
                             "type": "number"
                           }
                         }
+                      }
+                    },
+                    "copySources": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
                       }
                     },
                     "objectives": {
@@ -6282,6 +6296,7 @@
                     "scores",
                     "closeRequired",
                     "weekEssentials",
+                    "copySources",
                     "objectives"
                   ],
                   "properties": {
@@ -6773,6 +6788,12 @@
                             "type": "number"
                           }
                         }
+                      }
+                    },
+                    "copySources": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
                       }
                     },
                     "objectives": {
@@ -9903,7 +9924,8 @@
                     "objectives",
                     "closeRequired",
                     "unfinished",
-                    "rhythmNotMet",
+                    "renews",
+                    "openInside",
                     "checkpoints"
                   ],
                   "properties": {
@@ -10721,7 +10743,7 @@
                         }
                       }
                     },
-                    "rhythmNotMet": {
+                    "renews": {
                       "type": "array",
                       "items": {
                         "type": "object",
@@ -11082,6 +11104,24 @@
                           },
                           "version": {
                             "type": "integer"
+                          }
+                        }
+                      }
+                    },
+                    "openInside": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "horizon",
+                          "startDate"
+                        ],
+                        "properties": {
+                          "horizon": {
+                            "type": "string"
+                          },
+                          "startDate": {
+                            "type": "string"
                           }
                         }
                       }
@@ -13648,7 +13688,8 @@
                   "type": "object",
                   "required": [
                     "startDate",
-                    "templates"
+                    "templates",
+                    "covered"
                   ],
                   "properties": {
                     "startDate": {
@@ -13756,6 +13797,128 @@
                           },
                           "version": {
                             "type": "integer"
+                          }
+                        }
+                      }
+                    },
+                    "covered": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "template",
+                          "objectiveId",
+                          "objectiveTitle"
+                        ],
+                        "properties": {
+                          "template": {
+                            "type": "object",
+                            "required": [
+                              "id",
+                              "title",
+                              "tier",
+                              "targetType",
+                              "targetCount",
+                              "targetMinutes",
+                              "activityIds",
+                              "orderKey",
+                              "archivedAt",
+                              "version"
+                            ],
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "title": {
+                                "type": "string"
+                              },
+                              "tier": {
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "essential"
+                                    ]
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "secondary"
+                                    ]
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "parked"
+                                    ]
+                                  }
+                                ]
+                              },
+                              "targetType": {
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "count"
+                                    ]
+                                  },
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "duration"
+                                    ]
+                                  }
+                                ]
+                              },
+                              "targetCount": {
+                                "anyOf": [
+                                  {
+                                    "type": "integer"
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ]
+                              },
+                              "targetMinutes": {
+                                "anyOf": [
+                                  {
+                                    "type": "integer"
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ]
+                              },
+                              "activityIds": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "orderKey": {
+                                "type": "string"
+                              },
+                              "archivedAt": {
+                                "anyOf": [
+                                  {
+                                    "type": "string"
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ]
+                              },
+                              "version": {
+                                "type": "integer"
+                              }
+                            }
+                          },
+                          "objectiveId": {
+                            "type": "string"
+                          },
+                          "objectiveTitle": {
+                            "type": "string"
                           }
                         }
                       }

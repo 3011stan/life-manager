@@ -646,6 +646,7 @@ export type GetDay200 = {
   scores: GetDay200Scores;
   closeRequired: GetDay200CloseRequired;
   weekEssentials: GetDay200WeekEssentialsItem[];
+  copySources: string[];
   objectives: GetDay200ObjectivesItem[];
 };
 
@@ -789,6 +790,7 @@ export type UpdateDay200 = {
   scores: UpdateDay200Scores;
   closeRequired: UpdateDay200CloseRequired;
   weekEssentials: UpdateDay200WeekEssentialsItem[];
+  copySources: string[];
   objectives: UpdateDay200ObjectivesItem[];
 };
 
@@ -1523,6 +1525,7 @@ export type CloseDay200 = {
   scores: CloseDay200Scores;
   closeRequired: CloseDay200CloseRequired;
   weekEssentials: CloseDay200WeekEssentialsItem[];
+  copySources: string[];
   objectives: CloseDay200ObjectivesItem[];
 };
 
@@ -2104,39 +2107,39 @@ export type GetCycleClose200UnfinishedItem = {
   version: number;
 };
 
-export const GetCycleClose200RhythmNotMetItemTier = {  essential: 'essential',
+export const GetCycleClose200RenewsItemTier = {  essential: 'essential',
   secondary: 'secondary',
   parked: 'parked',
 } as const
-export const GetCycleClose200RhythmNotMetItemStatus = {  active: 'active',
+export const GetCycleClose200RenewsItemStatus = {  active: 'active',
   done: 'done',
   carried: 'carried',
   dropped: 'dropped',
 } as const
-export const GetCycleClose200RhythmNotMetItemTargetType = {  count: 'count',
+export const GetCycleClose200RenewsItemTargetType = {  count: 'count',
   duration: 'duration',
   value: 'value',
   level: 'level',
   milestone: 'milestone',
   composite: 'composite',
 } as const
-export type GetCycleClose200RhythmNotMetItemCheckpoint = {
+export type GetCycleClose200RenewsItemCheckpoint = {
   year: number;
   relevant: boolean;
   onTrack: boolean;
   note: string;
 } | null;
 
-export type GetCycleClose200RhythmNotMetItem = {
+export type GetCycleClose200RenewsItem = {
   id: string;
   cycleId: string;
   horizon: string;
   startDate: string;
   endDate: string;
   title: string;
-  tier: typeof GetCycleClose200RhythmNotMetItemTier[keyof typeof GetCycleClose200RhythmNotMetItemTier];
-  status: typeof GetCycleClose200RhythmNotMetItemStatus[keyof typeof GetCycleClose200RhythmNotMetItemStatus];
-  targetType: typeof GetCycleClose200RhythmNotMetItemTargetType[keyof typeof GetCycleClose200RhythmNotMetItemTargetType];
+  tier: typeof GetCycleClose200RenewsItemTier[keyof typeof GetCycleClose200RenewsItemTier];
+  status: typeof GetCycleClose200RenewsItemStatus[keyof typeof GetCycleClose200RenewsItemStatus];
+  targetType: typeof GetCycleClose200RenewsItemTargetType[keyof typeof GetCycleClose200RenewsItemTargetType];
   targetCount: number | null;
   targetMinutes: number | null;
   unit: string | null;
@@ -2154,12 +2157,17 @@ export type GetCycleClose200RhythmNotMetItem = {
   activityIds: string[];
   childIds: string[];
   carriedFromObjectiveId: string | null;
-  checkpoint: GetCycleClose200RhythmNotMetItemCheckpoint;
+  checkpoint: GetCycleClose200RenewsItemCheckpoint;
   orderKey: string;
   progress: number;
   current: number | string | null;
   pace: number;
   version: number;
+};
+
+export type GetCycleClose200OpenInsideItem = {
+  horizon: string;
+  startDate: string;
 };
 
 export const GetCycleClose200CheckpointsItemTier = {  essential: 'essential',
@@ -2229,7 +2237,8 @@ export type GetCycleClose200 = {
   objectives: GetCycleClose200ObjectivesItem[];
   closeRequired: GetCycleClose200CloseRequired;
   unfinished: GetCycleClose200UnfinishedItem[];
-  rhythmNotMet: GetCycleClose200RhythmNotMetItem[];
+  renews: GetCycleClose200RenewsItem[];
+  openInside: GetCycleClose200OpenInsideItem[];
   checkpoints: GetCycleClose200CheckpointsItem[];
 };
 
@@ -2602,9 +2611,36 @@ export type GetTemplateProposals200TemplatesItem = {
   version: number;
 };
 
+export const GetTemplateProposals200CoveredItemTemplateTier = {  essential: 'essential',
+  secondary: 'secondary',
+  parked: 'parked',
+} as const
+export const GetTemplateProposals200CoveredItemTemplateTargetType = {  count: 'count',
+  duration: 'duration',
+} as const
+export type GetTemplateProposals200CoveredItemTemplate = {
+  id: string;
+  title: string;
+  tier: typeof GetTemplateProposals200CoveredItemTemplateTier[keyof typeof GetTemplateProposals200CoveredItemTemplateTier];
+  targetType: typeof GetTemplateProposals200CoveredItemTemplateTargetType[keyof typeof GetTemplateProposals200CoveredItemTemplateTargetType];
+  targetCount: number | null;
+  targetMinutes: number | null;
+  activityIds: string[];
+  orderKey: string;
+  archivedAt: string | null;
+  version: number;
+};
+
+export type GetTemplateProposals200CoveredItem = {
+  template: GetTemplateProposals200CoveredItemTemplate;
+  objectiveId: string;
+  objectiveTitle: string;
+};
+
 export type GetTemplateProposals200 = {
   startDate: string;
   templates: GetTemplateProposals200TemplatesItem[];
+  covered: GetTemplateProposals200CoveredItem[];
 };
 
 export type ApplyTemplatesBodyAcceptItem = {
