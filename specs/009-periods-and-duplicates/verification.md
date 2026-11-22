@@ -27,3 +27,14 @@ tests); web tests are in this repository (`src/lib/day/goals.test.ts`,
   error before any migration ran) and passed on rerun, with migration 0017.
 - Staging: web `d45f16a`, API `a99a4e7`, health ok.
 - Data: the owner's read-only listing after the deploy found 0 groups of goals that look alike (8 before).
+
+## 009b (2026-11-22)
+
+| Requirement | Tests |
+|---|---|
+| FR-011 The close starts from the saved check-in and notes; closing again keeps them | unit "keeps every saved check-in value", "starts empty when the day has no check-in"; e2e "a reopened day's close starts from its saved check-in and notes, and closing again keeps them" (two reopen-and-close passes, desktop and mobile) |
+
+Runs: typecheck, lint, vitest 62/62. Local e2e: 108 passed, 2 failed in
+`agenda.spec.ts` under parallel load (the same flaky spec as before), both
+green when `agenda.spec.ts` and `day-close.spec.ts` ran alone (19/19).
+Staging: web `f228aa0` (Vercel success); no backend change.

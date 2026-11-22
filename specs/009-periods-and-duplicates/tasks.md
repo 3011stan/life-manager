@@ -40,4 +40,4 @@
 
 - [x] T015 Unit test then R11 helper (`src/lib/day/close.ts`); `CloseScreen` starts from the saved check-in and notes
 - [x] T016 e2e: close with a check-in and notes, add a task (the day reopens), the close shows them checked and filled; closing again keeps them (twice)
-- [ ] T017 Local e2e green; staging (web only)
+- [x] T017 Local e2e green; staging (web only)
