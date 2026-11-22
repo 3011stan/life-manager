@@ -8,6 +8,7 @@ import { ActivityPicker } from "@/components/ActivityPicker";
 import { ChevronLeft } from "@/components/icons";
 import { createActivity, getGetCatalogQueryKey, useGetCatalog } from "@/lib/api/generated/catalog/catalog";
 import { closeDay, getGetDayCloseQueryKey, getGetDayQueryKey, updateEntry, useGetDay, useGetDayClose } from "@/lib/api/generated/days/days";
+import { CHECK_IN, EMPTY_CHECK_IN, savedCheckIn, type CheckIn } from "@/lib/day/close";
 import { addDays, formatMinutes, isDate } from "@/lib/day/dates";
 import type { Activity } from "@/lib/day/types";
 import { formatDate, useI18n } from "@/lib/i18n";
@@ -16,8 +17,6 @@ import { useConnectivity } from "@/lib/offline/use-connectivity";
 import { DurationInput } from "@/components/DurationInput";
 
 type Decision = "confirmed" | "dismissed";
-type CheckInKey = "physicalEnergy" | "mentalEnergy" | "emotionalEnergy" | "satisfaction";
-const CHECK_IN: CheckInKey[] = ["physicalEnergy", "mentalEnergy", "emotionalEnergy", "satisfaction"];
 
 const percent = (value: number) => `${String(Math.round(value * 100))}%`;
 
@@ -33,10 +32,21 @@ export function CloseScreen() {
   const catalog = useGetCatalog();
   const day = useGetDay(date, { query: { enabled: date !== "" } });
   const [decisions, setDecisions] = useState<Record<string, { decision: Decision; title: string; minutes: number }>>({});
-  const [checkIn, setCheckIn] = useState<Record<CheckInKey, number | null>>({ physicalEnergy: null, mentalEnergy: null, emotionalEnergy: null, satisfaction: null });
+  const [checkIn, setCheckIn] = useState<CheckIn>(EMPTY_CHECK_IN);
   const [notes, setNotes] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(false);
+
+  // 009b: editing a closed day reopens it but keeps its check-in and notes.
+  // Start from them once, from a fresh fetch (not an older cached copy), so a
+  // refetch after resolving a task never undoes what the person changed here.
+  const [seeded, setSeeded] = useState(false);
+  const saved = day.isFetchedAfterMount ? day.data?.data.cycle : undefined;
+  if (!seeded && saved) {
+    setSeeded(true);
+    setCheckIn(savedCheckIn(saved.checkIn));
+    setNotes(saved.notes);
+  }
 
   const data = preview.data?.data;
   if (!data) return <p>{t("common.loading")}</p>;

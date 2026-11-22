@@ -27,3 +27,9 @@
 3. Local e2e green, CI green, staging (web first, then backend); the migration
    runs with the backend deploy.
 4. The owner runs the read-only duplicate listing to confirm.
+
+## 009b
+
+| # | Decision | Why |
+|---|---|---|
+| R11 | `CloseScreen` seeds its check-in and notes once from the day (`GET /v1/days/{date}` already returns them), only from a fetch made after the screen opened, so an older cached copy or a refetch after resolving a task never overrides it; `web/src/lib/day/close.ts` holds the check-in shape. No backend change | FR-011 |

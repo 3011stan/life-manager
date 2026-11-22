@@ -35,3 +35,9 @@
 - [x] T012 Local e2e green, CI green, staging (web first, then backend; the migration runs with the deploy)
 - [x] T013 The owner runs the read-only listing once more to confirm
 - [x] T014 Verification report
+
+## 009b: A reopened day keeps its check-in
+
+- [x] T015 Unit test then R11 helper (`src/lib/day/close.ts`); `CloseScreen` starts from the saved check-in and notes
+- [x] T016 e2e: close with a check-in and notes, add a task (the day reopens), the close shows them checked and filled; closing again keeps them (twice)
+- [ ] T017 Local e2e green; staging (web only)

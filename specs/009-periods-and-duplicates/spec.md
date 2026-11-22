@@ -125,3 +125,18 @@ Reopening a closed month when one of its weeks is closed later (the owner can
 close the open week now; the month stays closed); renaming goals made before
 this round, other than through a merge; changing the rule that a week belongs
 to the month of its fourth day; matching goals by similar words.
+
+## 009b — A reopened day keeps its check-in at the close (2026-11-22)
+
+**Finding**: editing a closed day reopens it (003 FR-024) and keeps its saved
+check-in and notes, but the close screen always started them empty and sent
+what was on screen: closing again erased the check-in (or replaced it with
+new values) and blanked the notes. The check-in records how the day felt that
+evening; it cannot be redone days later.
+
+**Decision** (approved by the owner): the close starts from the day's saved
+check-in and notes; closing again without touching them keeps them. Scores are
+still recomputed, as before.
+
+- **FR-011** A day's close shows its saved check-in and notes; closing again
+  keeps them unless the person changes them.

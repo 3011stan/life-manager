@@ -99,3 +99,38 @@ test("planning today waits for yesterday's close; logging does not (Rule Zero)",
   await page.getByRole("button", { name: "Today" }).click();
   await expect(page.getByLabel("New entry")).toBeEnabled();
 });
+
+test("a reopened day's close starts from its saved check-in and notes, and closing again keeps them (009b)", async ({ page }) => {
+  const date = uniqueDate();
+  await signIn(page, `/day?date=${date}`);
+  await expect(page.getByLabel("New entry")).toBeVisible();
+  await page.getByLabel("Log done").check();
+  await add(page, "Morning walk");
+
+  const checkInOf = (name: string, value: string) => page.getByRole("radiogroup", { name }).getByRole("radio", { name: value, exact: true });
+  const closeOnce = async () => {
+    await page.getByRole("link", { name: "Close the day" }).click();
+    await expect(page.getByRole("heading", { name: /^Close / })).toBeVisible();
+  };
+
+  await closeOnce();
+  await checkInOf("Physical energy", "2").click();
+  await checkInOf("Satisfaction", "4").click();
+  await page.getByLabel("Notes").fill("Slept badly, still a good day.");
+  await page.getByRole("button", { name: "Close the day" }).click();
+  await expect(page.getByText(/Day closed/)).toBeVisible();
+
+  // A task added later reopens the day (FR-024); its check-in stays.
+  for (const title of ["Called a friend", "Read a chapter"]) {
+    await page.getByLabel("Log done").check();
+    await add(page, title);
+    await closeOnce();
+    await expect(checkInOf("Physical energy", "2")).toHaveAttribute("aria-checked", "true");
+    await expect(checkInOf("Satisfaction", "4")).toHaveAttribute("aria-checked", "true");
+    await expect(checkInOf("Mental energy", "3")).toHaveAttribute("aria-checked", "false");
+    await expect(page.getByLabel("Notes")).toHaveValue("Slept badly, still a good day.");
+    // Closing again without touching them keeps them, as the next pass checks.
+    await page.getByRole("button", { name: "Close the day" }).click();
+    await expect(page.getByText(/Day closed/)).toBeVisible();
+  }
+});
